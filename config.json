@@ -1,0 +1,13 @@
+{
+	"http" : { 
+		"script" : "bska" 
+	},
+	"service" : {
+		"api" : "fastcgi",
+		"socket" : 8080
+	},
+	"daemon" : {
+		"enable" : false,
+		"lock" : "/var/run/radiorandom.pid"
+	}
+}
