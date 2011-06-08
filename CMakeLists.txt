@@ -14,6 +14,7 @@ project(GenTemplates)
 set (Templates_html
 	../src/templates/html/menu.tmpl
 	../src/templates/html/master.tmpl
+	../src/templates/html/setup.tmpl
 	../src/templates/html/index.tmpl
 )
 add_custom_command(
@@ -31,6 +32,7 @@ project(Server)
 set(server_lib
 	templates_html
 	-lcppcms
+	-lcppdb
 )
 
 add_executable(radiorandom-server ../src/apps/server.cpp)

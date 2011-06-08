@@ -1,4 +1,7 @@
 {
+	"setup" : {
+		"lockfile" : "/home/http/radiorandom/setuplock"
+	},
 	"http" : { 
 		"script" : "bska" 
 	},
