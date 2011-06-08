@@ -8,8 +8,18 @@
 					<th><a href="?sortby=username&direction=<% sort_username_dir %>">Username</a></th>
 					<th><a href="?sortby=score&direction=<% sort_score_dir %>">Score</a></th>
 					<th><a href="?sortby=access&direction=<% sort_access_dir %>">Access</a></th>
-					<th><a href="?sortby=date&direction=<% sort_date_dir %>">Joined</a></th>
+					<th><a href="?sortby=joined&direction=<% sort_date_dir %>">Joined</a></th>
 				</tr>
+				<% foreach user in usersset %>
+					<% item %>
+					<tr>
+						<td><% user.username %></td>
+						<td><% user.score %></td>
+						<td><% user.access %></td>
+						<td><% user.date %></td>
+					</tr>
+					<% end %>
+				<% end %>
 			</table>
 <% end %>
 <% template footer() %><% end %>

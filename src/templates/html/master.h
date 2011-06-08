@@ -24,6 +24,29 @@ class menu_item {
 };
 typedef std::vector<menu_item> links_set;
 
+class user_item {
+	public:
+		std::string username;
+		int score;
+		int access;
+		std::string date;
+	public:
+		user_item() {
+			username = "";
+			score = -1;
+			access = -1;
+			date = "";
+		}
+		user_item(std::string username, int score, int access, std::string date) {
+			this->username = username;
+			this->score = score;
+			this->access = access;
+			this->date = date;
+		}
+};
+
+typedef std::vector<user_item> users_set;
+
 namespace master  {  
     struct menu :public cppcms::base_content {
 		links_set menu_links_left;
@@ -87,6 +110,7 @@ namespace master  {
 		std::string sort_score_dir;
 		std::string sort_access_dir;
 		std::string sort_date_dir;
+		users_set usersset;
 		users() {
 			sort_username_dir = "desc";
 			sort_score_dir = "desc";

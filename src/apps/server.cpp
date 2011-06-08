@@ -153,6 +153,52 @@ class radio_random : public cppcms::application {
 			set_menu(c);
 			
 			std::multimap<std::string,std::string> getreq = request().get();
+			
+			std::string sortby = getreq.find("sortby")->second;
+			std::string direction = getreq.find("direction")->second;
+			
+			cppdb::session users_sql("sqlite3:db=db/users.db");
+			cppdb::result users;
+			if (sortby.length() == 0) sortby = "date";
+			if (sortby == "username") {
+				if (direction == "asc") {
+					users = users_sql << "select * from users order by username asc";
+				} else {
+					users = users_sql << "select * from users order by username desc";
+				}
+			}
+			if (sortby == "score") {
+				if (direction == "asc") {
+					users = users_sql << "select * from users order by score asc";
+				} else {
+					users = users_sql << "select * from users order by score desc";
+				}
+			}
+			if (sortby == "access") {
+				if (direction == "asc") {
+					users = users_sql << "select * from users order by access asc";
+				} else {
+					users = users_sql << "select * from users order by access desc";
+				}
+			}
+			if (sortby == "joined") {
+				if (direction == "asc") {
+					users = users_sql << "select * from users order by joined asc";
+				} else {
+					users = users_sql << "select * from users order by joined desc";
+				}
+			}
+			
+			users = users_sql << "select * from users order by joined desc";
+			while (users.next()) {
+				std::string un = users.get<std::string>("username");
+				std::string joined = users.get<std::string>("joined");
+				int score = users.get<int>("score");
+				int access = users.get<int>("access");
+				c.usersset.push_back(user_item(un,score,access,joined));
+			}
+			
+			
 			if (getreq.find("direction")->second == "asc") {
 				if (getreq.find("sortby")->second == "username") {
 					c.sort_username_dir = "desc";
@@ -163,7 +209,7 @@ class radio_random : public cppcms::application {
 				if (getreq.find("sortby")->second == "access") {
 					c.sort_access_dir = "desc";
 				}
-				if (getreq.find("sortby")->second == "date") {
+				if (getreq.find("sortby")->second == "joined") {
 					c.sort_date_dir = "desc";
 				}
 			} else {
@@ -176,7 +222,7 @@ class radio_random : public cppcms::application {
 				if (getreq.find("sortby")->second == "access") {
 					c.sort_access_dir = "asc";
 				}
-				if (getreq.find("sortby")->second == "date") {
+				if (getreq.find("sortby")->second == "joined") {
 					c.sort_date_dir = "asc";
 				}
 			}
