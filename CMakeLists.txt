@@ -6,6 +6,7 @@ add_definitions(-pedantic -Wall -g)
 set(CMAKE_BUILD_TYPE Debug)
 include_directories(
 	../src/templates/html
+	../src/data
 )
 
 ########################################################################
@@ -13,9 +14,16 @@ include_directories(
 project(GenTemplates)
 set (Templates_html
 	../src/templates/html/menu.tmpl
+	
 	../src/templates/html/master.tmpl
+	
+	../src/templates/html/error.tmpl
 	../src/templates/html/setup.tmpl
 	../src/templates/html/index.tmpl
+	../src/templates/html/users.tmpl
+	../src/templates/html/users_new.tmpl
+	../src/templates/html/users_login.tmpl
+	../src/templates/html/tos.tmpl
 )
 add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp
@@ -27,9 +35,18 @@ target_link_libraries(templates_html -lcppcms)
 
 ########################################################################
 
+project(Data)
+add_library(data-pstring STATIC 
+	../src/data/PString/PString.cpp
+	../src/data/PString/PlainIOHighLevel.cpp
+)
+
+########################################################################
+
 project(Server)
 
 set(server_lib
+	data-pstring
 	templates_html
 	-lcppcms
 	-lcppdb

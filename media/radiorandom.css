@@ -60,18 +60,24 @@ div.topmenu span.menu_rest {
 
 div.contentbody {
 	height:100%;
+	padding-left:2%;
+	padding-right:2%;
 }
 
 div.centeredtext {
 	text-align:center;
 }
 
-h1 {
+h1, p, h3 {
 	margin:0px;
-};
+}
 
-table {
+table.fullwidth {
 	width:100%;
+}
+
+td.error {
+	color:#f55;
 }
 
 a:link,a:visited {

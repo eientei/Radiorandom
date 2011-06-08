@@ -1,0 +1,17 @@
+<% c++ #include "master.h" %>
+<% xhtml %>
+<% skin html %>
+<% view radiorandom_users uses master::users extends radiorandom_master %>
+<% template body() %>
+			<table class="fullwidth">
+				<tr>
+					<th><a href="?sortby=username&direction=<% sort_username_dir %>">Username</a></th>
+					<th><a href="?sortby=score&direction=<% sort_score_dir %>">Score</a></th>
+					<th><a href="?sortby=access&direction=<% sort_access_dir %>">Access</a></th>
+					<th><a href="?sortby=date&direction=<% sort_date_dir %>">Joined</a></th>
+				</tr>
+			</table>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

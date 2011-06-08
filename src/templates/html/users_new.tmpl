@@ -1,0 +1,46 @@
+<% c++ #include "master.h" %>
+<% xhtml %>
+<% skin html %>
+<% view radiorandom_users_new uses master::users_new extends radiorandom_master %>
+<% template body() %>
+					<%if not success %>
+						<form method="post" action="/users/new">
+							<table>
+							<tr>
+								<td><% form as_space registerform.username %></td>
+								<td>Your desired username</td>
+								<td class="error"><% username_message %></td>
+							</tr>
+							<tr>
+								<td><% form as_space registerform.password %></td>
+								<td>Your password</td>
+								<td class="error"><% password_message %></td>
+							</tr>
+							<tr>
+								<td><% form as_space registerform.password_confirmation %></td>
+								<td>Password confirmation</td>
+								<td class="error"><% password_confirmation_message %></td>
+							</tr>
+							<tr>
+								<td><% form as_space registerform.email %></td>
+								<td>Your email</td>
+								<td class="error"><% email_message %></td>
+							</tr>
+							<tr>
+								<td><% form as_space registerform.email_confirmation %></td>
+								<td>Email confirmation</td>
+								<td class="error"><% email_confirmation_message %></td>
+							</tr>
+							<tr>
+								<td colspan="2">I have read and accept <a href="/tos">terms of service</a><% form as_space registerform.tos %></td>
+								<td><% form as_space registerform.submit %></td>
+							</tr>
+							</table>
+						</form>
+					<% else %>
+						<h1>Successfuly registered!</h1>
+					<% end %>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

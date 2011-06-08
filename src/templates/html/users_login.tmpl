@@ -1,0 +1,28 @@
+<% c++ #include "master.h" %>
+<% xhtml %>
+<% skin html %>
+<% view radiorandom_users_login uses master::users_login extends radiorandom_master %>
+<% template body() %>
+			<form method="post" action="/users/login">
+				<table>
+				<tr>
+					<td colspan="2" class="error"><% message %></td>
+				</tr>
+				<tr>
+					<td>Login:</td>
+					<td><% form as_space loginform.username %></td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td><% form as_space loginform.password %></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><% form as_space loginform.submit %></td>
+				</tr>
+				</table>
+			</form>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>
