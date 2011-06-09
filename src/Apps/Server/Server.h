@@ -20,7 +20,7 @@
 
 class radio_random : public cppcms::application {
 	private:
-		bool valid_user_cookie();
+		std::string valid_user_cookie();
 		void set_menu(radiorandom::menu &c, menu_item current = menu_item("None","None"), bool login = false);
 	public:
 		radio_random(cppcms::service &srv);
@@ -29,6 +29,9 @@ class radio_random : public cppcms::application {
 		void users_show(std::string id);
 		void users_login();
 		void users_logout();
+		void users_profile();
+		void users_profile_password();
+		void users_profile_settings();
 		void tos();
 		void setup();
 		void index();

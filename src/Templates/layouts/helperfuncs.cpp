@@ -1,5 +1,174 @@
 #include "helperfuncs.h"
 
+std::string make_session(std::string username) {
+	time_t rawtime;
+	struct tm * timeinfo;
+	cppdb::session radiorandom_sql("sqlite3:db=db/radiorandom.db");
+	cppdb::result users = radiorandom_sql << "select id from users where username = ?;" << username;
+	
+	int id;
+	while (users.next()) {
+		id = users.get<int>("id");
+	}
+	users.clear();
+	char buf[1024];
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	strftime(buf,1024,"%c",timeinfo);
+	std::string hash = sha1hash(buf);
+	printf("ok\n");
+	radiorandom_sql << "insert into sessions values (?,?,strftime('%s','now'));" << hash << id << cppdb::exec;
+	return hash;
+}
+
+std::string navgen_helper(int begin, int end, int page, int pagesize, std::string prefix, int pn=1) {
+	std::string result = "";
+	std::string c_class,href;
+	char buf[1024];
+	
+	for (int i=begin; i < end; i+=pagesize) {
+		snprintf(buf,1024,"%d",pn);
+		if (pn == page) {
+			c_class="current";
+			href="";
+		} else {
+			c_class = "rest";
+			href = " href=\"" + prefix + "&amp;page=" + buf + "\"";
+		}
+		result += "<a class=\"" + c_class + "\"" + href + ">" + std::string(buf) + "</a>";
+		pn++;
+	}
+	return result;
+}
+
+std::string navigation_generator(std::string prefix, int page, int pagesize,int total) {
+	std::string result = "";
+		int total_pages = total/pagesize;
+		if (total%pagesize > 0) total_pages += 1;
+		char buf[1024];
+		std::string c_class="rest";
+		std::string href="";
+		if (page == 1) {
+			result += "<a class=\"prev\">&lt;&lt;</a>";
+		} else {
+			snprintf(buf,1024,"%d",page-1);
+			result += "<a class=\"prev-active\" href=\"" + prefix + "&amp;page=" + std::string(buf) + "\">&lt;&lt;</a>";
+		}
+		if (total_pages < 8) {
+			result += navgen_helper(0,total,page,pagesize,prefix);
+		} else {
+			if (page > 5) {
+				result += "<a class=\"rest\" href=\"" + prefix + "&amp;page=1\">1</a>";
+				result += "...";
+			}
+			
+			if (page < 6) {
+				result += navgen_helper(0,(5+(page>=5&&2)+(page>5)+((page>=3) && abs(3-page)))*pagesize,page,pagesize,prefix);
+			}
+			
+			if ((page >= 6) && (((total_pages - page) >= 5))) {
+				result += navgen_helper((page-2)*pagesize,(page+3)*pagesize,page,pagesize,prefix,(page-2));
+			}
+			
+			
+			if ((total_pages - page) < 3) {
+				result += navgen_helper(total-(5)*pagesize,total,page,pagesize,prefix,(total_pages - 4));
+			} else if ((total_pages - page) < 4) {
+				result += navgen_helper(total-(6)*pagesize,total,page,pagesize,prefix,(total_pages - 5));
+			} else if ((total_pages - page) < 5) {
+				result += navgen_helper(total-(7)*pagesize,total,page,pagesize,prefix,(total_pages - 6));
+			}
+
+			if ((total_pages - page) > 4) {
+				snprintf(buf,1024,"%d",total_pages);
+				result += "...";
+				result += "<a class=\"rest\" href=\"" + prefix + "&amp;page=" + buf + "\">" + buf + "</a>";
+			}
+		}
+		if (page == total_pages) {
+			result += "<a class=\"next\">&gt;&gt;</a>";
+		} else {
+			snprintf(buf,1024,"%d",page+1);
+			result += "<a class=\"next-active\" href=\"" + prefix + "&amp;page=" + std::string(buf) + "\">&gt;&gt;</a>";
+		}
+	/*
+		std::string result = "";
+
+		if (total_pages <= 7) {
+			for (int i=0; i < total; i+=pagesize) {
+				snprintf(buf,1024,"%d",pn);
+				if (pn == page) {
+					c_class="current";
+					href="";
+				} else {
+					c_class = "rest";
+					href = " href=\"" + prefix + "&amp;page=" + buf + "\"";
+				}
+				result += "<a class=\"" + c_class + "\"" + href + ">" + std::string(buf) + "</a>";
+				pn++;
+			}
+		} else {
+				if (page <= 5) {
+					int lim = 5;
+					if (page >= 4) {
+						lim += (page-3);
+					}
+					for (int i=0; i < lim * pagesize; i+=pagesize) {
+					snprintf(buf,1024,"%d",pn);
+					if (pn == page) {
+						c_class="current";
+						href="";
+					} else {
+						c_class = "rest";
+						href = " href=\"" + prefix + "&amp;page=" + buf + "\"";
+					}
+					result += "<a class=\"" + c_class + "\"" + href + ">" + std::string(buf) + "</a>";
+					pn++;
+				}
+			} else if ((total_pages - page) > 3) {
+				pn = page-2;
+				for (int i=(page-2)*pagesize; i < (page+3)*pagesize; i+=pagesize) {
+					snprintf(buf,1024,"%d",pn);
+					if (pn == page) {
+						c_class="current";
+						href="";
+					} else {
+						c_class = "rest";
+						href = " href=\"" + prefix + "&amp;page=" + buf + "\"";
+					}
+					result += "<a class=\"" + c_class + "\"" + href + ">" + std::string(buf) + "</a>";
+					pn++;
+				}
+			}
+				if ((total_pages - page) > 3) {
+					result += "...";
+					c_class = "rest";
+					if (page == total_pages) c_class = "current";
+					snprintf(buf,1024,"%d",total_pages);
+					href = " href=\"" + prefix + "&amp;page=" + buf + "\"";
+					result += "<a class=\"" + c_class + "\"" + href + ">" + std::string(buf) + "</a>";
+				} else {
+					int diff = 6;
+					pn = page-diff+(total_pages - page);
+					for (int i=(page-diff+(total_pages - page))*pagesize; i <= total; i+=pagesize) {
+						snprintf(buf,1024,"%d",pn);
+						if (pn == page) {
+							c_class="current";
+							href="";
+						} else {
+							c_class = "rest";
+							href = " href=\"" + prefix + "&amp;page=" + buf + "\"";
+						}
+						result += "<a class=\"" + c_class + "\"" + href + ">" + std::string(buf) + "</a>";
+						pn++;
+					}
+				}
+		}
+
+		*/
+		return result;
+}
+
 std::string format_size(size_t size) {
 	char buf[1024];
 	float fsize = size;
@@ -63,30 +232,31 @@ std::string format_time(size_t t) {
 	return buf + std::string(" ") + suffix + " ago";
 }
 
-char *sha1hash(const char *buf) {
-	int input_len = strlen(buf);
+std::string sha1hash(std::string buf) {
+	int input_len = buf.length();
 	int hash_len = gcry_md_get_algo_dlen(GCRY_MD_SHA1);
 	unsigned char *binary_hash = new unsigned char[hash_len];
 	char *textual_hash = new char[hash_len * 2 + 1];
 	char *p = textual_hash;
-	gcry_md_hash_buffer(GCRY_MD_SHA1,binary_hash,buf,input_len);
+	gcry_md_hash_buffer(GCRY_MD_SHA1,binary_hash,buf.c_str(),input_len);
 	for (int i=0; i < hash_len; i++, p+=2) {
 		snprintf(p,3,"%02x",binary_hash[i]);
 	}
 	delete[] binary_hash;   
-	return textual_hash;
+	std::string result(textual_hash);
+	delete[] textual_hash;
+	return result;
 }
 
 bool valid_user(std::string username, std::string password_hash, bool raw) {
-	const char *hash;
+	std::string hash;
 	if (raw) {
 		hash = sha1hash(password_hash.c_str());
 	} else {
-		hash = password_hash.c_str();
+		hash = password_hash;
 	}
-	cppdb::session users_sql("sqlite3:db=db/users.db");
-	cppdb::result users = users_sql << "select count(*) from users where username = ? and password_hash = ?" << username << password_hash;
+	cppdb::session radiorandom_sql("sqlite3:db=db/radiorandom.db");
+	cppdb::result users = radiorandom_sql << "select count(*) from users where username = ? and password_hash = ?" << username << password_hash;
 	users.next();
-	if (raw) delete[] hash;
 	return users.get<int>(0) == 1;
 }

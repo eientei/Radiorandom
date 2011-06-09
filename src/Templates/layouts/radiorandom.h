@@ -21,6 +21,9 @@ namespace radiorandom {
 #include "radiorandom_users_new.h"
 #include "radiorandom_users_show.h"
 #include "radiorandom_users_login.h"
+#include "radiorandom_users_profile.h"
+#include "radiorandom_users_profile_password.h"
+#include "radiorandom_users_profile_settings.h"
 #include "radiorandom_tos.h"
 }
 

@@ -23,6 +23,9 @@ set (Templates_html
 	../src/Templates/HTML/users_new.html.tmpl
 	../src/Templates/HTML/users_show.html.tmpl
 	../src/Templates/HTML/users_login.html.tmpl
+	../src/Templates/HTML/users_profile.html.tmpl
+	../src/Templates/HTML/users_profile_password.html.tmpl
+	../src/Templates/HTML/users_profile_settings.html.tmpl
 	../src/Templates/HTML/tos.html.tmpl
 
 )

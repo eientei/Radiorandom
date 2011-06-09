@@ -1,0 +1,16 @@
+<% c++ #include "radiorandom.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_users_profile_settings uses radiorandom::users_profile_settings extends html_master %>
+<% template body() %>
+	<form method="post" action="/users/profile/settings">
+		<table>
+			<tr>
+				<td>No settings currently available.</td>
+			</tr>
+		</table>
+	</form>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

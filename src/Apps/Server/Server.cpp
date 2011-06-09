@@ -1,21 +1,39 @@
 #include "Server.h"
 
-bool radio_random::valid_user_cookie() {
-	std::string username = request().cookie_by_name("username").value();
-	std::string password_hash = request().cookie_by_name("password_hash").value();
-	return valid_user(username,password_hash);
+std::string radio_random::valid_user_cookie() {
+	std::string session = request().cookie_by_name("session").value();
+	
+	cppdb::session radiorandom_sql("sqlite3:db=db/radiorandom.db");
+	cppdb::result users = radiorandom_sql << "select username from sessions left join users on users.id = id where hash = ?" << session;
+	if (!users.next()) return "";
+	return users.get<std::string>("username");
 }
 
 void radio_random::set_menu(radiorandom::menu &c, menu_item current, bool login) {
+	bool emergency = false;
+	
+	struct stat filestatus;
+	std::string setuplock = settings().get<std::string>("setup.lockfile");
+	stat(setuplock.c_str(), &filestatus);
+	if (!S_ISREG(filestatus.st_mode)) {
+		emergency = true;
+	}
+
 	c.menu_current = current;
 	
 	c.menu_links_left.push_back(menu_item("[Index]","/"));
 	c.menu_links_left.push_back(menu_item("[Playlist]","/playlist"));
 	c.menu_links_left.push_back(menu_item("[Users]","/users"));
-	
-	if (valid_user_cookie() || login) {
+	std::string username;
+	if (emergency || (username = valid_user_cookie()).length() || login) {
+		c.logined = true;
+		c.username = username;
 		c.menu_links_right.push_back(menu_item("[Home]","/users/profile"));
-		c.menu_links_right.push_back(menu_item("[Logout]","/users/logout"));
+		if (emergency) {
+			c.menu_links_right.push_back(menu_item("[Setup]","/setup"));
+		} else {
+			c.menu_links_right.push_back(menu_item("[Logout]","/users/logout"));
+		}
 	} else {
 		c.menu_links_right.push_back(menu_item("[Register]","/users/new"));
 		c.menu_links_right.push_back(menu_item("[Login]","/users/login"));
@@ -33,6 +51,9 @@ radio_random::radio_random(cppcms::service &srv) :
 	dispatcher().assign("/users/new",&radio_random::users_new,this);
 	dispatcher().assign("/users/logout",&radio_random::users_logout,this);
 	dispatcher().assign("/users/login",&radio_random::users_login,this);
+	dispatcher().assign("/users/profile",&radio_random::users_profile,this);
+	dispatcher().assign("/users/profile/password",&radio_random::users_profile_password,this);
+	dispatcher().assign("/users/profile/settings",&radio_random::users_profile_settings,this);
 }
 
 void radio_random::tos() {
@@ -42,7 +63,7 @@ void radio_random::tos() {
 }
 void radio_random::setup() {
 	radiorandom::setup c;
-	set_menu(c);
+	set_menu(c,menu_item("[Setup]","/setup"));
 	
 	std::string setuplock = settings().get<std::string>("setup.lockfile");
 	struct stat filestatus;
@@ -59,12 +80,15 @@ void radio_random::setup() {
 		fclose(fp);
 		std::string users_schema = settings().get<std::string>("db-schema.users");
 		std::string files_schema = settings().get<std::string>("db-schema.files");
-		cppdb::session users_sql("sqlite3:db=db/users.db");
-		cppdb::session files_sql("sqlite3:db=db/files.db");
-		users_sql << "drop table users" << cppdb::exec;
-		files_sql << "drop table files" << cppdb::exec;
-		users_sql << users_schema << cppdb::exec;
-		files_sql << files_schema << cppdb::exec;
+		std::string sessions_schema = settings().get<std::string>("db-schema.sessions");
+		cppdb::session radiorandom_sql("sqlite3:db=db/radiorandom.db");
+		radiorandom_sql << "drop table if exists users" << cppdb::exec;
+		radiorandom_sql << "drop table if exists sessions" << cppdb::exec;
+		radiorandom_sql << "drop table if exists files" << cppdb::exec;
+		radiorandom_sql << users_schema << cppdb::exec;
+		radiorandom_sql << sessions_schema << cppdb::exec;
+		radiorandom_sql << files_schema << cppdb::exec;
+		response().set_redirect_header("/");
 	}
 	render("html_setup",c);
 }	
@@ -76,20 +100,23 @@ void radio_random::index() {
 	c.files = 0;
 	c.filessize = 0;
 	
-	try {
-		cppdb::session sql("sqlite3:db=db/files.db");
-	} catch (std::exception const &e) {
-		std::cerr << e.what() << std::endl;
-	}
 	
 	render("html_index",c);
 }
 void radio_random::main(std::string url) {
+	radiorandom::error c;
+	if (url != "/setup") {
+		struct stat filestatus;
+		std::string setuplock = settings().get<std::string>("setup.lockfile");
+		stat(setuplock.c_str(), &filestatus);
+		if (!S_ISREG(filestatus.st_mode)) {
+			set_menu(c);
+			response().set_redirect_header("/setup");
+			return;
+		}
+	}
 	if (!dispatcher().dispatch(url)) {
-		radiorandom::error c;
-		
 		set_menu(c);
-		
 		c.errorcode = 404;
 		render("html_error",c);
 	}

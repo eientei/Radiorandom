@@ -8,9 +8,11 @@
 
 std::string format_size(size_t size);
 std::string format_time(size_t time);
+std::string navigation_generator(std::string prefix, int page, int pagesize, int total);
 
-char *sha1hash(const char *buf);
+std::string sha1hash(std::string buf);
 
 bool valid_user(std::string username, std::string password_hash, bool raw=false);
+std::string make_session(std::string username);
 
 #endif

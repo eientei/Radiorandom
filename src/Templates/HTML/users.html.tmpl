@@ -5,10 +5,10 @@
 <% template body() %>
 	<table class="fullwidth">
 		<tr>
-				<th><a href="?sortby=username&direction=<% sort_username_dir %>">Username</a></th>
-				<th><a href="?sortby=score&direction=<% sort_score_dir %>">Score</a></th>
-				<th><a href="?sortby=access&direction=<% sort_access_dir %>">Access</a></th>
-				<th><a href="?sortby=joined&direction=<% sort_joined_dir %>">Joined</a></th>
+				<th><a href="?sortby=username&amp;direction=<% sort_username_dir %><% suffix %>">Username</a></th>
+				<th><a href="?sortby=score&amp;direction=<% sort_score_dir %><% suffix %>">Score</a></th>
+				<th><a href="?sortby=access&amp;direction=<% sort_access_dir %><% suffix %>">Access</a></th>
+				<th><a href="?sortby=joined&amp;direction=<% sort_joined_dir %><% suffix %>">Joined</a></th>
 		</tr>
 			<% foreach user in usersset %>
 			<% item %>
@@ -23,6 +23,12 @@
 	</table>
 
 <% end %>
-<% template footer() %><% end %>
+<% template footer() %>	
+		<div class="navigation">
+			<% if many %>
+				<% page | ext navigation_gen %>
+			<% end %>
+		</div>
+<% end %>
 <% end view %>
 <% end skin %>

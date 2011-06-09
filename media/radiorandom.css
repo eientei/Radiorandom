@@ -88,3 +88,27 @@ a:hover {
 	color:#aaf;
 }
 
+div.navigation {
+	margin:20px;
+	text-align:center;
+}
+
+div.navigation A {
+	margin:10px;
+	padding:5px;
+	border-width:1px;
+	border-style:solid;
+	border-color:#aaa;
+}
+
+div.navigation A.current {
+	border-width:0px;
+}
+
+div.navigation A:hover {
+	background:#ddf;
+}
+
+div.navigation A.prev, div.navigation A.next {
+	border-width:0px;
+}

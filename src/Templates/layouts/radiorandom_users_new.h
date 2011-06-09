@@ -36,9 +36,11 @@ struct users_new :public master, public cppcms::form {
 			if (!email.validate()) {
 				email.error_message("");
 				email_message = "invalid";
+				result = false;
 			}
 			if (email.value() != email_confirmation.value()) {
 				email_confirmation_message = "does not match";
+				result = false;
 			}
 			if (PString(password.value().c_str()).length() < 5) {
 				password_message = "lesser then 5 characters";
