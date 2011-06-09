@@ -3,11 +3,23 @@
 <% skin html %>
 <% view html_users_show uses radiorandom::users_show extends html_master %>
 <% template body() %>
-	<table class="fullwidth">
-				<td><a href="/users/<% user.id %>"><% user.username %></a></td>
-				<td><% user.score %></td>
-				<td><% user.access %></td>
-				<td><% user.joined | ext time_passed %></td>
+	<table>
+				<tr>
+					<td>Username: </td>
+					<td><a href="/users/<% user.id %>"><% user.username %></a></td>
+				</tr>
+				<tr>
+					<td>Score: </td>
+					<td><% user.score %></td>
+				</tr>
+				<tr>
+					<td>Access level: </td>
+					<td><% user.access %></td>
+				</tr>
+				<tr>
+					<td>Joined: </td>
+					<td><% user.joined | ext time_passed %></td>
+				</tr>
 		</tr>
 	</table>
 

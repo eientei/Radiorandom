@@ -8,32 +8,36 @@ std::string radio_random::valid_user_cookie() {
 	if (!users.next()) return "";
 	return users.get<std::string>("username");
 }
+void radio_random::set_submenu(radiorandom::menu &c, std::string section, menu_item current, bool login) {
+	if (section == "Posts") {
+		c.submenu_links_left.push_back(menu_item("[Index]","/posts"));
+		c.submenu_links_left.push_back(menu_item("[Upload]","/posts/new"));
+		c.submenu_current = current;
+		c.more = true;
+	}
+}
 
 void radio_random::set_menu(radiorandom::menu &c, menu_item current, bool login) {
-	bool emergency = false;
-	
 	struct stat filestatus;
 	std::string setuplock = settings().get<std::string>("setup.lockfile");
 	stat(setuplock.c_str(), &filestatus);
 	if (!S_ISREG(filestatus.st_mode)) {
-		emergency = true;
+		c.menu_links_right.push_back(menu_item("[Setup]","/setup"));
+		c.menu_current = current;
+		return;
 	}
 
 	c.menu_current = current;
 	
 	c.menu_links_left.push_back(menu_item("[Index]","/"));
-	c.menu_links_left.push_back(menu_item("[Playlist]","/playlist"));
+	c.menu_links_left.push_back(menu_item("[Playlist]","/posts"));
 	c.menu_links_left.push_back(menu_item("[Users]","/users"));
 	std::string username;
-	if (emergency || (username = valid_user_cookie()).length() || login) {
+	if ((username = valid_user_cookie()).length() || login) {
 		c.logined = true;
 		c.username = username;
 		c.menu_links_right.push_back(menu_item("[Home]","/users/profile"));
-		if (emergency) {
-			c.menu_links_right.push_back(menu_item("[Setup]","/setup"));
-		} else {
-			c.menu_links_right.push_back(menu_item("[Logout]","/users/logout"));
-		}
+		c.menu_links_right.push_back(menu_item("[Logout]","/users/logout"));
 	} else {
 		c.menu_links_right.push_back(menu_item("[Register]","/users/new"));
 		c.menu_links_right.push_back(menu_item("[Login]","/users/login"));
@@ -46,6 +50,7 @@ radio_random::radio_random(cppcms::service &srv) :
 	dispatcher().assign("/",&radio_random::index,this);
 	dispatcher().assign("/setup",&radio_random::setup,this);
 	dispatcher().assign("/tos",&radio_random::tos,this);
+	
 	dispatcher().assign("/users($|\\?.*)",&radio_random::users,this);
 	dispatcher().assign("/users/([0-9]*)",&radio_random::users_show,this,1);
 	dispatcher().assign("/users/new",&radio_random::users_new,this);
@@ -54,6 +59,10 @@ radio_random::radio_random(cppcms::service &srv) :
 	dispatcher().assign("/users/profile",&radio_random::users_profile,this);
 	dispatcher().assign("/users/profile/password",&radio_random::users_profile_password,this);
 	dispatcher().assign("/users/profile/settings",&radio_random::users_profile_settings,this);
+	
+	dispatcher().assign("/posts($|\\?.*)",&radio_random::posts,this);
+	dispatcher().assign("/posts/new",&radio_random::posts_new,this);
+	dispatcher().assign("/posts/([0-9]*)",&radio_random::posts_show,this,1);
 }
 
 void radio_random::tos() {
@@ -97,8 +106,11 @@ void radio_random::index() {
 	
 	set_menu(c,menu_item("[Index]","/"));
 	
-	c.files = 0;
-	c.filessize = 0;
+	cppdb::session radiorandom_sql("sqlite3:db=db/radiorandom.db");
+	cppdb::result files = radiorandom_sql << "select sum(size),count(*) from files";
+	files.next();
+	c.files = files.get<int>("count(*)");
+	c.filessize = files.get<int>("sum(size)");
 	
 	
 	render("html_index",c);

@@ -9,11 +9,30 @@ body {
 	background:#eee;
 }
 
+
+div.submenu a:link, div.submenu a:visited {
+	color:#88f;
+	background:#eee;
+}
+div.submenu a:hover {
+	color:#88f;
+	background:#ddf;
+}
+
+div.submenu {
+	float:left;
+	background:#eee;
+	padding-left:2%;
+	margin-bottom:10%;	
+	width:100%;
+}
+
+
 div.topmenu {
 	float:right;
 	background:#ddf;
 	width:100%;
-	margin-bottom:10%;
+
 }
 
 div.topmenu div.left_side {
@@ -40,9 +59,11 @@ a {
 }
 
 
-div.topmenu a:link, a:visited {
+div.topmenu a:link, div.submenu a:visited {
 	color:#88f;
 }
+
+
 
 div.topmenu a:hover {
 	background:#eee;
@@ -112,3 +133,24 @@ div.navigation A:hover {
 div.navigation A.prev, div.navigation A.next {
 	border-width:0px;
 }
+
+A.voteup {
+	background:#dfd;
+	color:#dfd;
+}
+
+A.votedown {
+	background:#fdd;
+	color:#fdd;
+}
+
+span.plus {
+	margin:10px;
+	color:#0d0;
+}
+
+span.minus {
+	margin:10px;
+	color:#f00;
+}
+

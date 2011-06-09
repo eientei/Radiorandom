@@ -40,3 +40,30 @@ class user_item {
 };
 
 typedef std::vector<user_item> users_set;
+
+class post_item {
+	public:
+		std::string hash;
+		std::string filename;
+		std::string filepath;
+		int score;
+		int size;
+		std::string tags;
+		size_t posted;
+	public:
+		post_item() {
+			hash = filename = filepath = tags = "";
+			score = size = posted = 0;
+		}
+		post_item(std::string hash, std::string filename, std::string filepath, std:: string tags, int score, int size, size_t posted) {
+			this->hash = hash;
+			this->filename = filename;
+			this->filepath = filepath;
+			this->tags = tags;
+			this->score = score;
+			this->size = size;
+			this->posted = posted;			
+		}
+};
+
+typedef std::vector<post_item> posts_set;

@@ -32,5 +32,24 @@
 		<% end %>
 	<% end %>
 <% end %>
+<% template submenulinks() %>
+	<div class="left_side">
+		<% if more %>
+		<span>&gt;&gt;</span>
+		<% end %>
+		<% include menulinks_left(submenu_links_left,submenu_current) %>
+	</div>
+<% end %>
+<% template submenulinks_left(links_set items, menu_item current) %>
+	<% foreach i in items %>
+		<% item %>
+			<% if (i.name == current.name) %>
+				<span class="submenu_current"><% i.name %></span>
+			<% else %>
+				<span class="submenu_rest"><a href="<% i.href %>"><% i.name %></a></span>
+			<% end %>
+		<% end %>
+	<% end %>
+<% end %>
 <% end view %>
 <% end skin %>

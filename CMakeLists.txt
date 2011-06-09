@@ -19,6 +19,8 @@ set (Templates_html
 	../src/Templates/HTML/error.html.tmpl
 	../src/Templates/HTML/setup.html.tmpl
 	../src/Templates/HTML/index.html.tmpl
+	../src/Templates/HTML/tos.html.tmpl
+	
 	../src/Templates/HTML/users.html.tmpl
 	../src/Templates/HTML/users_new.html.tmpl
 	../src/Templates/HTML/users_show.html.tmpl
@@ -26,8 +28,9 @@ set (Templates_html
 	../src/Templates/HTML/users_profile.html.tmpl
 	../src/Templates/HTML/users_profile_password.html.tmpl
 	../src/Templates/HTML/users_profile_settings.html.tmpl
-	../src/Templates/HTML/tos.html.tmpl
 
+	../src/Templates/HTML/posts.html.tmpl
+	../src/Templates/HTML/posts_new.html.tmpl
 )
 add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp
@@ -52,14 +55,17 @@ project(Server)
 set(server_lib
 	data-pstring
 	templates_html
-	-lgcrypt
 	-lcppcms
 	-lcppdb
+	-lmagic
+	-lssl
+	-lcrypto
 )
 
 add_executable(radiorandom-server 
 	../src/Apps/Server/Server.cpp
 	../src/Apps/Server/Users.cpp
+	../src/Apps/Server/Posts.cpp
 	../src/Templates/layouts/helperfuncs.cpp
 )
 target_link_libraries(radiorandom-server ${server_lib})

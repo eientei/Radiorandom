@@ -17,6 +17,8 @@ namespace radiorandom {
 #include "radiorandom_index.h"
 #include "radiorandom_setup.h"
 #include "radiorandom_error.h"
+#include "radiorandom_tos.h"
+
 #include "radiorandom_users.h"
 #include "radiorandom_users_new.h"
 #include "radiorandom_users_show.h"
@@ -24,7 +26,9 @@ namespace radiorandom {
 #include "radiorandom_users_profile.h"
 #include "radiorandom_users_profile_password.h"
 #include "radiorandom_users_profile_settings.h"
-#include "radiorandom_tos.h"
+
+#include "radiorandom_posts.h"
+#include "radiorandom_posts_new.h"
 }
 
 #endif

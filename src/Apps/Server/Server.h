@@ -5,6 +5,7 @@
 #include <cppcms/service.h>
 #include <cppcms/http_response.h>
 #include <cppcms/http_cookie.h>
+#include <cppcms/http_file.h>
 #include <cppcms/http_request.h>
 #include <cppcms/url_dispatcher.h>
 #include <cppcms/applications_pool.h>
@@ -17,11 +18,14 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <magic.h>
+#include <fcntl.h>
 
 class radio_random : public cppcms::application {
 	private:
 		std::string valid_user_cookie();
 		void set_menu(radiorandom::menu &c, menu_item current = menu_item("None","None"), bool login = false);
+		void set_submenu(radiorandom::menu &c, std::string section, menu_item current = menu_item("None","None"), bool login = false);
 	public:
 		radio_random(cppcms::service &srv);
 		void users();
@@ -32,6 +36,11 @@ class radio_random : public cppcms::application {
 		void users_profile();
 		void users_profile_password();
 		void users_profile_settings();
+		
+		void posts();
+		void posts_new();
+		void posts_show(std::string id);
+		
 		void tos();
 		void setup();
 		void index();

@@ -1,0 +1,38 @@
+<% c++ #include "radiorandom.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_posts uses radiorandom::posts extends html_master %>
+<% template body() %>
+	<table class="fullwidth">
+		<tr>
+				<th><a href="?sortby=filename&amp;direction=<% sort_filename_dir %><% suffix %>">Filename</a></th>
+				<th><a href="?sortby=size&amp;direction=<% sort_size_dir %><% suffix %>">Size</a></th>
+				<th><a href="?sortby=score&amp;direction=<% sort_score_dir %><% suffix %>">Score</a></th>
+				<th><a href="?sortby=tags&amp;direction=<% sort_tags_dir %><% suffix %>">Tags</a></th>
+				<th><a href="?sortby=posted&amp;direction=<% sort_posted_dir %><% suffix %>">Posted</a></th>
+		</tr>
+			<% foreach post in postsset %>
+			<% item %>
+		<tr>
+				<td><a href="/posts/<% post.hash %>"><% post.filename %></a></td>
+				<td><% post.size | ext formatsize %></td>
+				<td>
+					<% post.score %><a href="/posts/voteup/<% post.hash %>" class="voteup">[<span class="plus">+</span>]</a><a href="/posts/votedown/<% post.hash %>" class="votedown">[<span class="minus">-</span>]</a>
+				</td>
+				<td><% post.tags %></td>
+				<td><% post.posted | ext time_passed %></td>
+		</tr>
+		<% end %>
+		<% end %>
+	</table>
+
+<% end %>
+<% template footer() %>	
+		<div class="navigation">
+			<% if many %>
+				<% page | ext navigation_gen %>
+			<% end %>
+		</div>
+<% end %>
+<% end view %>
+<% end skin %>
