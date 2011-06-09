@@ -1,7 +1,7 @@
 {
 	"db-schema" : {
-		"users" : "CREATE TABLE users (username TEXT, password_hash TEXT, score INTEGER, access INTEGER, joined DATE );",
-		"files" : "CREATE TABLE files (filename TEXT, filepath TEXT, hash TEXT, size INTEGER, score INTEGER, posted DATE);"
+		"users" : "CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password_hash TEXT, score INTEGER, access INTEGER, joined DATE );",
+		"files" : "CREATE TABLE files (id INTEGER PRIMARY KEY, filename TEXT, filepath TEXT, hash TEXT, size INTEGER, score INTEGER, posted DATE);"
 	},
 	"setup" : {
 		"lockfile" : "/home/http/radiorandom/setuplock"

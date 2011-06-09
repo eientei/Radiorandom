@@ -1,0 +1,23 @@
+<% c++ #include "radiorandom.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_setup uses radiorandom::setup extends html_master %>
+<% template body() %>
+                        <div class="centeredtext">
+                                <% if submit.value() %>
+                                        <h1>Setted up!</h1>
+                                <% else %>
+                                        <% if already_setted_up %>
+                                                <h1>Already setted up. Aborting.</h1>
+                                        <% else %>
+                                                <h1>Setting up RadioRandom database.</h1>
+                                                <form method="post" action="/setup">
+                                                        <% form as_space submit %>
+                                                </form>
+                                        <% end %>
+                                <% end %>
+                        </div>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

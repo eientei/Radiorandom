@@ -1,0 +1,12 @@
+<% c++ #include "radiorandom.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_error uses radiorandom::error extends html_master %>
+<% template body() %>
+                        <div class="centeredtext">
+                                <h1>Error <% errorcode %> occured.</h1>
+                        </div>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

@@ -5,25 +5,26 @@ cmake_minimum_required(VERSION 2.8)
 add_definitions(-pedantic -Wall -g)
 set(CMAKE_BUILD_TYPE Debug)
 include_directories(
-	../src/templates/html
-	../src/data
+	../src/Templates/layouts
+	../src/Data
 )
 
 ########################################################################
 
 project(GenTemplates)
 set (Templates_html
-	../src/templates/html/menu.tmpl
-	
-	../src/templates/html/master.tmpl
-	
-	../src/templates/html/error.tmpl
-	../src/templates/html/setup.tmpl
-	../src/templates/html/index.tmpl
-	../src/templates/html/users.tmpl
-	../src/templates/html/users_new.tmpl
-	../src/templates/html/users_login.tmpl
-	../src/templates/html/tos.tmpl
+	../src/Templates/HTML/menu.html.tmpl
+
+	../src/Templates/HTML/master.html.tmpl
+	../src/Templates/HTML/error.html.tmpl
+	../src/Templates/HTML/setup.html.tmpl
+	../src/Templates/HTML/index.html.tmpl
+	../src/Templates/HTML/users.html.tmpl
+	../src/Templates/HTML/users_new.html.tmpl
+	../src/Templates/HTML/users_show.html.tmpl
+	../src/Templates/HTML/users_login.html.tmpl
+	../src/Templates/HTML/tos.html.tmpl
+
 )
 add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp
@@ -37,8 +38,8 @@ target_link_libraries(templates_html -lcppcms)
 
 project(Data)
 add_library(data-pstring STATIC 
-	../src/data/PString/PString.cpp
-	../src/data/PString/PlainIOHighLevel.cpp
+	../src/Data/PString/PString.cpp
+	../src/Data/PString/PlainIOHighLevel.cpp
 )
 
 ########################################################################
@@ -48,10 +49,15 @@ project(Server)
 set(server_lib
 	data-pstring
 	templates_html
+	-lgcrypt
 	-lcppcms
 	-lcppdb
 )
 
-add_executable(radiorandom-server ../src/apps/server.cpp)
+add_executable(radiorandom-server 
+	../src/Apps/Server/Server.cpp
+	../src/Apps/Server/Users.cpp
+	../src/Templates/layouts/helperfuncs.cpp
+)
 target_link_libraries(radiorandom-server ${server_lib})
 set_target_properties(radiorandom-server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../")

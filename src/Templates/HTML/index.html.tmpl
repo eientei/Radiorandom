@@ -1,0 +1,14 @@
+<% c++ #include "radiorandom.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_index uses radiorandom::index extends html_master %>
+<% template body() %>
+                        <div class="centeredtext">
+                                <h1 class="welcome">Welcome to radio random!</h1>
+                                <a href="/listen">Lsten!</a>
+                                <p class="stat">Currently serving <% files %> files of <% filessize | ext format_filessize %> size.</p>
+                        </div>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

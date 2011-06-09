@@ -1,0 +1,17 @@
+<% c++ #include "radiorandom.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_users_show uses radiorandom::users_show extends html_master %>
+<% template body() %>
+	<table class="fullwidth">
+				<td><a href="/users/<% user.id %>"><% user.username %></a></td>
+				<td><% user.score %></td>
+				<td><% user.access %></td>
+				<td><% user.joined | ext time_passed %></td>
+		</tr>
+	</table>
+
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

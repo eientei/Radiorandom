@@ -1,0 +1,28 @@
+<% c++ #include "radiorandom.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_users uses radiorandom::users extends html_master %>
+<% template body() %>
+	<table class="fullwidth">
+		<tr>
+				<th><a href="?sortby=username&direction=<% sort_username_dir %>">Username</a></th>
+				<th><a href="?sortby=score&direction=<% sort_score_dir %>">Score</a></th>
+				<th><a href="?sortby=access&direction=<% sort_access_dir %>">Access</a></th>
+				<th><a href="?sortby=joined&direction=<% sort_joined_dir %>">Joined</a></th>
+		</tr>
+			<% foreach user in usersset %>
+			<% item %>
+		<tr>
+				<td><a href="/users/<% user.id %>"><% user.username %></a></td>
+				<td><% user.score %></td>
+				<td><% user.access %></td>
+				<td><% user.joined | ext time_passed %></td>
+		</tr>
+		<% end %>
+		<% end %>
+	</table>
+
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>
