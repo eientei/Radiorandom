@@ -37,7 +37,8 @@ void controller::users() {
 	int total_items = users.get<int>(0);
 	char buf[1024];
 	snprintf(buf,1024,"%d",softlimit);
-	c.prefix = "?sortby=" + sortby + "&amp;order=" + order + "&amp;limit=" + buf;
+	c.infix = "&amp;limit=" + string(buf);
+	c.prefix = "?sortby=" + sortby + "&amp;order=" + order;
 	if (total_items > softlimit) {
 		c.many_items = true;
 		c.page = page;

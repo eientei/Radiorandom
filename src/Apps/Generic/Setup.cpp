@@ -12,14 +12,20 @@ void controller::setup() {
 		std::string users_schema = settings().get<std::string>("db-schema.users");
 		std::string posts_schema = settings().get<std::string>("db-schema.posts");
 		std::string sessions_schema = settings().get<std::string>("db-schema.sessions");
+		std::string anons_schema = settings().get<std::string>("db-schema.anons");
+		std::string votes_schema = settings().get<std::string>("db-schema.votes");
 		
 		cppdb::session radiorandom_sql("sqlite3:db=db/radiorandom.db");
 		radiorandom_sql << "drop table if exists users" << cppdb::exec;
 		radiorandom_sql << "drop table if exists sessions" << cppdb::exec;
 		radiorandom_sql << "drop table if exists posts" << cppdb::exec;
+		radiorandom_sql << "drop table if exists anons" << cppdb::exec;
+		radiorandom_sql << "drop table if exists votes" << cppdb::exec;
 		radiorandom_sql << users_schema << cppdb::exec;
 		radiorandom_sql << sessions_schema << cppdb::exec;
 		radiorandom_sql << posts_schema << cppdb::exec;
+		radiorandom_sql << anons_schema << cppdb::exec;
+		radiorandom_sql << votes_schema << cppdb::exec;
 		response().set_redirect_header("/");
 		
 	}

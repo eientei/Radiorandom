@@ -5,10 +5,12 @@
 <% template body() %>
 	<table class="fullwidth">
 		<tr>
-				<th><a href="?sortby=username&amp;order=<% sortdir_username %><% suffix %>">Username</a></th>
-				<th><a href="?sortby=score&amp;order=<% sortdir_score %><% suffix %>">Score</a></th>
-				<th><a href="?sortby=access&amp;order=<% sortdir_access %><% suffix %>">Access</a></th>
-				<th><a href="?sortby=joined&amp;order=<% sortdir_joined %><% suffix %>">Joined</a></th>
+			<% if content.infix.length() %>
+			<% end %>
+				<th><a href="?sortby=username&amp;order=<% sortdir_username %><% content.suffix %>">Username</a></th>
+				<th><a href="?sortby=score&amp;order=<% sortdir_score %><% content.suffix %>">Score</a></th>
+				<th><a href="?sortby=access&amp;order=<% sortdir_access %><% content.suffix %>">Access</a></th>
+				<th><a href="?sortby=joined&amp;order=<% sortdir_joined %><% content.suffix %>">Joined</a></th>
 		</tr>
 			<% foreach user in usersset %>
 			<% item %>
@@ -16,7 +18,7 @@
 				<td><a href="/users/<% user.id %>"><% user.username %></a></td>
 				<td><% user.score %></td>
 				<td><% user.access | ext user_access_filter %></td>
-				<td><% user.joined | ext passed_time_filter %></td>
+				<td><% user.joined | ext content.passed_time_filter %></td>
 		</tr>
 		<% end %>
 		<% end %>

@@ -8,7 +8,7 @@
 
 namespace model {
 	/// USers model
-	struct users_show :public master, public content {
+	struct users_show :public master {
 		string username; ///< Usernae
 		int id;          ///< User id
 		int score;       ///< User score
