@@ -4,12 +4,15 @@
 		"temp" : "/home/http/radiorandom/temp"
 	},
 	"limits" : {
-		"users" : 100,
-		"posts" : 100
+		"users-soft" : 100,
+		"posts-soft" : 100,
+		"users-hard" : 1000,
+		"posts-hard" : 1000
 	},
 	"db-schema" : {
-		"users" : "CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password_hash TEXT, score INTEGER, access INTEGER, joined DATE );",
-		"files" : "CREATE TABLE files (id INTEGER PRIMARY KEY, filename TEXT, filepath TEXT, hash TEXT, size INTEGER, score INTEGER, tags TEXT, posted DATE);",
+		"users" : "CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password_hash TEXT, score INTEGER, access INTEGER, email TEXT, joined DATE, visited DATE);",
+		"anons" : "CREATE TABLE anons (id INTEGER PRIMARY KEY, ip TEXT, useragent TEXT, score INTEGER, access INTEGER, email TEXT, joined DATE, visited DATE);",
+		"posts" : "CREATE TABLE files (id INTEGER PRIMARY KEY, filename TEXT, filepath TEXT, hash TEXT, size INTEGER, score INTEGER, tags TEXT, userid INTEGER, anonid INTEGER, posted DATE);",
 		"sessions" : "CREATE TABLE sessions (hash TEXT, userid INTEGER, added DATE);"
 	},
 	"setup" : {

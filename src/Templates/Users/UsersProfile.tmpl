@@ -1,0 +1,18 @@
+<% c++ #include "Models/Models.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_users_profile uses model::users_profile extends html_master %>
+<% template body() %>
+	<% if user_auth %>
+		<p><a href="/users/logout">» Logout</a></p>
+		<p><a href="/users/profile/settings">» Settings</a></p>
+		<p><a href="/users/profile/password">» Change Password</a></p>
+		<p><a href="/users/profile/email">» Change Email</a></p>
+	<% else %>
+		<p><a href="/users/login">» Login</a></p>
+		<p><a href="/users/new">» Register</a></p>
+	<% end %>
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

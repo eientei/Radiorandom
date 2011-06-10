@@ -1,0 +1,29 @@
+<% c++ #include "Models/Models.h" %>
+<% xhtml %>
+<% skin html %>
+<% view html_users_show uses model::users_show extends html_master %>
+<% template body() %>
+	<table>
+				<tr>
+					<td>Username: </td>
+					<td><a href="/users/<% id %>"><% username %></a></td>
+				</tr>
+				<tr>
+					<td>Score: </td>
+					<td><% score %></td>
+				</tr>
+				<tr>
+					<td>Access level: </td>
+					<td><% access | ext user_access_filter %></td>
+				</tr>
+				<tr>
+					<td>Joined: </td>
+					<td><% joined | ext passed_time_filter %></td>
+				</tr>
+		</tr>
+	</table>
+
+<% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

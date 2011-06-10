@@ -32,7 +32,7 @@ class PString {
 		void init();
 		
 		/// Simple function that chekcks if it's widechar parameter is
-		/// '\0' and returns false if not.
+		/// \\0' and returns false if not.
 		///
 		/// \param [in] ch is character to test
 		/// @return boolean

@@ -1,2 +1,0 @@
-struct master :public menu {
-};

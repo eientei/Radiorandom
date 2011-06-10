@@ -13,39 +13,18 @@
 #ifdef _WIN32
 
 #include <windows.h>
-/// Initialize terminal for unicode Input/Output.
+/// init IO
 #define pio_init() { setlocale(LC_ALL,""); SetConsoleOutputCP(CP_UTF8); }
-/// Convert system's multibyte string to widechar string
-///
-/// \param [out] dest is your destination widechar buffer
-/// \param [in] source is your C char source buffer
-/// \param [in] length is required length of the source buffer
-/// @return number of converted chars
+/// convert multibyte string to widechar one
 #define pio_mbstowcs(dest,source,length) MultiByteToWideChar(CP_UTF8,0,(source),-1,(dest),(length))
-
-/// Convert widechar string to system's multibyte string
-///
-/// \param [out] dest is your destination char buffer
-/// \param [in] source is you widechar buffer
-/// \param [in] length is required length of widechat buffer
-/// @return number of converted bytes
+/// convert widechar string to multibyte one
 #define pio_wcstombs(dest,source,length) return WideCharToMultiByte(CP_UTF8, 0, (source), -1, (dest), (length), NULL, NULL);;
 #else
-/// Initialize terminal for unicode Input/Output.
+/// init IO
 #define pio_init() setlocale(LC_ALL,"")
-/// Convert system's multibyte string to widechar string
-///
-/// \param [out] dest is your destination widechar buffer
-/// \param [in] source is your C char source buffer
-/// \param [in] length is required length of the source buffer
-/// @return number of converted chars
+/// convert multibyte string to widechar one
 #define pio_mbstowcs(dest,source,length) mbstowcs((dest),(source),(length))
-/// Convert widechar string to system's multibyte string
-///
-/// \param [out] dest is your destination char buffer
-/// \param [in] source is you widechar buffer
-/// \param [in] length is required length of widechat buffer
-/// @return number of converted bytes
+/// convert widechar string to multibyte one
 #define pio_wcstombs(dest,source,length) wcstombs((dest),(source),(length))
 
 #endif
