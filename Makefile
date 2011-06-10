@@ -1,4 +1,4 @@
-all: native docs
+all: native
 
 docs: $(shell find src -type f) docs/config
 	doxygen docs/config 

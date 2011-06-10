@@ -8,7 +8,7 @@ string controller::get_get(string option) {
 	return "";
 }
 
-void controller::prepare(model::master &c, menu_item current, bool login) {
+void controller::prepare(model::master &c, menu_item current, bool login,menu_item submenu_current) {
 	if (file_exists(settings().get<std::string>("setup.lockfile"))) {
 		c.setted_up = true;
 	}

@@ -5,18 +5,16 @@
 
 #include <Data/UserSet/UserSet.h>
 #include <Helpers/Format/UserAccess.h>
-#include <Data/Content/Content.h>
 
 
 namespace model {
 	/// USers model
-	struct users :public master {
+	struct users :public master, public content {
 		string sortdir_username; ///< Username sort direction
 		string sortdir_score;    ///< Score sort direction
 		string sortdir_access;   ///< Access sort direction
 		string sortdir_joined;   ///< Joined sort direction
 		user_set usersset;       ///< Set of users
-		Content content;	
 		users() {
 			sortdir_username = sortdir_score = sortdir_access = sortdir_joined = "desc";
 		}

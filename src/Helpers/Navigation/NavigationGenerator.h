@@ -11,6 +11,6 @@ using namespace std;
 
 
 /// Navigation generator
-string navigation_generator(int page, int total, int pagesize, string prefix);
+string navigation_generator(int page, int total, int pagesize, string prefix, string infix);
 
 #endif

@@ -8,6 +8,7 @@
 
 #include <Models/Generic/Generic.h>
 #include <Models/Generic/Auth.h>
+#include <Models/Generic/Content.h>
 #include <Models/Generic/Menu.h>
 #include <Models/Generic/Master.h>
 #include <Models/Generic/Error.h>
@@ -23,6 +24,8 @@
 #include <Models/Users/UsersProfileEmail.h>
 #include <Models/Users/UsersProfilePassword.h>
 #include <Models/Users/UsersProfileSettings.h>
+
+#include <Models/Posts/Posts.h>
 
 #include <Helpers/Helpers.h>
 

@@ -30,7 +30,7 @@ using namespace std;
 class controller : public cppcms::application {
 	private:
 		/// Prepares model to rendering
-		void prepare(model::master &c, menu_item current, bool login = false);
+		void prepare(model::master &c, menu_item current, bool login = false, menu_item submenu_current = menu_item());
 		/// Returns get reqest alue
 		///
 		/// \param [in] option to get
