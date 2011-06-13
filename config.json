@@ -9,13 +9,6 @@
 		"users-hard" : 1000,
 		"posts-hard" : 1000
 	},
-	"db-schema" : {
-		"users" : "CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, password_hash TEXT, score INTEGER, access INTEGER, email TEXT, joined DATE, visited DATE);",
-		"anons" : "CREATE TABLE anons (id INTEGER PRIMARY KEY, ip TEXT, useragent TEXT, score INTEGER, access INTEGER, email TEXT, joined DATE, visited DATE);",
-		"votes" : "CREATE TABLE voteups (id INTEGER PRIMARY KEY, postid INTEGER, userid INTEGER, value INTEGER);",
-		"posts" : "CREATE TABLE posts (id INTEGER PRIMARY KEY, filename TEXT, filepath TEXT, hash TEXT, size INTEGER, score INTEGER, tags TEXT, userid INTEGER, anonid INTEGER, posted DATE);",
-		"sessions" : "CREATE TABLE sessions (hash TEXT, userid INTEGER, added DATE);"
-	},
 	"setup" : {
 		"lockfile" : "/home/http/radiorandom/setuplock"
 	},
