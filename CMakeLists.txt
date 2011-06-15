@@ -5,201 +5,126 @@ cmake_minimum_required(VERSION 2.8)
 add_definitions(-pedantic -Wall -g)
 set(CMAKE_BUILD_TYPE Debug)
 include_directories(
-	../
+	../src
 )
 
 ########################################################################
 
 project(GenTemplates)
 set (Templates_html
-	../radiorandom/templates/master/generic.tmpl
-	../radiorandom/templates/master/menu.tmpl
-	../radiorandom/templates/master/master.tmpl
-#
-#	../src/Templates/Generic/Master.tmpl
-#	../src/Templates/Generic/Setup.tmpl
-#	../src/Templates/Generic/Error.tmpl	
-#	../src/Templates/Generic/Index.tmpl
-#	../src/Templates/Generic/Tos.tmpl
-#	
-#	../src/Templates/Users/Users.tmpl
-#	../src/Templates/Users/UsersNew.tmpl
-#	../src/Templates/Users/UsersShow.tmpl
-#	../src/Templates/Users/UsersLogin.tmpl
-#	../src/Templates/Users/UsersProfile.tmpl
-#	../src/Templates/Users/UsersProfileEmail.tmpl
-#	../src/Templates/Users/UsersProfilePassword.tmpl
-#	../src/Templates/Users/UsersProfileSettings.tmpl
-#	
-#	../src/Templates/Posts/Posts.tmpl
-)
-add_custom_command(
-	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp
-	COMMAND cppcms_tmpl_cc ${Templates_html} -o ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp
-	DEPENDS ${Templates_html}
-)
-add_library(templates SHARED ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp)
-target_link_libraries(templates 
-	-lcppcms
-)
+	../src/Templates/HTML/Master/Generic.tmpl
+	../src/Templates/HTML/Master/Menu.tmpl
+	../src/Templates/HTML/Master/Master.tmpl
 
-########################################################################
+	#../src/Templates/HTML/Generic/TOS.tmpl
+	#../src/Templates/HTML/Generic/Index.tmpl
+	#../src/Templates/HTML/Generic/Setup.tmpl
+	#../src/Templates/HTML/Generic/Error.tmpl
 
-project(Data)
-add_library(data STATIC
-	../radiorandom/data/content/menu_set.cpp
-	../radiorandom/data/content/user_set.cpp
+	#../src/Templates/HTML/Users/UsersLogout.tmpl
+	#../src/Templates/HTML/Users/UsersLogin.tmpl
+	#../src/Templates/HTML/Users/UsersSearch.tmpl
+	#../src/Templates/HTML/Users/UsersNew.tmpl
+	#../src/Templates/HTML/Users/UsersProfile.tmpl
+	#../src/Templates/HTML/Users/Users.tmpl
+	#../src/Templates/HTML/Users/UsersShow.tmpl
+	#../src/Templates/HTML/Users/UsersProfilePassword.tmpl
+	#../src/Templates/HTML/Users/UsersProfileSettings.tmpl
+	#../src/Templates/HTML/Users/UsersProfileEmail.tmpl
+
 )
-#add_library(data-pstring STATIC 
-#	../src/Data/PString/PString.cpp
-#	../src/Data/PString/PlainIOHighLevel.cpp
+#add_custom_command(
+	#OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp
+	#COMMAND cppcms_tmpl_cc ${Templates_html} -o ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp
+	#DEPENDS ${Templates_html}
 #)
-#add_library(data-menuset STATIC 
-#	../src/Data/MenuSet/MenuSet.cpp
-#)
-
-#add_library(data-userset STATIC 
-#	../src/Data/UserSet/UserSet.cpp
-#)
-
-#add_library(data-postset STATIC 
-#	../src/Data/PostSet/PostSet.cpp
+#add_library(templates SHARED ${CMAKE_CURRENT_BINARY_DIR}/templates_html.cpp)
+#target_link_libraries(templates 
+	#proto
+	#helpers
+	#-lcppcms
 #)
 
 ########################################################################
-project(Helpers)
-add_library(helpers STATIC 
-	../radiorandom/helpers/auth/auth.cpp
-	../radiorandom/helpers/hash/hash.cpp
-	../radiorandom/helpers/db/db.cpp
-	../radiorandom/helpers/format/format.cpp
-	../radiorandom/helpers/filesystem/filesystem.cpp
-	../radiorandom/helpers/navigation/navigation.cpp
-	#../radiorandom/helpers/auth/user_exist.cpp
-	#../radiorandom/helpers/auth/session_exist.cpp
 
-	#../radiorandom/helpers/db/tag_parser.cpp
-	#../radiorandom/helpers/db/sqlfy_pattern.cpp
-	#../radiorandom/helpers/db/sqlfy_pseudo.cpp
+project (Generic)
+
+add_library(Generic-io
+	../src/Generic/IO/PIO/PIO.cpp
+)
+
+add_library(Generic-data
+	../src/Generic/Data/Content/ContentURL/ContentURL.cpp
+	../src/Generic/Data/Content/Set/Set.cpp
+	../src/Generic/Data/Content/SetMenu/SetMenu.cpp
+	../src/Generic/Data/Content/SetUsers/SetUsers.cpp
+	../src/Generic/Data/Format/Format.cpp
+)
+
+add_library(Generic-marukup
+	../src/Generic/Markup/Menu/Menu.cpp
+)
+
+add_library(Generic-hash
+	../src/Generic/Hash/Hash.cpp
+	../src/Generic/Hash/SHA1/SHA1.cpp
+)
+add_library(Generic-filesystem
+	../src/Generic/FileSystem/Check/Check.cpp
+	../src/Generic/FileSystem/Create/Create.cpp
+)
+add_library(Generic-db
+	../src/Generic/DB/Interact/Interact.cpp
+	../src/Generic/DB/Users/Users.cpp
 	
-	#../radiorandom/helpers/format/uri_format.cpp
-	#../radiorandom/helpers/format/file_size.cpp
-	#../radiorandom/helpers/format/user_access.cpp
-	#../radiorandom/helpers/format/time_passed.cpp
-	
-	#../radiorandom/helpers/filesystem/file_exist.cpp
-	
-	#../radiorandom/helpers/hash/sha1.cpp
-	
-	#../radiorandom/helpers/navigation/menu.cpp
-	#../radiorandom/helpers/navigation/generator.cpp
 )
 
-#add_library(helper-db-tagsparser STATIC 
-#	../src/Helpers/DB/TagsParser.cpp
-#)
 
-#add_library(helper-filesystem-fileexists STATIC 
-#	../src/Helpers/FileSystem/FileExists.cpp
-#)
-
-#add_library(helper-navigation-menu STATIC 
-#	../src/Helpers/Navigation/Menu.cpp
-#)
-
-#add_library(helper-navigation-navigationgenerator STATIC 
-#	../src/Helpers/Navigation/NavigationGenerator.cpp
-#)
-
-#add_library(helper-auth-authuser STATIC 
-	##../src/Helpers/Auth/AuthUser.cpp
-#)
-
-#add_library(helper-auth-validsession STATIC 
-#	../src/Helpers/Auth/ValidSession.cpp
-#)
-
-#add_library(helper-auth-validuser STATIC 
-#	../src/Helpers/Auth/ValidUser.cpp
-#)
-
-#add_library(helper-auth-makesession STATIC 
-#	../src/Helpers/Auth/MakeSession.cpp
-#)
-
-#add_library(helper-format-filesize STATIC 
-#	../src/Helpers/Format/FileSize.cpp
-#)
-
-#add_library(helper-format-useraccess STATIC 
-#	../src/Helpers/Format/UserAccess.cpp
-#)
-
-#add_library(helper-format-passedtime STATIC 
-#	../src/Helpers/Format/PassedTime.cpp
-#)
-
-#add_library(helper-hash-sha1 STATIC 
-#	../src/Helpers/Hash/SHA1.cpp
-#)
-
-########################################################################
-project(DB)
-add_library(db STATIC 
-	../radiorandom/db/db.cpp
-)
 
 ########################################################################
 
-project(PlainIO)
-add_library(plainio STATIC 
-	../radiorandom/plainio/plainio.cpp
-)
+project(Apps)
 
-########################################################################
-
-project(Server)
-
-set(server_lib
-	helpers
-	db
-	data
-	plainio
-
+set(web-server_lib
+	Generic-io
+	Generic-data
+	Generic-hash
+	Generic-filesystem
+	Generic-db
+	Generic-marukup
+	
 	-lcppcms
 	-lcppdb
 	-lmagic
 	-lssl
-	-lcrypto
 	-luriparser
 )
 
-add_executable(radiorandom-server 
-	../radiorandom/apps/server.cpp
-	
-#	../src/Apps/Generic/Index.cpp
-#	../src/Apps/Generic/Setup.cpp
-#	../src/Apps/Generic/Tos.cpp
-	
-#	../src/Apps/Users/Users.cpp
-#	../src/Apps/Users/UsersNew.cpp
-#	../src/Apps/Users/UsersShow.cpp
-#	../src/Apps/Users/UsersLogin.cpp
-#	../src/Apps/Users/UsersSearch.cpp
-#	../src/Apps/Users/UsersLogout.cpp
-#	../src/Apps/Users/UsersProfile.cpp
-#	../src/Apps/Users/UsersProfilePassword.cpp
-#	../src/Apps/Users/UsersProfileEmail.cpp
-#	../src/Apps/Users/UsersProfileSettings.cpp
-	
-#	../src/Apps/Posts/Posts.cpp
-#	../src/Apps/Posts/PostsNew.cpp
-#	../src/Apps/Posts/PostsShowId.cpp
-#	../src/Apps/Posts/PostsShowHash.cpp
-#	../src/Apps/Posts/PostsShowTags.cpp
-#	../src/Apps/Posts/PostsShowDate.cpp
-#	../src/Apps/Posts/PostsVoteup.cpp
-#	../src/Apps/Posts/PostsVotedown.cpp
+add_executable(radiorandom-web-server
+	../src/Apps/Web/Web.cpp
+
+
+	#../src/Apps/Web/Master/Get.cpp
+	#../src/Apps/Web/Master/Prepare.cpp
+	#../src/Apps/Web/Master/Constructor.cpp
+	#../src/Apps/Web/Master/Main.cpp
+
+	#../src/Apps/Web/Generic/Setup.cpp
+	#../src/Apps/Web/Generic/Error.cpp
+	#../src/Apps/Web/Generic/TOS.cpp
+	#../src/Apps/Web/Generic/Index.cpp
+
+	#../src/Apps/Web/Users/UsersLogin.cpp
+	#../src/Apps/Web/Users/Users.cpp
+	#../src/Apps/Web/Users/UsersProfile.cpp
+	#../src/Apps/Web/Users/UsersLogout.cpp
+	#../src/Apps/Web/Users/UsersProfileEmail.cpp
+	#../src/Apps/Web/Users/UsersProfilePassword.cpp
+	#../src/Apps/Web/Users/UsersProfileSettings.cpp
+	#../src/Apps/Web/Users/UsersSearch.cpp
+	#../src/Apps/Web/Users/UsersNew.cpp
+	#../src/Apps/Web/Users/UsersShow.cpp
+
 )
-target_link_libraries(radiorandom-server ${server_lib})
-set_target_properties(radiorandom-server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../")
+target_link_libraries(radiorandom-web-server ${web-server_lib})
+set_target_properties(radiorandom-web-server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../")

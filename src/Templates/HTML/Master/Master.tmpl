@@ -1,0 +1,32 @@
+<% c++ #include "Models/Models.h" %>
+<% xhtml %>
+<% skin html %>
+<% view Master uses Models::Master::Master extends Menu %>
+<% template render() %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<title>Radio random</title>
+		<link rel="stylesheet" href="/media/radiorandom.css" type="text/css" />
+	</head>
+	<body>
+		<div class="topmenu">
+			<% include menulinks() %>
+		</div>
+		<div class="submenu">
+			<% include submenulinks() %>
+		</div>
+		<div class="contentbody">
+			<% include body() %>
+		</div>
+		<div class="footer">
+			<% include footer() %>
+		</div>
+	</body>
+</html>
+<% end template %>
+<% template body() %><% end %>
+<% template footer() %><% end %>
+<% end view %>
+<% end skin %>

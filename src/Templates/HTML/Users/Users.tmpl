@@ -1,0 +1,42 @@
+<% c++ #include "Models/Models.h" %>
+<% xhtml %>
+<% skin html %>
+<% view Users uses Models::Users::Users extends Master %>
+<% template body() %>
+	<table class="fullwidth">
+		<% if users_set.show_sort %>
+		<tr>
+				<th><a href="?sortby=username&amp;order=<% sort_directions_username %><% users_set.url_infix %><% users_set.url_suffix %>">Username</a></th>
+				<th><a href="?sortby=score&amp;order=<% sort_directions_score  %><% users_set.url_infix %><% users_set.url_suffix %>">Score</a></th>
+				<th><a href="?sortby=access&amp;order=<% sort_directions_access  %><% users_set.url_infix %><% users_set.url_suffix %>">Access</a></th>
+				<th><a href="?sortby=joined&amp;order=<% sort_directions_joined  %><% users_set.url_infix %><% users_set.url_suffix %>">Joined</a></th>
+		</tr>
+		<% else %>
+			<tr>
+				<th><a href="">Username</a></th>
+				<th><a href="">Score</a></th>
+				<th><a href="">Access</a></th>
+				<th><a href="">Joined</a></th>
+		</tr>
+		<% end %>
+			<% foreach user in users_set_data %>
+			<% item %>
+		<tr>
+				<td><a href="/users/<% user.id %>"><% user.name %></a></td>
+				<td><% user.score %></td>
+				<td><% c++ /*user.access | ext UserAccessFormat*/ %></td>
+				<td><% c++ /*user.joined | ext TimePassed*/ %></td>
+		</tr>
+		<% end %>
+		<% end %>
+	</table>
+<% end %>
+<% template footer() %>	
+		<div class="navigation">
+			<% if users_set.many_items %>
+				<% c++ /*users_set | ext GenNavigation*/ %>
+			<% end %>
+		</div>
+<% end %>
+<% end view %>
+<% end skin %>

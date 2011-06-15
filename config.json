@@ -10,7 +10,8 @@
 		"posts-hard" : 1000
 	},
 	"setup" : {
-		"lockfile" : "/home/http/radiorandom/setuplock"
+		"lockfile" : "/home/http/radiorandom/setuplock",
+		"db-schema" : "/home/http/radiorandom/db/schema.sql"
 	},
 	"http" : { 
 		"script" : "bska" 
@@ -22,5 +23,8 @@
 	"daemon" : {
 		"enable" : false,
 		"lock" : "/var/run/radiorandom.pid"
+	},
+	"views" : {
+		"default_skin" : "html"
 	}
 }

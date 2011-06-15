@@ -1,11 +1,11 @@
 all: native-release
 
-docs: $(shell find radiorandom -type f) docs/config
-	doxygen docs/config 
+docs: $(shell find src -type f) docs/config
+	doxygen docs/config >/dev/null
 
 native-release: 
 	cd build-native; cmake .; make;
-	strip --strip-unneeded radiorandom-server
+	strip --strip-unneeded radiorandom-web-server
 
 
 native-dev:
