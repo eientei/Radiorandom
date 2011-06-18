@@ -42,6 +42,7 @@ namespace Generic {
 	/// Database classes
 	namespace DB {
 		class Interact; ////// HARDCODED. Convinient though nonportable.
+		class TagParser;
 		class Users;
 		class Posts; ////////////////////////////////////////////// TODO
 	}

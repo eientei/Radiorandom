@@ -3,6 +3,24 @@
 <% skin html %>
 <% view UsersShow uses Models::Users::UsersShow extends Master %>
 <% template body() %>
+	<table>
+				<tr>
+					<td>Username: </td>
+					<td><a href="/users/<% item.id %>"><% item.name %></a></td>
+				</tr>
+				<tr>
+					<td>Score: </td>
+					<td><% item.score %></td>
+				</tr>
+				<tr>
+					<td>Access level: </td>
+					<td><% item.access | ext UserAccessFormat %></td>
+				</tr>
+				<tr>
+					<td>Joined: </td>
+					<td><% item.joined | ext TimePassed %></td>
+				</tr>
+	</table>
 <% end %>
 <% end view %>
 <% end skin %>

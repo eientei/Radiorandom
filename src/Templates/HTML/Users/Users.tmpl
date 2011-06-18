@@ -4,12 +4,20 @@
 <% view Users uses Models::Users::Users extends Master %>
 <% template body() %>
 	<table class="fullwidth">
-		<% if users_set.show_sort %>
 		<tr>
-				<th><a href="?sortby=username&amp;order=<% sort_directions_username %><% users_set.url_infix %><% users_set.url_suffix %>">Username</a></th>
-				<th><a href="?sortby=score&amp;order=<% sort_directions_score  %><% users_set.url_infix %><% users_set.url_suffix %>">Score</a></th>
-				<th><a href="?sortby=access&amp;order=<% sort_directions_access  %><% users_set.url_infix %><% users_set.url_suffix %>">Access</a></th>
-				<th><a href="?sortby=joined&amp;order=<% sort_directions_joined  %><% users_set.url_infix %><% users_set.url_suffix %>">Joined</a></th>
+			<form method="post" action="/users">
+			<td></td>		
+			<td><% form as_space search %></td>
+			<td><% form as_space submit %></td>
+			<td></td>
+			</form>
+		</tr>
+		<% if items.show_sort %>
+		<tr>
+				<th><a href="<% what %>?sortby=name&amp;order=<% sort_directions_username %><% items.url.infix | raw %><% items.url.suffix | raw %>">Username</a></th>
+				<th><a href="<% what %>?sortby=score&amp;order=<% sort_directions_score  %><% items.url.infix | raw %><% items.url.suffix | raw %>">Score</a></th>
+				<th><a href="<% what %>?sortby=access&amp;order=<% sort_directions_access  %><% items.url.infix | raw %><% items.url.suffix | raw %>">Access</a></th>
+				<th><a href="<% what %>?sortby=joined&amp;order=<% sort_directions_joined  %><% items.url.infix | raw %><% items.url.suffix | raw %>">Joined</a></th>
 		</tr>
 		<% else %>
 			<tr>
@@ -19,13 +27,13 @@
 				<th><a href="">Joined</a></th>
 		</tr>
 		<% end %>
-			<% foreach user in users_set_data %>
+			<% foreach user in items.items %>
 			<% item %>
 		<tr>
-				<td><a href="/users/<% user.id %>"><% user.name %></a></td>
+				<td class="left"><a href="/users/<% user.id %>"><% user.name %></a></td>
 				<td><% user.score %></td>
-				<td><% c++ /*user.access | ext UserAccessFormat*/ %></td>
-				<td><% c++ /*user.joined | ext TimePassed*/ %></td>
+				<td><% user.access | ext UserAccessFormat %></td>
+				<td><% user.joined | ext TimePassed %></td>
 		</tr>
 		<% end %>
 		<% end %>
@@ -33,8 +41,8 @@
 <% end %>
 <% template footer() %>	
 		<div class="navigation">
-			<% if users_set.many_items %>
-				<% c++ /*users_set | ext GenNavigation*/ %>
+			<% if not items.items.empty() %>
+				<% items | ext GenNavigation %>
 			<% end %>
 		</div>
 <% end %>

@@ -29,8 +29,8 @@ class Generic::Data::Content::SetMenu : public Set {
 			Set()
 		{}
 		/// Usual constructor
-		SetMenu(int page, int page_size, ContentURL url, bool show_sort=true) :
-			Set(page,page_size,url,show_sort)
+		SetMenu(int total, int page, int page_size, ContentURL url, bool show_sort=true) :
+			Set(total,page,page_size,url,show_sort)
 		{}
 	public:
 		/// Adds item to set

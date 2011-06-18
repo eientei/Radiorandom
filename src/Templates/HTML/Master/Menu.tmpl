@@ -10,13 +10,13 @@
 				<% include menulinks_gen(menu_right,menu_current) %>
 			</div>
 <% end %>
-<% template menulinks_gen(Data::Content::SetMenu items, Data::Content::ItemMenu current) %>
-	<% foreach i in items %>
+<% template menulinks_gen(::Generic::Data::Content::SetMenu  items, ::Generic::Data::Content::SetMenu::ItemMenu current) %>
+	<% foreach i in items.items %>
 		<% item %>
 			<% if (i.name == current.name) %>
-				<span class="menu_current"><a href="<% i.href %>"><% i.name %></a></span>
+				<div class="menu_current"><a href="<% i.href %>"><% i.name %></a></div>
 			<% else %>
-				<span class="menu_rest"><a href="<% i.href %>"><% i.name %></a></span>
+				<div class="menu_rest"><a href="<% i.href %>"><% i.name %></a></div>
 			<% end %>
 		<% end %>
 	<% end %>
@@ -24,7 +24,7 @@
 
 <% template submenulinks() %>
 			<div class="left_side">
-				<% if not submenu_left.empty() %><span>&gt;&gt;</span><% end %><% include menulinks_gen(submenu_left,submenu_current) %>
+				<% if not submenu_left.items.empty() %><% end %><% include menulinks_gen(submenu_left,submenu_current) %>
 			</div>
 			<div class="right_side">
 				<% include menulinks_gen(submenu_right,submenu_current) %>

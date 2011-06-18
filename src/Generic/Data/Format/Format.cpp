@@ -1,7 +1,5 @@
 #include "Format.h"
 
-
-
 std::string Generic::Data::Format::FileSize(int size) {
 	float fsize = size;
 	std::string suffix("B");
@@ -75,8 +73,7 @@ std::string Generic::Data::Format::URIUnEscape(std::string uri) {
 }
 
 
-std::string Generic::Data::Format::UserAccessFormat(int access) {
-	//Helpers::DB.Format.PopulateAccessLevel(user_access_levels);
-	return user_access_levels[access];
+std::string Generic::Data::Format::UserAccessFormat(std::string access) {
+	return access;
 	
 }

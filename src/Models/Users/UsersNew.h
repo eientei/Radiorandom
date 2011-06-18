@@ -4,6 +4,7 @@
 /// @file
 
 #include <Generic/IO/PIO/PIO.h>
+#include <Generic/DB/Users/Users.h>
 
 namespace Models {
 	namespace Users {
@@ -47,7 +48,11 @@ namespace Models {
 			
 			/// Email configrmation response message
 			std::string email_confirmation_message;
+			
+			/// Whether registration were successful
+			bool result;
 			UsersNew() {
+				result = false;
 				submit.value("Register");
 				username.regex(std::string("[^:*%]{5,32}"));
 				*this + username + email + email_confirmation + password + password_confirmation + acceptance_of_tos + submit;
@@ -56,25 +61,25 @@ namespace Models {
 			///
 			/// @return true if input is valid
 			bool validate() {
-				bool result = true;
-				if (pio.wclength(username.value().c_str()) < 5) {
+				result = true;
+				
+				if (pio.pio_wclength(username.value().c_str()) < 5) {
 					username_message = "shorter then 5 characters";
 					result = false;
-				}
-				if (pio.wclength(username.value().c_str()) > 32) {
+				} else if (pio.pio_wclength(username.value().c_str()) > 32) {
 					username_message = "longer then 32 characters";
 					result = false;
-				}
-				if (!username.validate()) {
+				} else if (!username.validate()) {
 					username.error_message("");
 					username_message = "Username may not contain any of *, : or % characters";
 					result = false;
 				}
-				if (pio.wclength(password.value().c_str()) < 6) {
+				
+				if (pio.pio_wclength(password.value().c_str()) < 6) {
 					password_message = "shorter then 6 characters";
 					result = false;
 				}
-				if (pio.wclength(password_confirmation.value().c_str()) > 32) {
+				if (pio.pio_wclength(password_confirmation.value().c_str()) > 32) {
 					password_message = "longer then 32 characters";
 					result = false;
 				}
@@ -91,7 +96,12 @@ namespace Models {
 					email_confirmation_message = "do not match";
 					result = false;
 				}
+				if (::Generic::DB::Users().ExistUserName(username.value())) {
+					username_message = "already exists";
+					result = false;
+				}
 				if (!acceptance_of_tos.value()) result = false;
+				
 				return result;
 			}
 		};

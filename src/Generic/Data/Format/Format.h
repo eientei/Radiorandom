@@ -8,7 +8,6 @@
 #include <uriparser/Uri.h>
 
 #include <Generic/Generic.h>
-#include <Generic/Hash/Hash.h>
 
 /// Data formatting class
 class Generic::Data::Format {
@@ -60,7 +59,7 @@ class Generic::Data::Format {
 		/// \param [in] access to convert
 		///
 		/// @return forammted string.
-		std::string UserAccessFormat(int access);
+		std::string UserAccessFormat(std::string access);
 };
 
 #endif

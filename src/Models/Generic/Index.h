@@ -3,16 +3,16 @@
 
 /// @file
 
+#include <Generic/Data/Content/SetUsers/SetUsers.h>
 #include <Generic/Data/Format/Format.h>
 
 namespace Models {
 	namespace Generic {
 		/// Index struct.
 		/// Used to display / index page.
-		struct Index : public Models::Master::Master {
+		struct Index : public Models::Master::Master, public ::Generic::Data::Format {
 			int index_files;      ///< Total files count
 			int index_files_size; ///< Total files size
-			::Generic::Data::Format formatter; ///< Formatter instance
 			
 			Index() {
 				index_files = 0;

@@ -29,7 +29,7 @@ class Generic::IO::PIO {
 		/// \param [in] length of the source string
 		///
 		/// @return number of widechar characters
-		size_t mbstowcs(wchar_t * dest, const char * source,size_t length);
+		size_t pio_mbstowcs(wchar_t * dest, const char * source,size_t length);
 		
 		/// Converts widechar string to multibyte one
 		///
@@ -38,7 +38,7 @@ class Generic::IO::PIO {
 		/// \param [in] length of source string
 		///
 		/// @return number of characters
-		inline size_t wcstombs(char * dest, const wchar_t * source, size_t length);
+		size_t pio_wcstombs(char * dest, const wchar_t * source, size_t length);
 
 		/// Converts multibyte array to widechar one.
 		///
@@ -46,7 +46,7 @@ class Generic::IO::PIO {
 		/// \param [in] source C std::string to convert from
 		/// \param [in] length is optional length of source std::string
 		/// @return length of resulting std::string
-		size_t mbtowc(wchar_t **dest, const char *source, int length = -1);
+		size_t pio_mbtowc(wchar_t **dest, const char *source, int length = -1);
 
 		/// Converts widechar array to multibyte one.
 		///
@@ -54,13 +54,13 @@ class Generic::IO::PIO {
 		/// \param [in] source is your widechar std::string to convert
 		/// \param [in] length is optional length of the input std::string
 		/// @return length of resulting std::string
-		size_t wctomb(char **dest, const wchar_t *source,int length = -1);
+		size_t pio_wctomb(char **dest, const wchar_t *source,int length = -1);
 		
 		/// Calcualtes lengt of multibyte string in characters
 		///
 		/// \param [in] source string to process
 		///
 		/// @return length in characters [not bytes]
-		size_t wclength(const char *source);
+		size_t pio_wclength(const char *source);
 };
 #endif

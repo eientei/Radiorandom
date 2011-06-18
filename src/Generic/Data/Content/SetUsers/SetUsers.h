@@ -14,7 +14,7 @@ class Generic::Data::Content::SetUsers : public Set {
 		class ItemUser {
 			public:
 				int id;                    ///< User ID
-				int access;                ///< User access
+				std::string access;        ///< User access
 				std::string name;          ///< User name
 				std::string password_hash; ///< User password hash
 				std::string email;         ///< User email
@@ -25,7 +25,6 @@ class Generic::Data::Content::SetUsers : public Set {
 				bool authed;               ///< If user logged in
 				ItemUser() :
 					id(0),
-					access(0),
 					joined(0),
 					score(0),
 					changer(0),
@@ -35,7 +34,7 @@ class Generic::Data::Content::SetUsers : public Set {
 				/// Usual constructor
 				ItemUser(
 					int id,
-					int access,
+					std::string access,
 					std::string name,
 					std::string password_hash,
 					std::string email,
@@ -64,8 +63,8 @@ class Generic::Data::Content::SetUsers : public Set {
 			Set()
 		{}
 		/// Usual constructor
-		SetUsers(int page, int page_size, ContentURL url, bool show_sort=true) :
-			Set(page,page_size,url,show_sort)
+		SetUsers(int total, int page, int page_size, ContentURL url, bool show_sort=true) :
+			Set(total,page,page_size,url,show_sort)
 		{}
 	public:
 		/// Adds item to set

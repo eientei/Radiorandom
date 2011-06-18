@@ -7,15 +7,15 @@ Generic::IO::PIO::PIO() {
 	setlocale(LC_ALL,"");
 }
 
-size_t Generic::IO::PIO::mbstowcs(wchar_t * dest, const char * source,size_t length) {
+size_t Generic::IO::PIO::pio_mbstowcs(wchar_t * dest, const char * source,size_t length) {
 #ifdef _WIN32
 	return MultiByteToWideChar(CP_UTF8,0,(source),-1,(dest),(length));
 #else
-	return mbstowcs((dest),(source),(length));
+	return mbstowcs(dest,source,length);
 #endif
 }
 
-size_t Generic::IO::PIO::wcstombs(char * dest, const wchar_t * source, size_t length) {
+size_t Generic::IO::PIO::pio_wcstombs(char * dest, const wchar_t * source, size_t length) {
 #ifdef _WIN32
 	return WideCharToMultiByte(CP_UTF8, 0, (source), -1, (dest), (length), NULL, NULL);
 #else
@@ -23,7 +23,7 @@ size_t Generic::IO::PIO::wcstombs(char * dest, const wchar_t * source, size_t le
 #endif
 }
 
-size_t Generic::IO::PIO::mbtowc(wchar_t **dest, const char *source, int length) {
+size_t Generic::IO::PIO::pio_mbtowc(wchar_t **dest, const char *source, int length) {
 	assert(*dest == NULL);
 	char *realsource;
 
@@ -38,7 +38,7 @@ size_t Generic::IO::PIO::mbtowc(wchar_t **dest, const char *source, int length) 
 	realsource[length] = '\0';
 
 	size_t buffsize = 0;
-	buffsize = PIO::mbstowcs(NULL,realsource,0);
+	buffsize = PIO::pio_mbstowcs(NULL,realsource,0);
 	
 	*dest = new wchar_t[buffsize+1];
 	mbstowcs(*dest,realsource,buffsize);
@@ -49,7 +49,7 @@ size_t Generic::IO::PIO::mbtowc(wchar_t **dest, const char *source, int length) 
 	return buffsize;
 }
 
-size_t Generic::IO::PIO::wctomb(char **dest, const wchar_t *source,int length) {
+size_t Generic::IO::PIO::pio_wctomb(char **dest, const wchar_t *source,int length) {
 	assert(*dest == NULL);
 	wchar_t *realsource = new wchar_t[length+1];
 	if (length < 0) {
@@ -71,6 +71,7 @@ size_t Generic::IO::PIO::wctomb(char **dest, const wchar_t *source,int length) {
 	return buffsize;
 }
 
-size_t Generic::IO::PIO::wclength(const char *source) {
-	return mbstowcs(NULL,source,0);
+size_t Generic::IO::PIO::pio_wclength(const char *source) {
+	return pio_mbstowcs(NULL,source,0);
+	
 }

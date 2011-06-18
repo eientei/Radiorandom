@@ -14,7 +14,9 @@ namespace Models {
 			/// SUbmit button
 			cppcms::widgets::submit submit;
 			/// Response message
-			std::string profile_email_message;
+			std::string message;
+			/// Response message if success
+			std::string success_message;
 			UsersProfileEmail() {
 				submit.value("Change Email");
 				*this + email + email_confirmation + submit;
@@ -22,15 +24,15 @@ namespace Models {
 			/// Validation fuinction
 			///
 			/// @return true on valid data
-			bool validation() {
+			bool validate() {
 				bool result = true;
 				if (result && !email.validate()) {
 					email.error_message("");
-					profile_email_message = "Invalid email";
+					message = "Invalid email";
 					result = false;
 				}
 				if (result && email_confirmation.value() != email.value()) {
-					profile_email_message = "Emails do not match";
+					message = "Emails do not match";
 					result = false;
 				}
 				return result;

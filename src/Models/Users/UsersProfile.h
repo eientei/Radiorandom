@@ -3,9 +3,11 @@
 
 /// @file
 
+#include <Models/Master/Master.h>
+
 namespace Models {
 	namespace Users {
-		/// User porfile struct
+		/// Profile model
 		struct UsersProfile : public Models::Master::Master {
 		};
 	}

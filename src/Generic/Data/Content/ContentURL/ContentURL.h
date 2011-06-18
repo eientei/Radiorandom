@@ -13,6 +13,15 @@ class Generic::Data::Content::ContentURL {
 		std::string prefix; ///< url prefix
 		std::string infix;  ///< url infix
 		std::string suffix; ///< url suffix
+	public:
+		ContentURL() {}
+		/// Usual constructor
+		ContentURL(std::string prefix, std::string infix, std::string suffix) :
+			whole(prefix + infix + suffix),
+			prefix(prefix),
+			infix(infix),
+			suffix(suffix)
+		{}
 };
 
 #endif

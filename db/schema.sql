@@ -17,26 +17,26 @@ CREATE TYPE action AS ENUM ('INSERT', 'UPDATE', 'DELETE');
 CREATE TABLE tags (
   name TEXT UNIQUE PRIMARY KEY, 
   type INTEGER, 
-  introduced BIGINT, 
-  changed BIGINT
+  introduced TIMESTAMP, 
+  changed TIMESTAMP
 );
 
 CREATE TABLE users (
   id SERIAL UNIQUE PRIMARY KEY,
-  access INTEGER,
+  access TEXT,
   name TEXT,
   password_hash TEXT,
   email TEXT,
-  joined BIGINT,
+  joined TIMESTAMP,
   score INTEGER,
   changer INTEGER REFERENCES users(id),
-  changed BIGINT
+  changed TIMESTAMP
 );
 
 CREATE TABLE sessions (
   hash TEXT UNIQUE PRIMARY KEY,
   userid INTEGER REFERENCES users(id),
-  created BIGINT
+  created TIMESTAMP
 );
 
 
@@ -48,10 +48,10 @@ CREATE TABLE posts (
   size INTEGER,
   score INTEGER,
   userid INTEGER REFERENCES users(id),
-  posted BIGINT,
+  posted TIMESTAMP,
   tags TEXT[],
   changer INTEGER REFERENCES users(id),
-  changed BIGINT
+  changed TIMESTAMP
 );
 
 CREATE TABLE votes (
@@ -64,7 +64,7 @@ CREATE TABLE votes (
 CREATE TABLE posts_history (
   id SERIAL UNIQUE PRIMARY KEY,
   changer INTEGER REFERENCES users(id),
-  changed BIGINT,
+  changed TIMESTAMP,
   action ACTION,
   postid INTEGER REFERENCES posts(id),
   userid INTEGER REFERENCES users(id),
@@ -79,11 +79,11 @@ CREATE TABLE posts_history (
 CREATE TABLE users_history (
   id SERIAL UNIQUE PRIMARY KEY,
   changer INTEGER REFERENCES users(id),
-  changed BIGINT,
+  changed TIMESTAMP,
   action ACTION,
   userid INTEGER REFERENCES users(id),
-  old_access INTEGER,
-  new_access INTEGER,
+  old_access TEXT,
+  new_access TEXT,
   old_score INTEGER,
   new_score INTEGER,
   old_password_hash TEXT,
@@ -97,7 +97,7 @@ CREATE TABLE users_history (
 CREATE RULE log_users_insert AS ON INSERT TO users
   DO ALSO INSERT INTO users_history VALUES (
     DEFAULT,
-    NULL,
+    1,
     NEW.changed,
     'INSERT',
     NULL,
@@ -136,7 +136,7 @@ CREATE RULE log_users_delete AS ON DELETE TO users
   DO ALSO INSERT INTO users_history VALUES (
     DEFAULT,
     DEFAULT,
-    floor(extract(EPOCH from now())),
+    'now',
     'DELETE',
     NULL,
     OLD.access,
@@ -187,7 +187,7 @@ CREATE RULE log_posts_delete AS ON DELETE TO posts
   DO ALSO INSERT INTO posts_history VALUES (
     DEFAULT,
     DEFAULT,
-	floor(extract(EPOCH from now())),
+	'now',
     'DELETE',
 	OLD.id,
 	OLD.userid,
@@ -199,25 +199,9 @@ CREATE RULE log_posts_delete AS ON DELETE TO posts
 	NULL
   );
 
-CREATE FUNCTION liketags(m text) RETURNS text[] AS $$ DECLARE set text[]; BEGIN select array_agg(name) into set from tags where name like m; return set; END; $$ LANGUAGE plpgsql;
+CREATE FUNCTION liketags(m text) RETURNS text[] AS $$ DECLARE set text[]; BEGIN select array_agg(name) into set from tags where lower(name) like lower(m); return set; END; $$ LANGUAGE plpgsql;
 CREATE FUNCTION unixtime(t timestamp) RETURNS bigint AS $$ BEGIN return floor(extract(EPOCH from t)); END; $$ LANGUAGE plpgsql;
 CREATE FUNCTION unixnow() RETURNS bigint AS $$ BEGIN return floor(extract(EPOCH from now())); END; $$ LANGUAGE plpgsql;
 
 
-
-CREATE TABLE access_levels (
-	value INTEGER,
-	name TEXT
-);
-
-INSERT INTO access_levels VALUES (1000,'Member');
-INSERT INTO access_levels VALUES (100,'Moderator');
-INSERT INTO access_levels VALUES (10,'Adminisrator');
-INSERT INTO access_levels VALUES (1,'Root Admin');
-INSERT INTO access_levels VALUES (0,'Deus');
-INSERT INTO access_levels VALUES (-1,'Anonymous');
-INSERT INTO access_levels VALUES (-10,'Unholy Nomad');
-INSERT INTO access_levels VALUES (-100,'Restricted');
-INSERT INTO access_levels VALUES (-1000,'Banned');
-
-INSERT INTO users VALUES (DEFAULT,0,'Deus','I am Not to be logged in, mortal','deus@machina',unixnow(),-1,NULL,unixnow());
+INSERT INTO users VALUES (DEFAULT,'Deus','Deus','I am Not to be logged in, mortal','deus@machina','now',0,NULL,'now');
