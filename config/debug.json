@@ -1,0 +1,16 @@
+{
+	"service" : {
+		"disable_global_exit_handling" : true,
+		"api" : "fastcgi",
+		"ip" : "127.0.0.1",
+		"port" : 8081
+
+	},
+	"http" : {
+		"script" : "/",
+		"script_names" : [ "radiorandom" ]
+	},
+	"cms" : {
+		"install_lock_file" : "./install.lock"
+	}
+}
