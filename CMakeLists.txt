@@ -6,15 +6,18 @@ include_directories (src)
 add_definitions(-g)
 
 set (radiorandom_html_templates
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/root.tmpl
 	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic_view.tmpl
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/please_install.tmpl
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/core.tmpl
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/user.tmpl
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/post.tmpl
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/installer.tmpl
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/installer_install.tmpl
-	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/about/about.tmpl
+	
+	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/core/index.tmpl
+
+	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/index.tmpl
+
+	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/index.tmpl
+	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/upload.tmpl
+
+	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/index.tmpl
+	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install.tmpl
+	${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/please_install.tmpl
 )
 
 add_custom_command(
@@ -33,10 +36,9 @@ add_library(radiorandom-util ${radiorandom_util_sources})
 set (radiorandom_sources 
 	src/radiorandom/main.cpp
 	src/radiorandom/controller/generic_controller.cpp
-	src/radiorandom/controller/core.cpp
 	src/radiorandom/controller/http_error_codes.cpp
+	src/radiorandom/controller/core/core.cpp
 	src/radiorandom/controller/post/post.cpp
-	src/radiorandom/controller/about/about.cpp
 	src/radiorandom/controller/user/user.cpp
 	src/radiorandom/controller/installer/installer.cpp
 

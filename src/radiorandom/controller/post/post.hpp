@@ -8,6 +8,7 @@ class post : public generic_controller {
 		post(cppcms::service & srv);
 	public:
 		void index();
+		void upload();
 };
 
 

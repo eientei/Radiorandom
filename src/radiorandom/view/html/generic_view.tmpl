@@ -1,46 +1,46 @@
 <% c++ #include <radiorandom/model/generic_model.hpp> %>
-<% c++ #include <radiorandom/model/root.hpp> %>
 <% skin html %>
-<% view generic_view uses content::generic_model extends root %>
+<% view generic_view uses content::generic_model %>
 
-<% template page_title() %>
+<% template sub_navigation() %>
 <% end template %>
-
-
-
-
-<% template page_content() %>
-<% end template %>
-
-
-
-
 
 <% template navigation() %>
-<div>
-	<a href="<% url "/"    %>">Index</a>
-	<a href="<% url "/user" %>">Users</a>
-	<a href="<% url "/post" %>">Posts</a>
-</div>
+	<% if is_installed %>
+		<div>
+			<a href="<% url "/"     %>">Index</a>
+			<a href="<% url "/user" %>">Users</a>
+			<a href="<% url "/post" %>">Posts</a>
+		</div>
+		<% include sub_navigation() %>
+	<% end %>
 <% end template %>
 
+<% template head_content() %>
+<% end template %>
 
+<% template body_content() %>
+<% end template %>
 
-
-
-
-<% template root_content() %>
-<head>
-	<% include page_title() %>
-</head>  
-<body>  
+<% template header() %>
 	<% include navigation() %>
-	<% include page_content() %>
-</body>
+<% end template%>
+
+<% template footer() %>
 <% end template %>
 
-
-
+<% template render() %>
+<html>
+	<head>
+		<% include head_content() %>
+	</head>
+	<body>
+		<% include header() %>
+		<% include body_content() %>
+		<% include footer() %>
+	</body>
+</html>
+<% end template %>
 
 <% end view %>
 <% end skin %>

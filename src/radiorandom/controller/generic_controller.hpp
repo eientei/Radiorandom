@@ -32,6 +32,8 @@ class generic_controller : public cppcms::application {
 	protected:
 		void error(int code, std::string message = "");
 		void do_dispatch(std::string const& url);
+		virtual void prepare(content::generic_model & c);
+		void display(content::generic_model & c, std::string tmpl, std::string skin = "html");
 	private:
 		void init_error_codes();
 };

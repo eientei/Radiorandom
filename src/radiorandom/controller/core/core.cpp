@@ -11,14 +11,13 @@ core::core(cppcms::service & srv) : generic_controller(srv,"Core") {
 
 	attach(new post(srv), "post", "post{1}", "/post((/.*)?)",1);
 	attach(new user(srv), "user", "user{1}", "/user((/.*)?)",1);
-	attach(new about(srv), "about", "about{1}", "/about((/.*)?)",1);
 
 	dispatcher().assign("/*",&core::index,this);
 	mapper().assign("");
 }
 
 void core::index() {
-	content::core c;
-	render("html","core",c);
+	content::core::index c;
+	display(c,"core_index");
 }
 

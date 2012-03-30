@@ -5,7 +5,7 @@
 #include <cppcms/service.h>
 #include <cppcms/applications_pool.h>
 
-#include "controller/core.hpp"
+#include "controller/core/core.hpp"
 
 bool should_run = true;
 cppcms::service * service;

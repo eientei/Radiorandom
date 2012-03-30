@@ -5,6 +5,7 @@ generic_controller::generic_controller(cppcms::service & srv, std::string name) 
 	std::string m_lock = settings().find("cms.install_lock_file").get_value<std::string>();
 	m_is_installed = util::fs::file_exists(m_lock);
 
+
 	init_error_codes();
 	std::cout << "    [NEW]      " << m_controller_name << std::endl;
 }
@@ -46,6 +47,15 @@ bool generic_controller::is_installed() {
 	return m_is_installed;
 }
 void generic_controller::please_install() {
-	content::please_install c;
-	render("html","please_install",c);
+	content::installer::please_install c;
+	display(c,"installer_please_install");
+}
+
+void generic_controller::prepare(content::generic_model & c) {
+	c.is_installed = m_is_installed;
+}
+
+void generic_controller::display(content::generic_model & c, std::string tmpl, std::string skin) {
+	prepare(c);
+	render(skin,tmpl,c);
 }

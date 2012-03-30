@@ -5,19 +5,15 @@
 
 class core;
 
-#include "post/post.hpp"
-#include "user/user.hpp"
-#include "installer/installer.hpp"
-#include "about/about.hpp"
+#include <radiorandom/controller/post/post.hpp>
+#include <radiorandom/controller/user/user.hpp>
+#include <radiorandom/controller/installer/installer.hpp>
 
 class core : public generic_controller {
 	public:
 		core(cppcms::service & srv);
 	public:
 		void index();
-//		void please_install();
-//	public:
-//		bool is_installed();
 };
 
 

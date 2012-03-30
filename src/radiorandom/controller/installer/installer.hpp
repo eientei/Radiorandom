@@ -3,8 +3,6 @@
 
 #include <radiorandom/controller/generic_controller.hpp>
 
-#include <radiorandom/controller/core.hpp>
-
 class installer : public generic_controller {
 	public:
 		installer(cppcms::service & srv);
