@@ -1,13 +1,14 @@
 #ifndef MODEL_INSTALLER_INSTALL_HPP
 #define MODEL_INSTALLER_INSTALL_HPP
 
-#include <radiorandom/model/generic_model.hpp>
+#include <radiorandom/model/generic/model.hpp>
 
 namespace content {
-	namespace installer {
-		struct install : public generic_model {
-		};
-	}
+    namespace installer {
+        struct install : public generic {
+
+        };
+    }
 }
 
-#endif
+#endif // MODEL_INSTALLER_INSTALL_HPP
