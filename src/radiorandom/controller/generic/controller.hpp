@@ -19,7 +19,6 @@
 namespace controller {
     class generic : public cppcms::application {
             std::string m_menu_item;
-            std::string m_submenu_item;
             std::map<int,std::string> m_error_codes;
             std::string m_lock_file;
             bool m_is_installed;

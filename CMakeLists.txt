@@ -16,8 +16,12 @@ set (radiorandom_html_templates
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/core/index.tmpl
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/index.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/list.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/signup.tmpl
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/index.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/list.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/upload.tmpl
 )
 
 add_custom_command(

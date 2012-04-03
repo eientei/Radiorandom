@@ -1,8 +1,15 @@
 #include "controller.hpp"
 
+// private
+
+// protected
+
+// public
+
 controller::core::core(cppcms::service &srv) : generic(srv,"core") {
     mapper().root("/");
     mapper().assign("");
+    mapper().assign("core","");
 
     if (!is_installed()) {
         attach(new controller::installer(srv), "installer", "installer{1}", "/installer((/.*)?)",1);

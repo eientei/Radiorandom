@@ -31,3 +31,11 @@ src/radiorandom/controller/post/controller.hpp
 src/radiorandom/controller/post/controller.cpp
 src/radiorandom/model/post/index.hpp
 src/radiorandom/view/html/post/index.tmpl
+src/radiorandom/model/post/list.hpp
+src/radiorandom/model/post/upload.hpp
+src/radiorandom/view/html/post/list.tmpl
+src/radiorandom/view/html/post/upload.tmpl
+src/radiorandom/model/user/list.hpp
+src/radiorandom/model/user/signup.hpp
+src/radiorandom/view/html/user/list.tmpl
+src/radiorandom/view/html/user/signup.tmpl

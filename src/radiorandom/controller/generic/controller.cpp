@@ -48,11 +48,13 @@ void controller::generic::error(int code, std::string message) {
 }
 
 void controller::generic::prepare(content::generic &c, std::string submenu_item) {
-    m_submenu_item = submenu_item;
-
     c.is_installed = m_is_installed;
     c.menu_item = m_menu_item;
-    c.submenu_item = m_submenu_item;
+    c.submenu_item = submenu_item;
+
+    c.menu_items["core"] = "Core";
+    c.menu_items["user"] = "User";
+    c.menu_items["post"] = "Post";
 }
 
 void controller::generic::display(content::generic &c, std::string tmpl, std::string skin) {
