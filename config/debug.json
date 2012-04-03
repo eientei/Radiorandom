@@ -2,7 +2,7 @@
 	"service" : {
 		"disable_global_exit_handling" : true,
 		"api" : "fastcgi",
-		"ip" : "127.0.0.1",
+		"ip" : "192.168.1.2",
 		"port" : 8081
 
 	},
