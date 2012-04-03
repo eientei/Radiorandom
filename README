@@ -5,7 +5,7 @@ INSTALLATION REQUIREMENTS
 
 INSTALLATION GUIDE [gentoo]
 
-# emerge -av layman
+# emerge -av cmake layman
 # echo "source /var/lib/layman/make.conf" >> /etc/make.conf
 # layman -S
 # layman -a funroll-loops
