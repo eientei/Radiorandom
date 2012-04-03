@@ -18,7 +18,12 @@ controller::generic::~generic() {
 // private
 
 void controller::generic::init_is_installed() {
-    m_lock_file = settings().find("cms.install_lock_file").get_value<std::string>();
+    try {
+        m_lock_file = settings().find("cms.install_lock_file").get_value<std::string>();
+    } catch (cppcms::json::bad_value_cast) {
+        m_lock_file = "";
+    }
+
     m_is_installed = util::fs::file_exists(m_lock_file);
 }
 

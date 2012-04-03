@@ -39,3 +39,6 @@
 ../src/radiorandom/model/user/signup.hpp
 ../src/radiorandom/view/html/user/list.tmpl
 ../src/radiorandom/view/html/user/signup.tmpl
+../config/debug.json
+../README
+../sql/debug.sql

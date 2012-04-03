@@ -51,6 +51,7 @@ set (radiorandom_sources
 set (radiorandom_libs
     -lcppcms
     -lbooster
+    -lcppdb
     radiorandom-util
 )
 
