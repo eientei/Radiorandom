@@ -1,0 +1,22 @@
+INSTALLATION REQUIREMENTS
+
+* cmake
+* cppcms
+
+INSTALLATION GUIDE [gentoo]
+
+# emerge -av layman
+# echo "source /var/lib/layman/make.conf" >> /etc/make.conf
+# layman -S
+# layman -a funroll-loops
+# eix-update
+# echo "dev-libs/cppcms ~amd64" >> /etc/portage/package.keywords
+# emerge -av cppcms
+$ cd /path/to/radiorandom
+$ mkdir build
+$ cd build
+$ cmake ../
+$ make
+$ ./radiorandom -c ../config/debug.json
+
+
