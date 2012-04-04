@@ -44,9 +44,9 @@ namespace controller {
             void error(int code, std::string message = "");
             void display(content::generic & c, std::string tmpl, std::string skin = "html");
             void do_dispatch(std::string url);
+            void update_is_installed();
 
         private:
-            void init_is_installed();
             void init_error_codes();
 
     };

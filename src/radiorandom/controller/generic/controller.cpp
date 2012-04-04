@@ -5,31 +5,19 @@ controller::generic::generic(cppcms::service & srv, std::string module_name)
       cppcms::application(srv),
       m_menu_item(module_name)
 {
-    std::string propname;
     std::string sql_host;
     std::string sql_dbname;
     std::string sql_user;
     std::string sql_password;
-    try {
-        propname = "sql.server";
-        sql_host     = settings().find("sql.server").get_value<std::string>();
 
-        propname = "sql.database";
-        sql_dbname   = settings().find("sql.database").get_value<std::string>();
-
-        propname = "sql.user";
-        sql_user     = settings().find("sql.user").get_value<std::string>();
-
-        propname = "sql.pass";
-        sql_password = settings().find("sql.pass").get_value<std::string>();
-    } catch (cppcms::json::bad_value_cast const& e) {
-        std::cout << "Error reading `" << propname << "' from configuration file: Property does not exists!" << std::endl;
-        exit(1);
-    }
+    sql_host     = settings().find("sql.server").get_value<std::string>();
+    sql_dbname   = settings().find("sql.database").get_value<std::string>();
+    sql_user     = settings().find("sql.user").get_value<std::string>();
+    sql_password = settings().find("sql.pass").get_value<std::string>();
 
     sql.open("postgresql:host=" + sql_host + ";dbname=" + sql_dbname + ";user=" + sql_user + ";password='" + sql_password + "'");
 
-    init_is_installed();
+    update_is_installed();
     init_error_codes();
 
     std::cout << "  [NEW]   " << m_menu_item << std::endl;
@@ -52,15 +40,6 @@ controller::generic::~generic() {
 
 // private
 
-void controller::generic::init_is_installed() {
-    try {
-        m_lock_file = settings().find("cms.install_lock_file").get_value<std::string>();
-    } catch (cppcms::json::bad_value_cast const& e) {
-        m_lock_file = "";
-    }
-
-    m_is_installed = util::fs::file_exists(m_lock_file);
-}
 
 void controller::generic::init_error_codes() {
     m_error_codes[404] = "Not Found";
@@ -154,6 +133,16 @@ void controller::generic::do_dispatch(std::string url) {
         } else {
             please_install();
         }
+    }
+}
+
+void controller::generic::update_is_installed() {
+    try {
+        m_lock_file = settings().find("cms.install_lock_file").get_value<std::string>();
+        m_is_installed = util::fs::file_exists(m_lock_file);
+    } catch (cppcms::json::bad_value_cast const& e) {
+        m_lock_file = "";
+        m_is_installed = false;
     }
 }
 

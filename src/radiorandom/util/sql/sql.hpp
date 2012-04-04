@@ -4,10 +4,18 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <openssl/sha.h>
 
 namespace util {
     namespace sql {
-        std::vector<std::string> read_file_to_stmts(std::string const& filename);
+        std::string salt_password(std::string const& salt, std::string const& raw_password);
+        std::string hash_password(std::string const& password);
+        std::string make_password_hash(std::string const& salt, std::string const& raw_password);
+
+        bool add_user(std::string const& name, std::string const& salt, std::string const& password, std::string const& email);
     }
 }
 

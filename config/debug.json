@@ -17,6 +17,6 @@
         "pass"     : "ignore"
     },
     "security" : {
-        "salt" : "shlasobakaporoyalyu"
+        "salt" : "shlasobakaporoyalyu--%s--pukpukpuk"
     }
 }

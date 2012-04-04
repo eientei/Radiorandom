@@ -1,21 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  fs.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  28.03.2012 16:45:22
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Tumin <itakingiteasy@gmail.com> Alexander (), 
- *   Organization:  
- *
- * =====================================================================================
- */
-
 #include "fs.hpp"
 
 

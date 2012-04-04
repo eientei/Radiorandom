@@ -24,22 +24,30 @@ void controller::installer::install() {
 }
 
 void controller::installer::install_finished() {
-    single::sql::global_sql_mutex.lock();
-    std::string schema_file_path = settings().find("sql.schema").get_value<std::string>();
-    std::vector<std::string> sql_stmts = util::sql::read_file_to_stmts(schema_file_path);
+
+    //single::sql::global_sql_mutex.lock();
+    update_is_installed();
+    if (!is_installed()) {
+        std::string schema_file_path = settings().find("sql.schema").get_value<std::string>();
+        std::ifstream schema_file(schema_file_path.c_str());
+
+        single::sql::perform_update(schema_file);
+        /*
+        std::vector<std::string> sql_stmts = util::sql::read_file_to_stmts(schema_file_path);
 
 
-    for (std::vector<std::string>::const_iterator it = sql_stmts.begin(); it != sql_stmts.end(); it++) {
-        sql << *it << cppdb::exec;
+        for (std::vector<std::string>::const_iterator it = sql_stmts.begin(); it != sql_stmts.end(); it++) {
+            sql << *it << cppdb::exec;
+        }
+        */
+
+        util::fs::create_file(lock_file());
+
+        content::installer::install_finished c;
+        prepare(c,"install_finished");
+        display(c,"installer_install_finished");
     }
-
-    util::fs::create_file(lock_file());
-
-    single::sql::global_sql_mutex.unlock();
-
-    content::installer::install_finished c;
-    prepare(c,"install_finished");
-    display(c,"installer_install_finished");
+    //single::sql::global_sql_mutex.unlock();
 
     service().shutdown();
 }

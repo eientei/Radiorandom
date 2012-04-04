@@ -127,7 +127,7 @@ delete from users_static;
 insert into users_static(ip,user_id)
 select v_ip,users.id from users,
     (values
-        ('127.0.0.1','admin')
+        ('666.666.666.666','deus')
     ) v(v_ip,v_user)
 where users.name=v.v_user;
 
@@ -188,7 +188,6 @@ insert into users_groups
 select users.id, groups.id from users, groups,
     (values
         ('deus','admin'),
-        ('anonymous','anonymous'),
-        ('admin','admin')
+        ('anonymous','anonymous')
     ) v(v_user,v_group)
 where users.name=v.v_user and groups.name=v.v_group;
