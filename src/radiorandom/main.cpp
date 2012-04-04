@@ -10,6 +10,8 @@
 
 #include "controller/core/controller.hpp"
 
+#include <radiorandom/util/util.hpp>
+
 bool should_run = true;
 cppcms::service * service;
 
@@ -20,40 +22,52 @@ void sighandler(int sig) {
 }
 
 void help(char * progname) {
-    std::cout << "USAGE: " << progname << " -c config.json -s schema.sql -l lock.file" << std::endl;
+    std::cout << "USAGE: " << progname << " -w working directory" << std::endl;
 }
 
 int main(int argc, char ** argv) {
-    int c;
-    char * config_file_path = NULL;
-    char * sql_file_path = NULL;
-    char * lock_file_path = NULL;
+    int c = -1;
+    std::string working_directory;
+    std::string config_file_path;
+    std::string sql_file_path;
+    std::string lock_file_path;
+    std::string data_directory;
 
-    while ((c = getopt(argc,argv,"c:s:l:?h")) != -1) {
+    while ((c = getopt(argc,argv,"w:h?")) != -1 ) {
         switch (c) {
-            case 'c':
-                config_file_path = optarg;
-                break;
-            case 's':
-                sql_file_path = optarg;
-                break;
-            case 'l':
-                lock_file_path = optarg;
+            case 'w':
+                working_directory = optarg;
                 break;
             case 'h':
             case '?':
             default:
+                std::cout << c;
                 help(argv[0]);
                 return 0;
                 break;
         }
     }
-    if (config_file_path == NULL || sql_file_path == NULL || lock_file_path == NULL) {
-        help(argv[0]);
+    config_file_path = working_directory + "/config.json";
+    sql_file_path    = working_directory + "/schema.sql";
+    lock_file_path   = working_directory + "/install.lock";
+    data_directory   = working_directory + "/data";
+
+    if (!util::fs::file_exists(config_file_path)) {
+        std::cout << "Configuration file in path `" + config_file_path + "' does not exists!" << std::endl;
         return 1;
     }
 
-    std::ifstream config_file(config_file_path);
+    if (!util::fs::file_exists(sql_file_path)) {
+        std::cout << "SQL schema file in path `" + sql_file_path + "' does not exists!" << std::endl;
+        return 1;
+    }
+
+    if (!util::fs::file_exists(data_directory)) {
+        std::cout << "Data directory in path `" + data_directory + "' does not exists!" << std::endl;
+        return 1;
+    }
+
+    std::ifstream config_file(config_file_path.c_str());
     cppcms::json::value config;
     int lno = -1;
     if (!config.load(config_file,true,&lno)) {
@@ -62,6 +76,8 @@ int main(int argc, char ** argv) {
     }
     config.set<std::string>("sql.schema",sql_file_path);
     config.set<std::string>("cms.install_lock_file",lock_file_path);
+    config.set<std::string>("cms.data_directory",data_directory);
+
 
     signal(SIGINT, &sighandler);
 
