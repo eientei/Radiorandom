@@ -12,6 +12,7 @@ set (radiorandom_html_templates
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/index.tmpl
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install_finished.tmpl
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/core/index.tmpl
 
@@ -33,9 +34,16 @@ add_custom_command(
 set (radiorandom_util_sources
     src/radiorandom/util/fs/fs.cpp
     src/radiorandom/util/string/string.cpp
+    src/radiorandom/util/sql/sql.cpp
 )
 
 add_library(radiorandom-util ${radiorandom_util_sources})
+
+set (radiorandom_single_sources
+    src/radiorandom/single/single.cpp
+)
+
+add_library(radiorandom-single ${radiorandom_single_sources})
 
 set (radiorandom_sources
     src/radiorandom/main.cpp
@@ -48,11 +56,13 @@ set (radiorandom_sources
 
     ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
 )
+
 set (radiorandom_libs
     -lcppcms
     -lbooster
     -lcppdb
     radiorandom-util
+    radiorandom-single
 )
 
 add_executable(radiorandom ${radiorandom_sources})

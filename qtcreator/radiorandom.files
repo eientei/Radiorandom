@@ -42,3 +42,9 @@
 ../config/debug.json
 ../README
 ../sql/debug.sql
+../src/radiorandom/util/sql/sql.hpp
+../src/radiorandom/util/sql/sql.cpp
+../src/radiorandom/single/single.hpp
+../src/radiorandom/single/single.cpp
+../src/radiorandom/model/installer/install_finished.hpp
+../src/radiorandom/view/html/installer/install_finished.tmpl

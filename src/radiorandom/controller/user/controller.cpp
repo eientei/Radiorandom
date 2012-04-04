@@ -8,7 +8,7 @@ void controller::user::prepare(content::generic &c, std::string submenu_item) {
     controller::generic::prepare(c,submenu_item);
 
     c.submenu_items["list"]   = "List";
-    c.submenu_items["signup"] = "Register";
+    c.submenu_items["signup"] = "Signup";
 }
 
 // public

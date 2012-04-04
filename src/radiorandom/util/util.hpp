@@ -3,5 +3,6 @@
 
 #include "fs/fs.hpp"
 #include "string/string.hpp"
+#include "sql/sql.hpp"
 
 #endif

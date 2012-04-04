@@ -1,11 +1,14 @@
+drop view if exists users_rights_view;
 drop view if exists users_groups_rights_view;
 drop view if exists users_groups_view ;
 drop view if exists groups_rights_view ;
+drop view if exists users_static_view;
 
 drop table if exists groups_rights;
 drop table if exists rights;
 drop table if exists users_groups;
 drop table if exists groups;
+drop table if exists users_static;
 drop table if exists users;
 
 
@@ -18,6 +21,18 @@ create table users (
     password_hash text,
     email text
 );
+
+create table users_static (
+    id serial PRIMARY KEY,
+    ip text UNIQUE NOT NULL,
+    user_id integer REFERENCES users(id)
+);
+
+create view users_static_view as
+    select
+        name, ip
+    from users_static
+        inner join users on user_id = users.id;
 
 create table groups (
     id serial PRIMARY KEY,
@@ -74,8 +89,13 @@ create view users_groups_rights_view as
         inner join rights on groups_rights.right_id = rights.id;
 
 
+create view users_rights_view as select distinct name,"right" from users_groups_rights_view ;
+
+
+
+
 delete from rights;
-insert into rights(name) values('visit');
+insert into rights(name) values('view');
 insert into rights(name) values('signup');
 insert into rights(name) values('signin');
 insert into rights(name) values('upload');
@@ -100,18 +120,29 @@ insert into groups(name) values('admin');
 
 delete from users;
 insert into users(name) values('deus');
+insert into users(name) values('admin');
+insert into users(name,password_hash) values('anonymous','');
+
+delete from users_static;
+insert into users_static(ip,user_id)
+select v_ip,users.id from users,
+    (values
+        ('127.0.0.1','admin')
+    ) v(v_ip,v_user)
+where users.name=v.v_user;
+
 
 delete from groups_rights;
 insert into groups_rights
 select groups.id, rights.id from groups, rights,
     (values
-        ('anonymous','visit'),
+        ('anonymous','view'),
         ('anonymous','signup'),
         ('anonymous','signin'),
         ('anonymous','rateview'),
         ('anonymous','commentview'),
 
-        ('user','visit'),
+        ('user','view'),
         ('user','signup'),
         ('user','signin'),
         ('user','rateview'),
@@ -121,7 +152,7 @@ select groups.id, rights.id from groups, rights,
         ('user','commentadd'),
         ('user','upload'),
 
-        ('moderator','visit'),
+        ('moderator','view'),
         ('moderator','signup'),
         ('moderator','signin'),
         ('moderator','rateview'),
@@ -134,7 +165,7 @@ select groups.id, rights.id from groups, rights,
         ('moderator','delete'),
         ('moderator','clean'),
 
-        ('admin','visit'),
+        ('admin','view'),
         ('admin','signup'),
         ('admin','signin'),
         ('admin','rateview'),
@@ -156,6 +187,8 @@ delete from users_groups;
 insert into users_groups
 select users.id, groups.id from users, groups,
     (values
-        ('deus','admin')
+        ('deus','admin'),
+        ('anonymous','anonymous'),
+        ('admin','admin')
     ) v(v_user,v_group)
 where users.name=v.v_user and groups.name=v.v_group;

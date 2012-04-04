@@ -35,7 +35,11 @@
 </div>
 <% end template %>
 
+<% template head_meta_content() %>
+<% end template %>
+
 <% template head_content() %>
+    <% include head_meta_content() %>
 <% end template %>
 
 <% template body_content() %>
@@ -43,6 +47,11 @@
 
 <% template header() %>
     <% if is_installed %>
+        <% if user_logged_in %>
+            <div>
+                <p>You are <%= user_name %>!</p>
+            </div>
+        <% end %>
         <% include navigation() %>
     <% end %>
 <% end template%>
@@ -56,9 +65,13 @@
         <% include head_content() %>
     </head>
     <body>
-        <% include header() %>
-        <% include body_content() %>
-        <% include footer() %>
+        <% if has_right("view") %>
+            <% include header() %>
+            <% include body_content() %>
+            <% include footer() %>
+        <% else %>
+            <div><p>View was disabled for you, you, you!</p></div>
+        <% end %>
     </body>
 </html>
 <% end template %>

@@ -10,11 +10,14 @@
 #include <cppcms/url_dispatcher.h>
 #include <cppcms/url_mapper.h>
 
+#include <cppdb/frontend.h>
+
 #include <radiorandom/model/generic/model.hpp>
 #include <radiorandom/model/generic/error.hpp>
 #include <radiorandom/model/generic/please_install.hpp>
 
 #include <radiorandom/util/util.hpp>
+#include <radiorandom/single/single.hpp>
 
 namespace controller {
     class generic : public cppcms::application {
@@ -22,7 +25,8 @@ namespace controller {
             std::map<int,std::string> m_error_codes;
             std::string m_lock_file;
             bool m_is_installed;
-
+        protected:
+            cppdb::session sql;
         public:
             generic(cppcms::service & srv, std::string module_name);
             ~generic();

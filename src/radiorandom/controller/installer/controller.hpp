@@ -5,6 +5,7 @@
 
 #include <radiorandom/model/installer/index.hpp>
 #include <radiorandom/model/installer/install.hpp>
+#include <radiorandom/model/installer/install_finished.hpp>
 
 namespace controller {
     class installer : public generic {
@@ -13,6 +14,7 @@ namespace controller {
         public:
             virtual void index();
             virtual void install();
+            virtual void install_finished();
     };
 }
 

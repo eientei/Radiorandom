@@ -24,6 +24,6 @@ $ mkdir build
 $ cd build
 $ cmake ../
 $ make
-$ ./radiorandom -c ../config/debug.json
+$ ./radiorandom -c ../config/debug.json -s ../sql/debug.sql -l ./install.lock
 
 
