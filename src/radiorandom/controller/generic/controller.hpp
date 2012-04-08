@@ -2,6 +2,7 @@
 #define CONTROLLER_GENERIC_HPP
 
 #include <string>
+#include <vector>
 #include <map>
 
 #include <cppcms/application.h>
@@ -16,6 +17,7 @@
 #include <cppdb/mutex.h>
 
 #include <radiorandom/util/fs/util.hpp>
+#include <radiorandom/util/sql/util.hpp>
 
 #include <radiorandom/model/generic/model.hpp>
 #include <radiorandom/model/generic/error.hpp>
@@ -31,6 +33,7 @@ namespace controller {
             bool is_installed();
             std::string const& lock_file();
             std::string const& schema_template();
+            std::string const& js_directory();
 
             virtual void main(std::string url);
             virtual void index() = 0;
@@ -39,6 +42,7 @@ namespace controller {
             static void unlock(std::string const& name);
             static void unlock_all();
 
+            static cppdb::session & update();
             static void update(std::string const& stmt);
             static void update(std::istream & stream);
 
@@ -65,6 +69,8 @@ namespace controller {
             static std::string m_schema_template;
             static std::string m_connection_string;
             static std::string m_lock_file;
+            static std::string m_js_directory;
+            static std::string m_site_name;
             static std::map<int,std::string> m_error_codes;
 
             std::string m_menu_item;

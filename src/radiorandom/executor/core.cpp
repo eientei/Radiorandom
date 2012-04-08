@@ -87,6 +87,7 @@ void executor::core::parse_args() {
     m_config_file     = m_working_directory + "/config.json";
     m_lock_file       = m_working_directory + "/install.lock";
     m_data_directory  = m_working_directory + "/data";
+    m_js_directory    = m_working_directory + "/js";
     m_schema_template = m_working_directory + "/schema.sql";
 }
 
@@ -95,6 +96,7 @@ void executor::core::validate_args() {
     assure_exists(m_config_file,"Config file");
     assure_exists(m_schema_template,"Schema template file");
     assure_exists(m_data_directory,"Data directory");
+    assure_exists(m_js_directory,"Javascript directory");
 }
 
 void executor::core::load_config() {
@@ -141,13 +143,12 @@ void executor::core::populate_config() {
             + password
             + "'";
 
-
-
     m_config.set<std::string>("cms.working_directory",m_working_directory);
     m_config.set<std::string>("cms.lock_file",m_lock_file);
     m_config.set<std::string>("cms.config_file",m_config_file);
     m_config.set<std::string>("cms.schema_template",m_schema_template);
     m_config.set<std::string>("cms.data_directory",m_data_directory);
+    m_config.set<std::string>("cms.js_directory",m_js_directory);
     m_config.set<std::string>("sql.connection_string",connection_string);
 }
 

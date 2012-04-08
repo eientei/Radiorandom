@@ -7,6 +7,7 @@
 
 namespace controller { class core; }
 
+#include <radiorandom/controller/js/controller.hpp>
 #include <radiorandom/controller/installer/controller.hpp>
 //#include <radiorandom/controller/user/controller.hpp>
 //#include <radiorandom/controller/post/controller.hpp>

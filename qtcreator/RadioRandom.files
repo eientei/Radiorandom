@@ -33,3 +33,14 @@
 ../src/radiorandom/controller/core/controller.cpp
 ../src/radiorandom/controller/installer/controller.hpp
 ../src/radiorandom/controller/installer/controller.cpp
+../src/radiorandom/controller/installer/rpc.hpp
+../src/radiorandom/controller/generic/rpc.hpp
+../src/radiorandom/controller/generic/rpc.cpp
+../src/radiorandom/controller/installer/rpc.cpp
+../src/radiorandom/controller/js/controller.hpp
+../src/radiorandom/controller/js/controller.cpp
+../src/radiorandom/model/js/index.hpp
+../src/radiorandom/view/html/js/index.tmpl
+../workenv/js/installer.js
+../src/radiorandom/util/sql/util.hpp
+../src/radiorandom/util/sql/util.cpp

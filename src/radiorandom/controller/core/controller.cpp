@@ -9,6 +9,8 @@ controller::core::core(cppcms::service &srv)
     mapper().assign("");
     mapper().assign("core","");
 
+    attach(new controller::js(srv),"js","js{1}","/js((/.*)?)",1);
+
     if (!is_installed()) {
         attach(new controller::installer(srv),"installer","installer{1}","/installer((/.*)?)",1);
         return;

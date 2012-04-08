@@ -35,11 +35,18 @@
 </div>
 <% end template %>
 
+<% template head_title_content() %><% end template %>
+
 <% template head_meta_content() %>
 <% end template %>
 
+<% template head_script_content() %>
+<% end template %>
+
 <% template head_content() %>
+    <title><%= site_name %> - <% include head_title_content() %></title>
     <% include head_meta_content() %>
+    <% include head_script_content() %>
 <% end template %>
 
 <% template body_content() %>

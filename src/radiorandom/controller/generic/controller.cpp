@@ -9,6 +9,8 @@ bool controller::generic::m_is_installed = false;
 std::string controller::generic::m_schema_template;
 std::string controller::generic::m_connection_string;
 std::string controller::generic::m_lock_file;
+std::string controller::generic::m_js_directory;
+std::string controller::generic::m_site_name;
 std::map<int,std::string> controller::generic::m_error_codes;
 
 // public
@@ -21,11 +23,11 @@ controller::generic::generic(cppcms::service &srv, std::string const& module_nam
     }
 
     sql.open(m_connection_string);
-    std::cout << "  [NEW]   " << m_menu_item << std::endl;
+    std::cout << "    [NEW]   " << m_menu_item << std::endl;
 }
 
 controller::generic::~generic() {
-    std::cout << "  [DEL]   " << m_menu_item << std::endl;
+    std::cout << "    [DEL]   " << m_menu_item << std::endl;
 }
 
 bool controller::generic::is_installed() {
@@ -38,6 +40,10 @@ std::string const& controller::generic::lock_file() {
 
 std::string const& controller::generic::schema_template() {
     return m_schema_template;
+}
+
+std::string const& controller::generic::js_directory() {
+    return m_js_directory;
 }
 
 void controller::generic::main(std::string url) {
@@ -70,6 +76,10 @@ void controller::generic::unlock_all() {
     m_mutexes.clear();
 }
 
+cppdb::session & controller::generic::update() {
+    return m_update_sql;
+}
+
 void controller::generic::update(std::string const& stmt) {
     lock("global_sql_mutex");
     m_update_sql << stmt << cppdb::exec;
@@ -78,36 +88,10 @@ void controller::generic::update(std::string const& stmt) {
 
 void controller::generic::update(std::istream & stream) {
     lock("global_sql_mutex");
-
-    std::string stmt;
-
-    int c = -1;
-    bool instring = false;
-
-    while ((c=stream.get()) != -1) {
-        char ch = (char)c;
-        stmt.push_back(ch);
-        switch (ch) {
-            case '\'':
-                if (!instring) {
-                    instring = true;
-                } else {
-                    if ('\'' == (char)stream.peek()) {
-                        stream.get();
-                    } else {
-                        instring = false;
-                    }
-                }
-                break;
-            case ';':
-                if (!instring) {
-                    m_update_sql << stmt << cppdb::exec;
-                    stmt.clear();
-                }
-                break;
-        }
+    std::vector<std::string> stmts = util::sql::parse_sql_schema(stream);
+    for (std::vector<std::string>::const_iterator it = stmts.begin(); it != stmts.end(); it++) {
+        m_update_sql << *it << cppdb::exec;
     }
-
     unlock("global_sql_mutex");
 }
 
@@ -116,6 +100,8 @@ void controller::generic::update(std::istream & stream) {
 // protected
 
 void controller::generic::prepare(content::generic &c, std::string const& submodule_name) {
+    c.site_name = m_site_name;
+
     c.is_installed = m_is_installed;
     c.menu_item = m_menu_item;
     c.submenu_item = submodule_name;
@@ -123,6 +109,13 @@ void controller::generic::prepare(content::generic &c, std::string const& submod
     c.menu_items["core"] = "Core";
     c.menu_items["user"] = "User";
     c.menu_items["post"] = "Post";
+
+    if (!is_installed()) {
+        c.user.name = "anonymous";
+        c.user.logged_in = false;
+        c.user.rights.push_back("view");
+        return;
+    }
 
     cppdb::result r;
 
@@ -184,6 +177,7 @@ void controller::generic::please_install() {
 }
 
 void controller::generic::error(int code, std::string message) {
+    response().status(code);
     content::error c;
     prepare(c,"error");
     c.code = code;
@@ -222,7 +216,9 @@ void controller::generic::init_error_codes() {
 void controller::generic::init_static_context() {
     m_connection_string = settings().find("sql.connection_string").get_value<std::string>();
     m_lock_file = settings().find("cms.lock_file").get_value<std::string>();
+    m_js_directory = settings().find("cms.js_directory").get_value<std::string>();
     m_schema_template = settings().find("cms.schema_template").get_value<std::string>();
+    m_site_name = settings().find("branding.site_name").get_value<std::string>();
     m_update_sql.open(m_connection_string);
     m_static_initialized = true;
     update_installed_state();

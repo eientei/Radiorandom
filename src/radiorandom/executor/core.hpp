@@ -75,6 +75,7 @@ namespace executor {
             std::string m_config_file;
             std::string m_lock_file;
             std::string m_data_directory;
+            std::string m_js_directory;
             std::string m_schema_template;
     };
 }

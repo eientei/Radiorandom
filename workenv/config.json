@@ -6,6 +6,10 @@
         "port" : 8081
 
     },
+    "branding" : {
+        "site_name" : "RadioRandom"
+    },
+
     "http" : {
         "script" : "/",
         "script_names" : [ "radiorandom" ]

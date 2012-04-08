@@ -6,3 +6,11 @@ std::string util::string::to_string(int num) {
     ss << num;
     return ss.str();
 }
+
+std::string util::string::to_string(bool boolean) {
+    if (boolean) {
+        return "true";
+    } else {
+        return "false";
+    }
+}

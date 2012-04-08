@@ -2,9 +2,11 @@
 <% skin html %>
 <% view error uses content::error extends generic %>
 
+<% template head_title_content() %>Error <%= code %><%= message %><% end template %>
+
 <% template body_content() %>
 <div>
-    <p>Error index</p>
+    <p>Error <%= code %><%= message %></p>
 </div>
 <% end template %>
 

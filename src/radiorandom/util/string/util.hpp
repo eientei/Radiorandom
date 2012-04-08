@@ -7,6 +7,7 @@
 namespace util {
     namespace string {
         std::string to_string(int num);
+        std::string to_string(bool boolean);
     }
 }
 

@@ -14,6 +14,8 @@ namespace content {
     struct generic : public cppcms::base_content {
             bool  is_installed;
 
+            std::string site_name;
+
             std::string menu_item;
             std::string submenu_item;
 

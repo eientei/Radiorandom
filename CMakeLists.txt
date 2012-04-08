@@ -11,9 +11,17 @@ add_definitions(-g)
 
 #### controller ####
 set(controller_sources
+    src/radiorandom/controller/js/controller.cpp
+#    src/radiorandom/controller/js/rpc.cpp
+
     src/radiorandom/controller/generic/controller.cpp
+    src/radiorandom/controller/generic/rpc.cpp
+
     src/radiorandom/controller/core/controller.cpp
+#    src/radiorandom/controller/core/rpc.cpp
+
     src/radiorandom/controller/installer/controller.cpp
+    src/radiorandom/controller/installer/rpc.cpp
 
 )
 add_library(controller ${controller_sources})
@@ -34,6 +42,7 @@ add_library(executor ${executor_sources})
 set(util_sources
     src/radiorandom/util/string/util.cpp
     src/radiorandom/util/fs/util.cpp
+    src/radiorandom/util/sql/util.cpp
 )
 add_library(util ${util_sources})
 #### end util ####
@@ -43,6 +52,8 @@ set(html_template_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/view.tmpl
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/error.tmpl
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/please_install.tmpl
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/js/index.tmpl
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/core/index.tmpl
 
