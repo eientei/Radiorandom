@@ -1,71 +1,79 @@
-cmake_minimum_required (VERSION 2.6)
-project (RadioRandom)
+option(USE_CLANG "build application with clang" OFF)
+if(USE_CLANG)
+    set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/clang/toolchain.cmake)
+endif(USE_CLANG)
 
-include_directories (src bakabakabaka)
+cmake_minimum_required(VERSION 2.6)
+project(RadioRandom)
 
+include_directories(src)
 add_definitions(-g)
 
-set (radiorandom_html_templates
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/view.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/error.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/please_install.tmpl
+#### controller ####
+set(controller_sources
+    src/radiorandom/controller/generic/controller.cpp
+    src/radiorandom/controller/core/controller.cpp
+    src/radiorandom/controller/installer/controller.cpp
 
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/index.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install_finished.tmpl
-
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/core/index.tmpl
-
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/index.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/list.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/signup.tmpl
-
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/index.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/list.tmpl
-#    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/post/upload.tmpl
 )
+add_library(controller ${controller_sources})
+#### end controller ####
 
+#### executor ####
+set(executor_sources
+    src/radiorandom/executor/core.cpp
+    src/radiorandom/executor/already_running.cpp
+    src/radiorandom/executor/configuration_parse_error.cpp
+    src/radiorandom/executor/file_not_found.cpp
+
+)
+add_library(executor ${executor_sources})
+#### end executor ####
+
+#### util ####
+set(util_sources
+    src/radiorandom/util/string/util.cpp
+    src/radiorandom/util/fs/util.cpp
+)
+add_library(util ${util_sources})
+#### end util ####
+
+#### template ####
+set(html_template_sources
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/view.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/error.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/please_install.tmpl
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/core/index.tmpl
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/index.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install.tmpl
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install_finished.tmpl
+)
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
-    COMMAND cppcms_tmpl_cc ${radiorandom_html_templates} -o ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
-    DEPENDS ${radiorandom_html_templates}
+    COMMAND cppcms_tmpl_cc ${html_template_sources} -o ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
+    DEPENDS ${html_template_sources}
 )
-
-set (radiorandom_util_sources
-    src/radiorandom/util/fs/fs.cpp
-#    src/radiorandom/util/string/string.cpp
-#    src/radiorandom/util/sql/sql.cpp
-)
-
-add_library(radiorandom-util ${radiorandom_util_sources})
-
-set (radiorandom_master_sources
-    src/radiorandom/master/master.cpp
-)
-
-add_library(radiorandom-master ${radiorandom_master_sources})
-
-#    src/radiorandom/controller/generic/controller.cpp
-#    src/radiorandom/controller/core/controller.cpp
-#    src/radiorandom/controller/installer/controller.cpp
-#    src/radiorandom/controller/user/controller.cpp
-#    src/radiorandom/controller/post/controller.cpp
-
-#    ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
+#### end template ####
 
 
-
-set (radiorandom_sources
+#### main ####
+set(main_sources
     src/radiorandom/main.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
 )
 
-set (radiorandom_libs
-    -lcppcms
-    -lbooster
-    -lcppdb
-    radiorandom-util
-#    radiorandom-single
+set(main_libs
+    cppcms
+    booster
+    cppdb
+
+    executor
+    controller
+    util
 )
 
-add_executable(radiorandom ${radiorandom_sources})
-target_link_libraries(radiorandom ${radiorandom_libs})
+add_executable(radiorandom ${main_sources})
+target_link_libraries(radiorandom ${main_libs})
+#### end main ####

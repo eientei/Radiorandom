@@ -1,0 +1,17 @@
+<% c++ #include <radiorandom/model/installer/install.hpp> %>
+<% skin html %>
+<% view installer_install uses content::installer::install extends generic %>
+
+<% template head_meta_content() %>
+    <meta http-equiv="refresh" content="0; url=<% url "install_finished" %>">
+<% end template %>
+
+<% template body_content() %>
+<div>
+    <p>Installing in progress, please wait...</p>
+    <!--<p>Now you can return to the <a href="<% url "/" %>">index</a></p>-->
+</div>
+<% end template %>
+
+<% end view %>
+<% end skin %>

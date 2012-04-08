@@ -1,4 +1,4 @@
-#include "fs.hpp"
+#include "util.hpp"
 
 bool util::fs::file_exists(const std::string &filename) {
     return std::ifstream(filename.c_str()) != NULL;
