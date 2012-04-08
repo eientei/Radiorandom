@@ -1,0 +1,29 @@
+INSTALLATION REQUIREMENTS
+
+* cmake
+* cppcms
+* cppdb
+
+INSTALLATION GUIDE [gentoo]
+
+# emerge -av cmake layman // layman is for funroll-loops overlay with cppcms 
+                          // and cppdb packages
+
+# echo "source /var/lib/layman/make.conf" >> /etc/make.conf
+# layman -S
+# layman -a funroll-loops
+# eix-update
+# echo "dev-libs/cppcms ~amd64"  >> /etc/portage/package.keywords
+# echo "dev-db/cppdb ~amd64"   >> /etc/portage/package.keywords
+# echo "dev-db/cppdb postgres" >> /etc/portage/package.use
+
+# emerge -av cppcms cppdb
+
+$ cd /path/to/radiorandom
+$ mkdir build
+$ cd build
+$ cmake ../
+$ make
+$ ./radiorandom -c ../config/debug.json -s ../sql/debug.sql -l ./install.lock
+
+
