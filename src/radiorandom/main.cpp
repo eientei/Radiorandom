@@ -2,6 +2,7 @@
 #include <string>
 
 #include <radiorandom/executor/core.hpp>
+#include <radiorandom/controller/generic/superclass.hpp>
 
 int main(int argc, char ** argv) {
     try {

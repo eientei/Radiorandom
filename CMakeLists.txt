@@ -11,13 +11,26 @@ add_definitions(-g)
 
 #### controller ####
 set(controller_sources
-    src/radiorandom/controller/js/controller.cpp
-#    src/radiorandom/controller/js/rpc.cpp
-
+    src/radiorandom/controller/generic/superclass.cpp
+#    src/radiorandom/controller/generic/app_manager.cpp
+#    src/radiorandom/controller/generic/rpc_manager.cpp
+    src/radiorandom/controller/generic/mutex_manager.cpp
+    src/radiorandom/controller/generic/config_manager.cpp
+    src/radiorandom/controller/generic/sql_manager.cpp
     src/radiorandom/controller/generic/controller.cpp
     src/radiorandom/controller/generic/rpc.cpp
 
+    #src/radiorandom/controller/js/controller.cpp
+#    src/radiorandom/controller/js/rpc.cpp
+
+    #src/radiorandom/controller/generic/controller.cpp
+    #src/radiorandom/controller/generic/rpc.cpp
+
     src/radiorandom/controller/core/controller.cpp
+
+    src/radiorandom/controller/server/controller.cpp
+
+    src/radiorandom/controller/js/controller.cpp
 #    src/radiorandom/controller/core/rpc.cpp
 
     src/radiorandom/controller/installer/controller.cpp

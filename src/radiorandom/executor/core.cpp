@@ -143,13 +143,13 @@ void executor::core::populate_config() {
             + password
             + "'";
 
-    m_config.set<std::string>("cms.working_directory",m_working_directory);
-    m_config.set<std::string>("cms.lock_file",m_lock_file);
-    m_config.set<std::string>("cms.config_file",m_config_file);
-    m_config.set<std::string>("cms.schema_template",m_schema_template);
-    m_config.set<std::string>("cms.data_directory",m_data_directory);
-    m_config.set<std::string>("cms.js_directory",m_js_directory);
-    m_config.set<std::string>("sql.connection_string",connection_string);
+    controller::generic::config().set("cms.working_directory") = m_working_directory;
+    controller::generic::config().set("cms.install_lock")      = m_lock_file;
+    controller::generic::config().set("cms.config_file")       = m_config_file;
+    controller::generic::config().set("cms.schema_template")   = m_schema_template;
+    controller::generic::config().set("cms.data_directory")    = m_data_directory;
+    controller::generic::config().set("cms.js_directory")      = m_js_directory;
+    controller::generic::config().set("sql.connection_string") = connection_string;
 }
 
 void executor::core::print_help() {

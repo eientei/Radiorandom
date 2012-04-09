@@ -6,12 +6,12 @@ controller::core::core(cppcms::service &srv)
     : generic(srv,"core")
 {
     mapper().root("/");
-    mapper().assign("");
+    mapper().assign("");;
     mapper().assign("core","");
 
-    attach(new controller::js(srv),"js","js{1}","/js((/.*)?)",1);
 
-    if (!is_installed()) {
+    attach(new controller::js(srv),"js","js{1}","/js((/.*)?)",1);
+    if (!config().get<bool>("cms.is_installed")) {
         attach(new controller::installer(srv),"installer","installer{1}","/installer((/.*)?)",1);
         return;
     }

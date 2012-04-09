@@ -9,18 +9,18 @@
 #include <radiorandom/model/installer/install.hpp>
 #include <radiorandom/model/installer/install_finished.hpp>
 
+
+#include <radiorandom/util/sql/util.hpp>
+
 #include "rpc.hpp"
 
 namespace controller {
     class installer : public generic {
         public:
             installer(cppcms::service & srv);
-            ~installer();
             virtual void index();
             virtual void install();
             virtual void install_finished(std::string url);
-        private:
-            static installer_rpc * m_rpc;
     };
 }
 

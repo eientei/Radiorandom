@@ -1,19 +1,17 @@
-#ifndef CONTROLLER_JS_HPP
-#define CONTROLLER_JS_HPP
+#ifndef CONTROLLER_SERVER_JS_HPP
+#define CONTROLLER_SERVER_JS_HPP
 
-#include <fstream>
-
-#include <radiorandom/controller/generic/controller.hpp>
+#include <radiorandom/controller/server/controller.hpp>
 
 #include <radiorandom/model/js/index.hpp>
 
 namespace controller {
-    class js : public generic {
+    class js : public server {
         public:
             js(cppcms::service & srv);
             virtual void index();
-            void serve_script(std::string name);
+            void serve_javascript(std::string name);
     };
 }
 
-#endif // CONTROLLER_JS_HPP
+#endif // CONTROLLER_SERVER_JS_HPP
