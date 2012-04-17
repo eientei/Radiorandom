@@ -24,14 +24,15 @@ void controller::generic::main(std::string url) {
 
 // protected
 void controller::generic::prepare(content::generic &c, std::string const& submodule_name) {
-    c.site_name = (std::string)config().get<std::string>("branding.site_name");
+    c.site_name = config().get<std::string>("branding.site_name");
     c.is_installed = config().get<bool>("cms.is_installed");
     c.menu_item = m_module_name;
     c.submenu_item = submodule_name;
 
     c.menu_items["core"] = "Core";
-    c.menu_items["user"] = "User";
-    c.menu_items["post"] = "Post";
+    //c.menu_items["user"] = "User";
+    //c.menu_items["post"] = "Post";
+
 
     if (!c.is_installed) {
         c.user.name = "anonymous";
@@ -46,14 +47,14 @@ void controller::generic::prepare(content::generic &c, std::string const& submod
     c.user.name = "baka";
     c.user.password_hash = "zzz";
 
-    sql().session("core") << "select count(*) from users where name = ? and password_hash = ?"
+    m_sql << "select count(*) from users where name = ? and password_hash = ?"
         << c.user.name
         << c.user.password_hash
         << cppdb::row
         >> user_count;
 
     if (user_count == 0) {
-        r = sql().session("core") << "select name from users_static_view where ip = ?"
+        r = m_sql << "select name from users_static_view where ip = ?"
                 << request().http_host()
                 << cppdb::row;
         if (!r.empty()) {
@@ -67,12 +68,12 @@ void controller::generic::prepare(content::generic &c, std::string const& submod
     }
 
     if (user_count > 0) {
-        sql().session("core") << "select email from users where name = ?"
+        m_sql << "select email from users where name = ?"
             << c.user.name
             << cppdb::row
             >> c.user.email;
 
-        r = sql().session("core") << "select \"group\" from users_groups_view where name = ?"
+        r = m_sql << "select \"group\" from users_groups_view where name = ?"
                 << c.user.name;
         while (r.next()) {
             std::string group;
@@ -80,7 +81,7 @@ void controller::generic::prepare(content::generic &c, std::string const& submod
             c.user.groups.push_back(group);
         }
 
-        r = sql().session("core") << "select \"right\" from users_rights_view where name = ?"
+        r = m_sql << "select \"right\" from users_rights_view where name = ?"
                 << c.user.name;
         while (r.next()) {
             std::string right;
@@ -126,7 +127,7 @@ void controller::generic::do_dispatch(std::string const& url) {
 }
 
 void controller::generic::update_installed_state() {
-    config().set("cms.is_installed") = util::fs::file_exists(config().get<std::string>("cms.instal_lock"));
+    config().set("cms.is_installed") = util::fs::file_exists(config().get<std::string>("cms.install_lock"));
 }
 
 // private

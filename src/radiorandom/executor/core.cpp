@@ -24,15 +24,12 @@ executor::core::core(int argc, char **argv) {
     validate_args();
     load_config();
     populate_config();
-    m_service = new cppcms::service(m_config);
-    m_service->applications_pool().mount(cppcms::applications_factory<controller::core>());
     signal(SIGINT,&sighandler);
     std::cout << "Initialized" << std::endl;
 }
 
 executor::core::~core() {
     m_instance = NULL;
-    delete m_service;
     m_service = NULL;
     std::cout << "Deinitialized" << std::endl;
 }
@@ -40,7 +37,11 @@ executor::core::~core() {
 void executor::core::run() {
     while (m_should_run) {
         std::cout << "Fired up" << std::endl;
+        m_service = new cppcms::service(m_config);
+        m_service->applications_pool().mount(cppcms::applications_factory<controller::core>());
         m_service->run();
+        delete m_service;
+        m_service = NULL;
         std::cout << "Shutted down" << std::endl;
     }
 }
@@ -114,6 +115,8 @@ void executor::core::populate_config() {
     std::string user;
     std::string password;
 
+    std::string site_name;
+
     std::string propname;
 
     try {
@@ -128,6 +131,9 @@ void executor::core::populate_config() {
 
         propname = "sql.password";
         password = m_config.find(propname).get_value<std::string>();
+
+        propname = "branding.site_name";
+        site_name = m_config.find(propname).get_value<std::string>();
     } catch (cppcms::json::bad_value_cast const& e) {
         throw configuration_parse_error("Missing property `" + propname + "' in configuration file");
     }
@@ -150,6 +156,7 @@ void executor::core::populate_config() {
     controller::generic::config().set("cms.data_directory")    = m_data_directory;
     controller::generic::config().set("cms.js_directory")      = m_js_directory;
     controller::generic::config().set("sql.connection_string") = connection_string;
+    controller::generic::config().set("branding.site_name")    = site_name;
 }
 
 void executor::core::print_help() {

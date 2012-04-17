@@ -9,10 +9,9 @@ controller::core::core(cppcms::service &srv)
     mapper().assign("");;
     mapper().assign("core","");
 
-
     attach(new controller::js(srv),"js","js{1}","/js((/.*)?)",1);
+    attach(new controller::installer(srv),"installer","installer{1}","/installer((/.*)?)",1);
     if (!config().get<bool>("cms.is_installed")) {
-        attach(new controller::installer(srv),"installer","installer{1}","/installer((/.*)?)",1);
         return;
     }
     dispatcher().assign("/*",&core::index,this);
