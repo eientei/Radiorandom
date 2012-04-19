@@ -1,35 +1,117 @@
-#ifndef CONTROLLER_SUPERCLASS_HPP
-#define CONTROLLER_SUPERCLASS_HPP
+#ifndef SUPERCLASS_HPP
+#define SUPERCLASS_HPP
 
-//#include <radiorandom/core/executor/core.hpp>
+#include <string>
+#include <vector>
+#include <map>
 
+#include <booster/shared_ptr.h>
+
+#include <cppdb/mutex.h>
+
+#include <cppcms/service.h>
 #include <cppcms/json.h>
+#include <cppcms/rpc_json.h>
 
-#include <iostream>
-
-#include <radiorandom/manager/mutex/manager.hpp>
-#include <radiorandom/manager/sql/manager.hpp>
+#include <radiorandom/wrapper/sql/session/wrapper.hpp>
 
 namespace controller {
+    class mutex_manager {
+        public:
+            void lock(std::string const& name);
+            void unlock(std::string const& name);
+            void unlock_all();
+        private:
+            typedef std::map<std::string,booster::shared_ptr<cppdb::mutex> > mutex_map;
+             mutex_map m_mutexes;
+    };
+
+    class rpc_manager {
+        public:
+            template <class T>
+            booster::shared_ptr<T> acquire(std::string const& key, cppcms::service & srv);
+            template <class T>
+            booster::shared_ptr<T> operator[](std::string const& key);
+        private:
+            std::map<std::string,booster::shared_ptr<cppcms::rpc::json_rpc_server> > m_rpc;
+    };
+
+
+    class app_manager {
+        public:
+            template <class T>
+            booster::shared_ptr<T> acquire(std::string const& key, cppcms::service & srv);
+            template <class T>
+            booster::shared_ptr<T> operator[](std::string const& key);
+        private:
+            std::map<std::string,booster::shared_ptr<cppcms::application> > m_app;
+
+    };
+
+    class config_manager {
+        public:
+            class property {
+                public:
+                    property();
+
+                    property & operator =(std::string const& data);
+                    property & operator =(int data);
+                    property & operator =(double data);
+                    property & operator =(bool data);
+                    operator std::string() const;
+                    operator int() const;
+                    operator double() const;
+                    operator bool() const;
+                    property & set(std::string const& data);
+                    property & set(int data);
+                    property & set(double data);
+                    property & set(bool data);
+
+                private:
+                    std::string m_string_value;
+                    int m_int_value;
+                    double m_double_value;
+                    bool m_bool_value;
+            };
+            property & operator[](std::string const& key);
+            template <typename T>
+            T get(std::string const& key) {
+                return (T)(m_properties[key]);
+            }
+
+            property & set(std::string const& key);
+        private:
+            std::map<std::string,property> m_properties;
+    };
+
+    class sql_manager {
+        public:
+            wrapper::sql::session & session(std::string const& key, bool is_static = false);
+            void close(std::string const& key);
+            void close_all();
+        private:
+            std::map<std::string,wrapper::sql::session> m_sessions;
+    };
+
+
     class superclass {
         public:
-            superclass(std::string const& controller_type, std::string const& controller_name);
+            superclass();
             virtual ~superclass();
-            void set_config(cppcms::json::value const& value);
-        public:
-            static cppcms::json::value & config();
-            static manager::mutex & mutex();
-            static manager::sql   & sql();
 
-        protected:
-            std::string m_controller_type;
-            std::string m_controller_name;
-
+            //static app_manager & app();
+            static config_manager & config();
+            static mutex_manager & mutex();
+            //static rpc_manager & rpc();
+            static sql_manager & sql();
         private:
-            static cppcms::json::value m_config;
-            static manager::mutex m_mutex;
-            static manager::sql   m_sql;
+            //static app_manager m_app;
+            static config_manager m_config;
+            static mutex_manager m_mutex;
+            //static rpc_manager m_rpc;
+            static sql_manager m_sql;
     };
 }
 
-#endif // CONTROLLER_SUPERCLASS_HPP
+
+#endif // SUPERCLASS_HPP

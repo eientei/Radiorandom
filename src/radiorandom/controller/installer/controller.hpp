@@ -9,6 +9,7 @@
 #include <radiorandom/model/installer/install.hpp>
 #include <radiorandom/model/installer/install_finished.hpp>
 
+
 #include <radiorandom/util/sql/util.hpp>
 
 #include "rpc.hpp"
@@ -20,6 +21,9 @@ namespace controller {
             virtual void index();
             virtual void install();
             virtual void install_finished(std::string url);
+        private:
+            static bool m_static_initialized;
+            static wrapper::sql::session m_sql_update;
     };
 }
 

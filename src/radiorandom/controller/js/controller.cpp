@@ -1,7 +1,7 @@
 #include "controller.hpp"
 
 controller::js::js(cppcms::service &srv)
-    : generic_server(srv,"js")
+    : server(srv,"js-server")
 {
     dispatcher().assign("/*",&js::index,this);
     mapper().assign("");
@@ -10,11 +10,13 @@ controller::js::js(cppcms::service &srv)
     mapper().assign("js","/js{1}");
 }
 
+
 void controller::js::index() {
     content::js::index c;
-    display(c,"index","js_index");
+    prepare(c,"js server");
+    display(c,"js_index");
 }
 
-void controller::js::serve_javascript(std::string script_name) {
-    serve_small(config().get<std::string>("cms.js_directory") + "/" + script_name, "text/javascript");
+void controller::js::serve_javascript(std::string name) {
+    serve_small(config().get<std::string>("cms.js_directory") + "/" + name,"text/javascript");
 }
