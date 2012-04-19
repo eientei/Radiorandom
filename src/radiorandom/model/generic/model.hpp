@@ -16,11 +16,11 @@ namespace content {
 
             std::string site_name;
 
+            std::string module_name;
             std::string menu_item;
-            std::string submenu_item;
 
+            std::map<std::string,std::string> module_names;
             std::map<std::string,std::string> menu_items;
-            std::map<std::string,std::string> submenu_items;
 
             data::user user;
 
