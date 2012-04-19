@@ -1,0 +1,34 @@
+<% c++ #include "Models/Models.h" %>
+<% xhtml %>
+<% skin html %>
+<% view Menu uses Models::Master::Menu extends Generic %>
+<% template menulinks() %>
+			<div class="left_side">
+				<% include menulinks_gen(menu_left,menu_current) %>
+			</div>
+			<div class="right_side">
+				<% include menulinks_gen(menu_right,menu_current) %>
+			</div>
+<% end %>
+<% template menulinks_gen(::Generic::Data::Content::SetMenu  items, ::Generic::Data::Content::SetMenu::ItemMenu current) %>
+	<% foreach i in items.items %>
+		<% item %>
+			<% if (i.name == current.name) %>
+				<div class="menu_current"><a href="<% i.href %>"><% i.name %></a></div>
+			<% else %>
+				<div class="menu_rest"><a href="<% i.href %>"><% i.name %></a></div>
+			<% end %>
+		<% end %>
+	<% end %>
+<% end %>
+
+<% template submenulinks() %>
+			<div class="left_side">
+				<% if not submenu_left.items.empty() %><% end %><% include menulinks_gen(submenu_left,submenu_current) %>
+			</div>
+			<div class="right_side">
+				<% include menulinks_gen(submenu_right,submenu_current) %>
+			</div>
+<% end %>
+<% end view %>
+<% end skin %>

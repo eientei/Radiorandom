@@ -1,0 +1,27 @@
+<% c++ #include "Models/Models.h" %>
+<% xhtml %>
+<% skin html %>
+<% view UsersLogin uses Models::Users::UsersLogin extends Master %>
+<% template body() %>
+		<form method="post" action="/users/login">
+		<table>
+			<tr>
+					<td colspan="2" class="error"><% message %></td>
+			</tr>
+			<tr>
+					<td>Login:</td>
+					<td><% form as_space username %></td>
+			</tr>
+			<tr>
+					<td>Password:</td>
+					<td><% form as_space password %></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td><% form as_space submit %></td>
+			</tr>
+		</table>
+	</form>
+<% end %>
+<% end view %>
+<% end skin %>

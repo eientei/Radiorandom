@@ -1,0 +1,30 @@
+{
+	"paths" : {
+		"data" : "/home/http/radiorandom/data",
+		"temp" : "/home/http/radiorandom/temp"
+	},
+	"limits" : {
+		"users-soft" : 100,
+		"posts-soft" : 100,
+		"users-hard" : 1000,
+		"posts-hard" : 1000
+	},
+	"setup" : {
+		"lockfile" : "/home/http/radiorandom/setuplock",
+		"db-schema" : "/home/http/radiorandom/db/schema.sql"
+	},
+	"http" : { 
+		"script" : "bska" 
+	},
+	"service" : {
+		"api" : "fastcgi",
+		"socket" : 8080
+	},
+	"daemon" : {
+		"enable" : false,
+		"lock" : "/var/run/radiorandom.pid"
+	},
+	"views" : {
+		"default_skin" : "html"
+	}
+}
