@@ -15,10 +15,7 @@
         "script_names" : [ "radiorandom" ]
     },
     "sql" : {
-        "host"     : "192.168.1.1",
-        "dbname"   : "radiorandom",
-        "user"     : "radiorandom",
-        "password" : "ignore"
+        "connection_string" : "postgresql:host=192.168.1.1;dbname=radiorandom;user=radiorandom;password='ignore'"
     },
     "security" : {
         "salt" : "shlasobakaporoyalyu--%s--pukpukpuk"

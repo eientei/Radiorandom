@@ -12,45 +12,37 @@ add_definitions(-g)
 #### controller ####
 set(controller_sources
     src/radiorandom/controller/generic/superclass.cpp
-#    src/radiorandom/controller/generic/app_manager.cpp
-#    src/radiorandom/controller/generic/rpc_manager.cpp
-    src/radiorandom/controller/generic/mutex_manager.cpp
-    src/radiorandom/controller/generic/config_manager.cpp
-    src/radiorandom/controller/generic/sql_manager.cpp
-    src/radiorandom/controller/generic/controller.cpp
     src/radiorandom/controller/generic/rpc.cpp
-
-    #src/radiorandom/controller/js/controller.cpp
-#    src/radiorandom/controller/js/rpc.cpp
-
-    #src/radiorandom/controller/generic/controller.cpp
-    #src/radiorandom/controller/generic/rpc.cpp
+    src/radiorandom/controller/generic/controller.cpp
+    src/radiorandom/controller/generic/server.cpp
 
     src/radiorandom/controller/core/controller.cpp
-
-    src/radiorandom/controller/server/controller.cpp
-
-    src/radiorandom/controller/js/controller.cpp
-#    src/radiorandom/controller/core/rpc.cpp
 
     src/radiorandom/controller/installer/controller.cpp
     src/radiorandom/controller/installer/rpc.cpp
 
-    src/radiorandom/controller/user/controller.cpp
+    src/radiorandom/controller/js/controller.cpp
+
 )
 add_library(controller ${controller_sources})
 #### end controller ####
 
-#### executor ####
-set(executor_sources
-    src/radiorandom/executor/core.cpp
-    src/radiorandom/executor/already_running.cpp
-    src/radiorandom/executor/configuration_parse_error.cpp
-    src/radiorandom/executor/file_not_found.cpp
+#### core ####
+set(core_sources
+    src/radiorandom/core/executor/core.cpp
 
 )
-add_library(executor ${executor_sources})
-#### end executor ####
+add_library(core ${core_sources})
+#### end core ####
+
+#### manager ####
+set(manager_sources
+    src/radiorandom/manager/mutex/manager.cpp
+    src/radiorandom/manager/sql/manager.cpp
+
+)
+add_library(manager ${manager_sources})
+#### end manager ####
 
 #### util ####
 set(util_sources
@@ -61,12 +53,6 @@ set(util_sources
 add_library(util ${util_sources})
 #### end util ####
 
-#### wrapper ####
-set(wrapper_sources
-    src/radiorandom/wrapper/sql/session/wrapper.cpp
-)
-add_library(wrapper ${wrapper_sources})
-#### end wrapper ####
 
 #### template ####
 set(html_template_sources
@@ -91,6 +77,12 @@ add_custom_command(
 )
 #### end template ####
 
+#### wrapper ####
+set(wrapper_sources
+    src/radiorandom/wrapper/session/wrapper.cpp
+)
+add_library(wrapper ${wrapper_sources})
+#### end wrapper ####
 
 #### main ####
 set(main_sources
@@ -103,8 +95,9 @@ set(main_libs
     booster
     cppdb
 
-    executor
+    core
     controller
+    manager
     util
     wrapper
 )

@@ -1,5 +1,5 @@
-#ifndef CONTROLLER_RPC_INSTALLER_HPP
-#define CONTROLLER_RPC_INSTALLER_HPP
+#ifndef CONTROLLER_INSTALLER_RPC_HPP
+#define CONTROLLER_INSTALLER_RPC_HPP
 
 #include <radiorandom/controller/generic/rpc.hpp>
 
@@ -9,8 +9,9 @@ namespace controller {
     class installer_rpc : public generic_rpc {
         public:
             installer_rpc(cppcms::service & srv);
-            void install_progress();
+            virtual void install_progress();
 
+            static int total();
             static void reset();
             static void set_state(bool state);
             static void set_current(int count);
@@ -22,5 +23,4 @@ namespace controller {
     };
 }
 
-
-#endif // CONTROLLER_RPC_INSTALLER_HPP
+#endif // CONTROLLER_INSTALLER_RPC_HPP
