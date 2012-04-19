@@ -2,11 +2,16 @@
 
 // static
 std::map<int,std::string> controller::generic::m_error_codes;
+bool controller::generic::m_static_initialized = false;
 
 // public
 controller::generic::generic(cppcms::service &srv, std::string const& module_name)
-    : application(srv), m_module_name(module_name)
+        : application(srv), m_module_name(module_name)
 {
+    if (!m_static_initialized) {
+        m_static_initialized = true;
+        init_error_codes();
+    }
     update_installed_state();
     m_sql = sql().session(m_module_name);
     m_sql.open(config().get<std::string>("sql.connection_string"));
@@ -30,7 +35,7 @@ void controller::generic::prepare(content::generic &c, std::string const& submod
     c.submenu_item = submodule_name;
 
     c.menu_items["core"] = "Core";
-    //c.menu_items["user"] = "User";
+    c.menu_items["user"] = "User";
     //c.menu_items["post"] = "Post";
 
 
@@ -128,6 +133,21 @@ void controller::generic::do_dispatch(std::string const& url) {
 
 void controller::generic::update_installed_state() {
     config().set("cms.is_installed") = util::fs::file_exists(config().get<std::string>("cms.install_lock"));
+}
+
+void controller::generic::sql_update_lock(std::string const& module_name) {
+    mutex().lock(module_name + "_update");
+}
+
+void controller::generic::sql_update_unlock(std::string const& module_name) {
+    mutex().unlock(module_name + "_update");
+}
+
+cppdb::session controller::generic::acquire_static_sql() {
+    cppdb::session update;
+    update = sql().session(m_module_name + "_static");
+    update.open(config().get<std::string>("sql.connection_string"));
+    return update;
 }
 
 // private

@@ -1,10 +1,21 @@
 #include "controller.hpp"
 
+// static
+bool controller::installer::m_static_initialized = false;
+cppdb::session controller::installer::m_sql_update;
+
+// public
+
 controller::installer::installer(cppcms::service &srv)
     : generic(srv,"installer")
 {
-    attach(new controller::installer_rpc(srv),"rpc","/rpc{1}","/rpc((/.*)?)",1);
+    if (!m_static_initialized) {
+        m_static_initialized  = true;
+        m_sql_update = acquire_static_sql();
+    }
+
     if (!config().get<bool>("cms.is_installed")) {
+        attach(new controller::installer_rpc(srv),"rpc","/rpc{1}","/rpc((/.*)?)",1);
         dispatcher().assign("/*",&installer::index,this);
         mapper().assign("");
 
@@ -36,19 +47,21 @@ void controller::installer::install_finished(std::string url) {
         std::cout << "installing" << std::endl;
         std::ifstream schema_template_stream(config().get<std::string>("cms.schema_template").c_str());
         std::vector<std::string> stmts = util::sql::parse_sql_schema(schema_template_stream);
-        std::vector<std::string>::const_iterator it,end;
+        std::vector<std::string>::const_iterator it;
 
         controller::installer_rpc::reset();
         controller::installer_rpc::set_state(true);
         controller::installer_rpc::set_total(stmts.size());
         int current = 0;
-        mutex().lock("sql");
+        sql_update_lock(m_module_name);
+        cppdb::transaction guard(m_sql_update);
         for (it = stmts.begin(); it != stmts.end(); ++it) {
-            m_sql << *it << cppdb::exec;
+            m_sql_update << *it << cppdb::exec;
             ++current;
             controller::installer_rpc::set_current(current);
         }
-        mutex().unlock("sql");
+        guard.commit();
+        sql_update_unlock(m_module_name);
         controller::installer_rpc::set_state(false);
         if (url != "silent") {
             content::installer::install_finished c;
@@ -57,8 +70,7 @@ void controller::installer::install_finished(std::string url) {
         }
 
     }
-    std::cout << config().get<std::string>("cms.instal_lock") << std::endl;
-    util::fs::create_file(config().get<std::string>("cms.install_lock"));
     service().shutdown();
+    util::fs::create_file(config().get<std::string>("cms.install_lock"));
     mutex().unlock("install");
 }

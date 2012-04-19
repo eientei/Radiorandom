@@ -36,6 +36,7 @@ set(controller_sources
     src/radiorandom/controller/installer/controller.cpp
     src/radiorandom/controller/installer/rpc.cpp
 
+    src/radiorandom/controller/user/controller.cpp
 )
 add_library(controller ${controller_sources})
 #### end controller ####
@@ -73,6 +74,8 @@ set(html_template_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/index.tmpl
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install.tmpl
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/installer/install_finished.tmpl
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/user/index.tmpl
 )
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/html.cpp

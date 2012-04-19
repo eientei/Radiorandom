@@ -21,6 +21,9 @@ namespace controller {
             virtual void index();
             virtual void install();
             virtual void install_finished(std::string url);
+        private:
+            static bool m_static_initialized;
+            static cppdb::session m_sql_update;
     };
 }
 

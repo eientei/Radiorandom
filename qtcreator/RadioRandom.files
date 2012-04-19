@@ -57,3 +57,8 @@
 ../src/radiorandom/controller/installer/controller.cpp
 ../src/radiorandom/controller/installer/rpc.hpp
 ../src/radiorandom/controller/installer/rpc.cpp
+../src/radiorandom/model/user/index.hpp
+../src/radiorandom/view/html/user/index.tmpl
+../src/radiorandom/controller/user/controller.hpp
+../src/radiorandom/controller/user/controller.cpp
+../src/radiorandom/wrapper/sql/session/wrapper.hpp

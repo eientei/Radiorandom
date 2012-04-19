@@ -15,6 +15,7 @@ controller::core::core(cppcms::service &srv)
         return;
     }
     dispatcher().assign("/*",&core::index,this);
+    attach(new controller::user(srv),"user","user{1}","/user((/.*)?)",1);
 }
 
 void controller::core::index() {
