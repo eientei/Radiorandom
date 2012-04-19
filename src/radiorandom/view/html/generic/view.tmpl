@@ -3,14 +3,14 @@
 <% view generic uses content::generic %>
 
 <% template sub_navigation() %>
-<% if not empty submenu_items %>
+<% if not empty menu_items %>
     <div class="submenu_navigation">
-        <% foreach sitem in submenu_items %>
+        <% foreach m in menu_items %>
             <% item %>
-                <% if (sitem.first == content.submenu_item) %>
-                    [_<a href="<% c++ content.app().mapper().map(out(), sitem.first); %>"><%= sitem.second %></a>_]
+                <% if (m.first == content.menu_item) %>
+                    [_<a href="<% c++ content.app().mapper().map(out(), m.first); %>"><%= m.second %></a>_]
                 <% else %>
-                    [<a href="<% c++ content.app().mapper().map(out(), sitem.first); %>"><%= sitem.second %></a>]
+                    [<a href="<% c++ content.app().mapper().map(out(), m.first); %>"><%= m.second %></a>]
                 <% end %>
             <% end %>
         <% end %>
@@ -21,12 +21,12 @@
 <% template navigation() %>
 <div class="navigation">
     <div class="main_navigation">
-        <% foreach mitem in menu_items %>
+        <% foreach m in module_names %>
             <% item %>
-                <% if (mitem.first == content.menu_item) %>
-                    [_<a href="<% c++ content.app().mapper().map(out(),"/" + mitem.first); %>"><%= mitem.second %></a>_]
+                <% if (m.first == content.module_name) %>
+                    [_<a href="<% c++ content.app().mapper().map(out(),"/" + m.first); %>"><%= m.second %></a>_]
                 <% else %>
-                    [<a href="<% c++ content.app().mapper().map(out(),"/" + mitem.first); %>"><%= mitem.second %></a>]
+                    [<a href="<% c++ content.app().mapper().map(out(),"/" + m.first); %>"><%= m.second %></a>]
                 <% end %>
             <% end %>
         <% end %>

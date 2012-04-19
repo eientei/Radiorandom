@@ -1,16 +1,13 @@
 #include <iostream>
-#include <string>
+#include <exception>
 
-#include <radiorandom/executor/core.hpp>
-#include <radiorandom/controller/generic/superclass.hpp>
+#include <radiorandom/core/executor/core.hpp>
 
 int main(int argc, char ** argv) {
     try {
-        executor::core core(argc,argv);
+        core::executor core(argc,argv);
         core.run();
     } catch (std::exception const& e) {
         std::cout << e.what() << std::endl;
     }
-
-    return 0;
 }
