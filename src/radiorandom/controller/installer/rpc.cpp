@@ -9,12 +9,11 @@ int controller::installer_rpc::m_total = 0;
 // public
 
 controller::installer_rpc::installer_rpc(cppcms::service &srv)
-    : generic_rpc(srv,"installer")
+    : generic_rpc(srv,"installer-rpc")
 {
     mapper().assign("");
     bind("install_progress",json_method(&installer_rpc::install_progress,this),method_role);
 }
-
 
 void controller::installer_rpc::install_progress() {
     return_result("{ \"is_installing\" : "
@@ -24,10 +23,6 @@ void controller::installer_rpc::install_progress() {
                   + ", \"current\" : "
                   + util::string::to_string(m_current)
                   + " }");
-}
-
-int controller::installer_rpc::total() {
-    return m_total;
 }
 
 void controller::installer_rpc::reset() {

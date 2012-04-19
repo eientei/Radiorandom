@@ -1,26 +1,26 @@
 #include "controller.hpp"
 
 // static
-
 std::map<int,std::string> controller::generic::m_error_codes;
-bool controller::generic::m_static_initalized = false;
+bool controller::generic::m_static_initialized = false;
 
 // public
-
-controller::generic::generic(cppcms::service &srv, std::string const& controller_name, std::string const& service_name)
-    : superclass(service_name,controller_name), application(srv)
+controller::generic::generic(cppcms::service &srv, std::string const& module_name)
+        : application(srv), m_module_name(module_name)
 {
-    if (!m_static_initalized) {
-        m_static_initalized = true;
+    if (!m_static_initialized) {
+        m_static_initialized = true;
         init_error_codes();
-        set_config(settings());
     }
     update_installed_state();
-    m_sql = acquire_sql(false);
+    m_sql = sql().session(m_module_name);
+    m_sql.open(config().get<std::string>("sql.connection_string"));
+    std::cout << "      [NEW]   " << m_module_name << std::endl;
 }
 
 controller::generic::~generic() {
-
+    sql().close(m_module_name);
+    std::cout << "      [DEL]   " << m_module_name << std::endl;
 }
 
 void controller::generic::main(std::string url) {
@@ -28,17 +28,19 @@ void controller::generic::main(std::string url) {
 }
 
 // protected
-void controller::generic::prepare(content::generic &c, std::string const& menu_item) {
+void controller::generic::prepare(content::generic &c, std::string const& submodule_name) {
     c.site_name = config().get<std::string>("branding.site_name");
     c.is_installed = config().get<bool>("cms.is_installed");
-    c.module_name = m_controller_name;
-    c.menu_item = menu_item;
+    c.menu_item = m_module_name;
+    c.submenu_item = submodule_name;
 
-    c.module_names["core"] = "Core";
-    //c.module_names["user"] = "User";
+    c.menu_items["core"] = "Core";
+    c.menu_items["user"] = "User";
+    //c.menu_items["post"] = "Post";
+
 
     if (!c.is_installed) {
-        c.user.name ="anonymous";
+        c.user.name = "anonymous";
         c.user.logged_in = false;
         c.user.rights.push_back("view");
         return;
@@ -92,33 +94,34 @@ void controller::generic::prepare(content::generic &c, std::string const& menu_i
             c.user.rights.push_back(right);
         }
     }
+
 }
 
-
-void controller::generic::display(content::generic &c, std::string const& menu_item,  std::string const& tmpl, std::string const& skin) {
-    prepare(c,menu_item);
-    render(skin,tmpl,c);
-}
 
 void controller::generic::please_install() {
     content::please_install c;
     prepare(c,"index");
-    c.module_name = "installer";
-    render("html","please_install",c);
+    c.menu_item = "installer";
+    display(c,"please_install");
 }
 
 void controller::generic::error(int code, std::string message) {
     response().status(code);
     content::error c;
+    prepare(c,"error");
     c.code = code;
     if (message.empty()) message = m_error_codes[code];
     if (!message.empty()) {
         c.message = " - " + message;
     }
-    display(c,"error","error");
+    display(c,"error");
 }
 
-void controller::generic::do_dispatch(const std::string &url) {
+void controller::generic::display(content::generic & c, std::string const& tmpl, std::string const& skin) {
+    render(skin,tmpl,c);
+}
+
+void controller::generic::do_dispatch(std::string const& url) {
     if (!dispatcher().dispatch(url)) {
         if (config().get<bool>("cms.is_installed")) {
             error(404);
@@ -129,19 +132,22 @@ void controller::generic::do_dispatch(const std::string &url) {
 }
 
 void controller::generic::update_installed_state() {
-    config().set<bool>("cms.is_installed",util::fs::file_exists(config().get<std::string>("cms.install_lock")));
+    config().set("cms.is_installed") = util::fs::file_exists(config().get<std::string>("cms.install_lock"));
 }
 
-void controller::generic::sql_guard(wrapper::session &sql) {
-    mutex().lock(sql.name());
+void controller::generic::sql_update_lock(std::string const& module_name) {
+    mutex().lock(module_name + "_update");
 }
 
-void controller::generic::sql_commit(wrapper::session &sql) {
-    mutex().unlock(sql.name());
+void controller::generic::sql_update_unlock(std::string const& module_name) {
+    mutex().unlock(module_name + "_update");
 }
 
-wrapper::session & controller::generic::acquire_sql(bool is_static) {
-    return sql().acquire(m_controller_name,is_static);
+wrapper::sql::session controller::generic::acquire_static_sql() {
+    wrapper::sql::session update;
+    update = sql().session(m_module_name + "_static");
+    update.open(config().get<std::string>("sql.connection_string"));
+    return update;
 }
 
 // private
