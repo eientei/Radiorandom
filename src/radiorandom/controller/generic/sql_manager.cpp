@@ -1,10 +1,10 @@
 #include "superclass.hpp"
 
-cppdb::session & controller::sql_manager::session(std::string const& key) {
-    std::map<std::string,cppdb::session>::iterator it;
+wrapper::sql::session & controller::sql_manager::session(std::string const& key, bool is_static) {
+    std::map<std::string,wrapper::sql::session>::iterator it;
     it = m_sessions.find(key);
     if (it == m_sessions.end()) {
-        cppdb::session session;
+        wrapper::sql::session session(key + (is_static ? "_static" : ""));
         m_sessions[key] = session;
         return m_sessions[key];
     } else {
@@ -13,7 +13,7 @@ cppdb::session & controller::sql_manager::session(std::string const& key) {
 }
 
 void controller::sql_manager::close(std::string const& key) {
-    std::map<std::string,cppdb::session>::iterator it;
+    std::map<std::string,wrapper::sql::session>::iterator it;
     it = m_sessions.find(key);
     if (it != m_sessions.end()) {
         it->second.close();
@@ -21,7 +21,7 @@ void controller::sql_manager::close(std::string const& key) {
 }
 
 void controller::sql_manager::close_all() {
-    std::map<std::string,cppdb::session>::iterator it,end;
+    std::map<std::string,wrapper::sql::session>::iterator it,end;
     end = m_sessions.end();
     for (it = m_sessions.begin(); it != end; ++it) {
         it->second.close();

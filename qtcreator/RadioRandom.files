@@ -62,3 +62,4 @@
 ../src/radiorandom/controller/user/controller.hpp
 ../src/radiorandom/controller/user/controller.cpp
 ../src/radiorandom/wrapper/sql/session/wrapper.hpp
+../src/radiorandom/wrapper/sql/session/wrapper.cpp

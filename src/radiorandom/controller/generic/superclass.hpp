@@ -7,13 +7,13 @@
 
 #include <booster/shared_ptr.h>
 
-#include <cppdb/frontend.h>
 #include <cppdb/mutex.h>
 
 #include <cppcms/service.h>
 #include <cppcms/json.h>
 #include <cppcms/rpc_json.h>
 
+#include <radiorandom/wrapper/sql/session/wrapper.hpp>
 
 namespace controller {
     class mutex_manager {
@@ -86,11 +86,11 @@ namespace controller {
 
     class sql_manager {
         public:
-            cppdb::session & session(std::string const& key);
+            wrapper::sql::session & session(std::string const& key, bool is_static = false);
             void close(std::string const& key);
             void close_all();
         private:
-            std::map<std::string,cppdb::session> m_sessions;
+            std::map<std::string,wrapper::sql::session> m_sessions;
     };
 
 

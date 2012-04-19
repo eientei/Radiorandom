@@ -143,8 +143,8 @@ void controller::generic::sql_update_unlock(std::string const& module_name) {
     mutex().unlock(module_name + "_update");
 }
 
-cppdb::session controller::generic::acquire_static_sql() {
-    cppdb::session update;
+wrapper::sql::session controller::generic::acquire_static_sql() {
+    wrapper::sql::session update;
     update = sql().session(m_module_name + "_static");
     update.open(config().get<std::string>("sql.connection_string"));
     return update;

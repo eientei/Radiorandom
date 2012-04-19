@@ -3,7 +3,7 @@
 // static
 
 bool controller::user::m_static_initialized = false;
-cppdb::session controller::user::m_sql_update;
+wrapper::sql::session controller::user::m_sql_update;
 
 // public
 

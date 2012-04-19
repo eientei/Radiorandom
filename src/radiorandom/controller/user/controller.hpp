@@ -19,7 +19,7 @@ namespace controller {
             static void add_user(data::user const& user_data);
         private:
             static bool m_static_initialized;
-            static cppdb::session m_sql_update;
+            static wrapper::sql::session m_sql_update;
     };
 }
 

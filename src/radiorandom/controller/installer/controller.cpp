@@ -2,7 +2,7 @@
 
 // static
 bool controller::installer::m_static_initialized = false;
-cppdb::session controller::installer::m_sql_update;
+wrapper::sql::session controller::installer::m_sql_update;
 
 // public
 
@@ -11,7 +11,7 @@ controller::installer::installer(cppcms::service &srv)
 {
     if (!m_static_initialized) {
         m_static_initialized  = true;
-        m_sql_update = acquire_static_sql();
+        m_sql_update = a    cquire_static_sql();
     }
 
     if (!config().get<bool>("cms.is_installed")) {

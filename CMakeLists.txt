@@ -61,6 +61,13 @@ set(util_sources
 add_library(util ${util_sources})
 #### end util ####
 
+#### wrapper ####
+set(wrapper_sources
+    src/radiorandom/wrapper/sql/session/wrapper.cpp
+)
+add_library(wrapper ${wrapper_sources})
+#### end wrapper ####
+
 #### template ####
 set(html_template_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/src/radiorandom/view/html/generic/view.tmpl
@@ -99,6 +106,7 @@ set(main_libs
     executor
     controller
     util
+    wrapper
 )
 
 add_executable(radiorandom ${main_sources})
