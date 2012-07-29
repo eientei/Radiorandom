@@ -1,8 +1,10 @@
-#include <QCoreApplication>
+#include "radiorandom.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-    QCoreApplication a(argc, argv);
-    
-    return a.exec();
+    radiorandom app(argc,argv);
+
+    app.execute();
+    return 0;
 }
+

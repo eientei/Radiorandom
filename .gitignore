@@ -13,6 +13,9 @@
 
 # Qt project files
 *.pro.user
+CMakeLists.txt.user
 project/Makefile
+
+# build dir
 build/*
 !build/.keep
