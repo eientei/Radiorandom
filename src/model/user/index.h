@@ -1,7 +1,7 @@
 #ifndef MODEL_USER_INDEX_H
 #define MODEL_USER_INDEX_H
 
-#include "base.h"
+#include "../base.h"
 
 namespace model {
 namespace user {

@@ -7,7 +7,9 @@ set(html_template_sources
     src/view/html/base.tmpl
     src/view/html/error.tmpl
     src/view/html/index.tmpl
+    # user
     src/view/html/user/index.tmpl
+    src/view/html/user/list.tmpl
 )
 
 foreach(f ${html_template_sources})
@@ -31,13 +33,17 @@ set(SRC_LIST
 # controllers
     src/controller/base.cpp
     src/controller/index.cpp
+    # user
     src/controller/user/index.cpp
+    src/controller/user/list.cpp
 
 # models
     src/model/base.h
     src/model/index.h
     src/model/error.h
+    # user
     src/model/user/index.h
+    src/model/user/list.h
 
 # views
     ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
