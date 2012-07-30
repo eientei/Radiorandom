@@ -1,9 +1,10 @@
-#ifndef CONTROLLER_INDEX_H
-#define CONTROLLER_INDEX_H
+#ifndef CONTROLLER_USER_INDEX_H
+#define CONTROLLER_USER_INDEX_H
 
-#include "base.h"
+#include "../base.h"
 
 namespace controller {
+namespace user {
 class index : public controller::base
 {
 public:
@@ -11,6 +12,7 @@ public:
 
     virtual void indexPage(std::string url);
 };
-}
+} // user
+} // controller
 
-#endif // CONTROLLER_INDEX_H
+#endif // CONTROLLER_USER_INDEX_H

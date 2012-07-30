@@ -1,20 +1,19 @@
 #include "index.h"
 
+#include "user/index.h"
+
 #include "../model/index.h"
 
-#include <cppcms/url_dispatcher.h>
-#include <cppcms/url_mapper.h>
 
 using namespace controller;
 
 index::index(cppcms::service &srv, base *parent)
-    : controller::base(srv,parent,"Index","","index")
+    : controller::base(srv,0,"Index","","index")
 {
-    dispatcher().assign("/*",&index::indexPage,this);
-    mapper().assign("");
+    attachItem(new controller::user::index(srv,this));
 }
 
-void index::indexPage()
+void index::indexPage(std::string data)
 {
     model::index c;
     prepare(c);

@@ -3,6 +3,7 @@
 #include "../model/error.h"
 
 #include <cppcms/url_dispatcher.h>
+#include <cppcms/url_mapper.h>
 #include <cppcms/http_response.h>
 
 using namespace controller;
@@ -21,6 +22,8 @@ base::base(cppcms::service &srv, base *parent,
     if (parent != 0) {
         parent->addChild(this);
     }
+    dispatcher().assign("/*",&base::indexPage,this,1);
+    //mapper().assign("");
 }
 
 void base::attachItem(base *item)
@@ -62,14 +65,19 @@ void base::error(int code, const std::string &message)
     c.code = code;
 
     if (message.empty()) {
-        c.message = message;
-    } else {
         c.message = response().status_to_string(code);
+    } else {
+        c.message = message;
     }
 
     response().status(code);
 
     display(c,"error");
+}
+
+void base::calculateMenu()
+{
+
 }
 
 base* base::getParent() const

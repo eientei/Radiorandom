@@ -26,9 +26,11 @@ protected:
 
     void error(int code, const std::string &message = std::string());
 
+    void calculateMenu();
+
 public:
     virtual void main(std::string url);
-
+    virtual void indexPage(std::string url = std::string()) = 0;
 
     base * getParent() const;
     const std::string & getMenuName() const;
@@ -38,6 +40,7 @@ public:
 private:
     void addChild(base *child);
 
+    static std::vector< std::vector< std::string > > menus;
     base * m_parent;
     std::list<base*> m_children;
     std::string m_menuName;
