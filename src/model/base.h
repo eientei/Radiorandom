@@ -8,7 +8,6 @@
 
 #include <string>
 
-
 namespace model {
 
 struct base : public cppcms::base_content {

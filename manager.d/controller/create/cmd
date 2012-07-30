@@ -19,10 +19,12 @@ main() {
 	namespace_close="`echo "$@" | tr ' ' '\n'  | sed 's|.*|} // namespace &|g' | head -n -1 | tac`"
 	namespace="`echo "controller $@" | sed 's/ [^ ]*$//g' | sed 's/ /::/g'`"
 	model="`echo "$@" | sed 's/ /::/g'`"
+	model_inc="`echo "$@" | sed 's| |/|g'`.h"
 	classname="`echo "$@" | sed 's/.* //g'`"
 	capclassname="`echo "${classname:0:1}" | tr [:lower:] [:upper:]`${classname:1}"
 	parent="`echo "$@" | sed 's/[ ]*[^ ]*$//'`"
 	bfile="$src_dirs/`echo "$@" | tr ' ' '/'`"
+	prnts="`echo "$@" | sed 's/[^ ]*$//;s|[^ ]* |../|g'`"
 
 	for file in "${bfile}.h" "${bfile}.cpp"; do
 		if [ -e "$file" ] && [ "$override" != "true" ]; then
@@ -37,6 +39,8 @@ main() {
 cat <<EOF > "${bfile}.h"
 #ifndef CONTROLLER_${capname}_H
 #define CONTROLLER_${capname}_H
+
+#include "${prnts}base.h"
 
 namespace controller {
 $namespace_open
@@ -56,6 +60,8 @@ EOF
 
 cat <<EOF > "${bfile}.cpp"
 #include "${classname}.h"
+
+#include "${prnts}../model/$model_inc"
 
 using namespace ${namespace};
 

@@ -17,6 +17,8 @@ foreach(PART ${PARTS})
   include(${PART})
 endforeach()
 
+list(SORT VIEW_SRC)
+
 foreach(f ${VIEW_SRC})
     set(VIEW_SRC_PREFIXED ${VIEW_SRC_PREFIXED} ${CMAKE_CURRENT_SOURCE_DIR}/${f})
 endforeach(f)

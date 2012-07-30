@@ -15,8 +15,21 @@ helper() {
 
 main() {
 (
+	view_level="$1"; shift
+	if [ -z "$view_level" ]; then
+		echo "Please specify view level"
+		return 1
+	fi
+	if ! printf "%04d" "$view_level" &>/dev/null; then
+		echo "Invalid view level number: $view_level"
+		return 1
+	fi
+	if [ "`printf "%04d\n" "$view_level"`" != "$view_level" ]; then
+		view_level="`printf "%04d\n" "$view_level"`"
+	fi
+
 	helper "controller" "create" "$@"
 	helper "model" "create" "$@"
-	helper "html_view" "create" "$@"
+	helper "html_view" "create" "$view_level" "$@"
 )
 }

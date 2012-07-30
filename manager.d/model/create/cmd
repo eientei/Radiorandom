@@ -20,6 +20,7 @@ main() {
 	namespace_open="`echo "$@" | tr ' ' '\n' | sed 's|.*|namespace & {|g' | head -n -1`"
 	namespace_close="`echo "$@" | tr ' ' '\n'  | sed 's|.*|} // namespace &|g' | head -n -1 | tac`"
 	classname="`echo "$@" | sed 's/.* //g'`"
+	prnts="`echo "$@" | sed 's/[^ ]*$//;s|[^ ]* |../|g'`"
 
 	file="$src_dirs/`echo "$@" | tr ' ' '/'`.h"
 
@@ -34,6 +35,8 @@ main() {
 cat <<EOF > "$file"
 #ifndef MODEL_${capname}_H
 #define MODEL_${capname}_H
+
+#include "${prnts}base.h"
 
 namespace model {
 $namespace_open

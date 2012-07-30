@@ -9,6 +9,7 @@ main() {
 		override="true"
 		shift
 	fi
+	pos="$1"; shift
 	if [ ${#@} -lt 1 ]; then
 		echo "Please specify skin name"
 		return 1
@@ -19,6 +20,7 @@ main() {
 	uses="`echo "$@" | sed 's/ /::/g'`"
 
 	file="$src_dirs/`echo "$@" | tr ' ' '/'`.tmpl"
+	file="`dirname "$file"`/${pos}`basename "$file"`"
 
 	if [ -e "$file" ] && [ "$override" != "true" ]; then
 		echo "File '$file' already exists. Refusing to proceed."
