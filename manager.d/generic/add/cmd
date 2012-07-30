@@ -1,0 +1,28 @@
+#!/bin/sh
+
+info_cmd="Adds file"
+
+main() {
+(
+	file="$1"; shift
+	if [ -z "$file" ]; then
+		exec_cmd "$facility" "list"
+		return $?
+	fi
+	
+	if [ ! -f "$file" ]; then
+		echo "No such file: $file"
+		return 1
+	fi
+	
+	cmake_file="`map "$file"`"
+
+	echo "Adding file: $file"
+	mkdir -p "`dirname "$cmake_file"`"
+
+cat <<EOF > "$cmake_file"
+set($src_group \${$src_group} $file)
+EOF
+
+)
+}

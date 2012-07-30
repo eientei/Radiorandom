@@ -1,0 +1,22 @@
+#!/bin/sh
+
+info_cmd="Lists files"
+
+main() {
+(
+	echo "List of $facility files"
+	for src_dir in $src_dirs; do
+		for file in `list_files "$src_dir"`; do
+			cmake_file="`map "$file"`"
+			if [ -f "$cmake_file" ]; then
+				echo -n "  *  "
+			else
+				echo -n "  !  "
+			fi
+			echo -n "$file"
+			echo -ne "\n"
+		done
+	done
+	echo "End of list"
+)
+}

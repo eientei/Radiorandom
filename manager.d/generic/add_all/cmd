@@ -1,0 +1,13 @@
+#!/bin/sh
+
+info_cmd="Adds all files"
+
+main() {
+(
+	for src_dir in $src_dirs; do
+		for file in `list_files "$src_dir"`; do
+			exec_cmd "$facility" "add" "$file"
+		done
+	done
+)
+}

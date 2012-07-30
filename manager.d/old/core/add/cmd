@@ -1,0 +1,11 @@
+#!/bin/sh
+
+info_cmd="Adds a core file"
+
+main() {
+(
+	file="$1"; shift
+	exec_cmd "generic" "add" "$file" "core" "CORE_SRC"
+)
+}
+

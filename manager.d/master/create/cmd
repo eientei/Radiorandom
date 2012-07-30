@@ -1,0 +1,22 @@
+#!/bin/sh
+
+info_cmd="Creates entity classes"
+
+helper() {
+(
+	facility="$1"; shift
+	cmd="$1"; shift
+
+	. "$workload_dir/$facility/meta"
+	exec_cmd "$facility" "$cmd" "$@"
+
+)
+}
+
+main() {
+(
+	helper "controller" "create" "$@"
+	helper "model" "create" "$@"
+	helper "html_view" "create" "$@"
+)
+}

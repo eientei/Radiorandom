@@ -1,0 +1,20 @@
+#!/bin/sh
+
+info_cmd="Dels all misc files"
+
+main() {
+(
+        for file in `list_files "misc"`; do
+                if cmake_link_exists "$file"; then
+			echo "Removing file: $file"
+			cmake_file="$cmake_dir/${file}.cmake"
+			rm "$cmake_file"
+                else
+			:
+                fi
+        done
+
+
+)
+}
+

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+info_cmd="Dels a core file"
+
+main() {
+(
+        file="$1"; shift
+	exec_cmd "generic" "del" "$file" "core" "CORE_SRC"
+)
+}
+

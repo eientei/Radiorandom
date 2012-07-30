@@ -1,0 +1,19 @@
+#!/bin/sh
+
+info_cmd="Lists misc files"
+
+main() {
+(
+	echo "List of misc files"
+	for file in `list_files "misc"`; do
+		if cmake_link_exists "$file"; then
+			echo -n "  *  "
+		else
+			echo -n "  !  "
+		fi
+		echo -n "$file"
+		echo -ne "\n"
+	done
+	echo "End of list"
+)
+}

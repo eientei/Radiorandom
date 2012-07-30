@@ -1,0 +1,22 @@
+#!/bin/sh
+
+info_cmd="Adds all core files"
+
+main() {
+(
+        for file in `list_files "src"`; do
+                if cmake_link_exists "${file/src/core}"; then
+			:
+                else
+			echo "Adding file: $file"
+			cmake_file="$cmake_dir/${file/src/core}.cmake"
+cat <<EOF > "$cmake_file"
+set(CORE_SRC \${CORE_SRC} $file)
+EOF
+                fi
+        done
+
+
+)
+}
+

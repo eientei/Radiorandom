@@ -1,0 +1,12 @@
+#!/bin/sh
+
+info_descr="Skin utils"
+info_version="1.0"
+
+src_group="SKIN_SRC"
+
+src_dirs="src/gen/skins"
+
+mask="*.cpp"
+
+recursive="false"

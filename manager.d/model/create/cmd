@@ -1,0 +1,51 @@
+#!/bin/sh
+
+info_cmd="Creates model"
+
+main() {
+(
+	override="false"
+	if [ "$1" = "-f" ]; then
+		override="true"
+		shift
+	fi
+	if [ ${#@} -lt 1 ]; then
+		echo "Please specify model name"
+		return 1
+	fi
+
+	name="`echo "$@" | tr ' ' '_'`"
+	capname="`echo "$name" | tr [:lower:] [:upper:]`"
+
+	namespace_open="`echo "$@" | tr ' ' '\n' | sed 's|.*|namespace & {|g' | head -n -1`"
+	namespace_close="`echo "$@" | tr ' ' '\n'  | sed 's|.*|} // namespace &|g' | head -n -1 | tac`"
+	classname="`echo "$@" | sed 's/.* //g'`"
+
+	file="$src_dirs/`echo "$@" | tr ' ' '/'`.h"
+
+	if [ -e "$file" ] && [ "$override" != "true" ]; then
+		echo "File '$file' already exists. Refusing to proceed."
+		echo "Use -f to override."
+		return 1
+	fi
+
+	mkdir -p `dirname "$file"`
+
+cat <<EOF > "$file"
+#ifndef MODEL_${capname}_H
+#define MODEL_${capname}_H
+
+namespace model {
+$namespace_open
+struct $classname : public base {
+
+};
+$namespace_close
+}
+
+#endif // MODEL_${capname}_H
+
+EOF
+	exec_cmd "$facility" "add" "$file"	
+)
+}

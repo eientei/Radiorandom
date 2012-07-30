@@ -5,8 +5,8 @@ include_directories(src/model)
 
 set(CONTROLLER_SRC)
 set(MODEL_SRC)
-set(TMPL_SRC)
 set(VIEW_SRC)
+set(SKIN_SRC)
 set(DATA_SRC)
 set(MISC_SRC)
 set(CORE_SRC)
@@ -20,8 +20,8 @@ endforeach()
 set(ALL_SRC
   ${CONTROLLER_SRC}
   ${MODEL_SRC}
-  ${TMPL_SRC}
   ${VIEW_SRC}
+  ${SKIN_SRC}
   ${DATA_SRC}
   ${MISC_SRC}
   ${CORE_SRC}

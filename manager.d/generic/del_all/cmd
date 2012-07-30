@@ -1,0 +1,13 @@
+#!/bin/sh
+
+info_cmd="Dels all files"
+
+main() {
+(
+	for src_dir in $src_dirs; do
+		for file in `list_files "$src_dir"`; do
+			exec_cmd "$facility" "del" "$file"
+		done
+	done
+)
+}

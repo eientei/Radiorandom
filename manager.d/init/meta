@@ -1,0 +1,8 @@
+#!/bin/sh
+
+info_descr="Initializes project"
+info_version="1.0"
+
+src_dirs="src"
+
+mask="*"

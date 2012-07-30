@@ -1,0 +1,12 @@
+#!/bin/sh
+
+info_descr="Model utils"
+info_version="1.0"
+
+src_group="MODEL_SRC"
+
+src_dirs="src/model"
+
+mask="*.h"
+
+recursive="true"

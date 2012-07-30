@@ -1,0 +1,24 @@
+#!/bin/sh
+
+main() {
+(
+	dire="$1"; shift
+	facility="$1"; shift
+	SRC="$1"; shift
+
+        for file in `list_files "$dir"`; do
+                if cmake_link_exists "$file"; then
+			:
+                else
+			echo "Adding file: $file"
+			cmake_file="$cmake_dir/${file}.cmake"
+cat <<EOF > "$cmake_file"
+set(MISC_SRC \${MISC_SRC} $file)
+EOF
+                fi
+        done
+
+
+)
+}
+

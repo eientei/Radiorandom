@@ -1,0 +1,12 @@
+#!/bin/sh
+
+info_descr="HTML View utils"
+info_version="1.0"
+
+src_group="VIEW_SRC"
+
+src_dirs="src/view/html"
+
+mask="*.tmpl"
+
+recursive="true"

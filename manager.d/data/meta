@@ -1,0 +1,12 @@
+#!/bin/sh
+
+info_descr="Data utils"
+info_version="1.0"
+
+src_group="DATA_SRC"
+
+src_dirs="src/data"
+
+mask="*.cpp"
+
+recursive="true"

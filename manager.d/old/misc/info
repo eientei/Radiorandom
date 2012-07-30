@@ -1,0 +1,4 @@
+#!/bin/sh
+
+info_descr="Misc files operations"
+info_version="1.0"

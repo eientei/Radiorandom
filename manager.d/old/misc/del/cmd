@@ -1,0 +1,11 @@
+#!/bin/sh
+
+info_cmd="Dels a misc file"
+
+main() {
+(
+        file="$1"; shift
+	exec_cmd "generic" "del" "$file" "misc" "MISC_SRC"
+)
+}
+

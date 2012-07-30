@@ -1,0 +1,184 @@
+#!/bin/sh
+
+workload_dir="manager.d"
+cmake_dir="cmake.d"
+src_dir="src"
+
+
+list_names() {
+(
+	path="$1"; shift
+	find -L "$path" -mindepth 1 -maxdepth 1 -type d -printf "%P\n" 2>/dev/null
+)
+}
+
+list_cmake_files() {
+(
+	path="$1"; shift
+	find -L "$path" -mindepth 1 -maxdepth 1 -type f -name "*.cmake" | sed "s|\.cmake$||;s|^$cmake_dir[/]*||" 2>/dev/null
+)
+}
+
+list_files() {
+(
+	path="$1"; shift
+	if [ "$recursive" = "true" ]; then
+		find -L "$path" -mindepth 1 -type f -name "$mask" 2>/dev/null
+	else
+		find -L "$path" -mindepth 1 -maxdepth 1 -type f -name "$mask" 2>/dev/null
+	fi
+)
+}
+
+cmake_link() {
+(
+	path="$1"; shift
+	echo "$cmake_dir/${path}.cmake"
+)
+}
+
+cmake_link_exists() {
+(
+	path="$1"; shift
+	[ -f "`cmake_link "$path"`" ]
+)
+}
+
+fill_to() {
+(
+	maximum="$1"; shift
+	this="$1"; shift
+	filler="${1- }"; shift
+	this_len=`echo "$this" | wc -c`
+
+	for _ in `seq $this_len $maximum`; do
+		echo -n "$filler"
+	done
+)
+}
+
+check_workload() {
+(
+	name="$1"; shift
+	path="$workload_dir/$name"
+	if [ -f "$path/meta" ]; then
+		. "$path/meta"
+		if [ "$info_descr" ] && [ "$info_version" ]; then
+			return 0
+		fi
+	fi
+	return 1
+)
+}
+
+check_cmd() {
+(
+	workload="$1"; shift
+	cmd="$1"; shift
+	path="$workload_dir/$workload/$cmd/cmd"
+
+	if check_workload "$workload"; then
+		if [ -x "$path" ]; then
+			return 0
+		fi
+	fi
+	return 1
+)
+}
+
+print_help() {
+(
+	filter="${1-.*}"; shift
+	workload_maxlen=$((`list_names "$workload_dir" | wc -L`+25))
+	
+	for workload in `list_names "$workload_dir" | grep "$filter"`; do
+		if [ -e "$workload_dir/$workload/skip" ]; then
+			continue
+		fi
+		echo -n ">>> $workload "
+		fill_to "$workload_maxlen" "$workload" "."
+		if check_workload "$workload"; then
+			(
+				. $workload_dir/$workload/meta
+				echo -n " $info_descr"
+			)
+			echo -en "\n"
+			cmd_maxlen=$((`list_names "$workload_dir/$workload" | wc -L`+1))
+			for cmd in `list_names "$workload_dir/$workload"`; do
+				echo -n "  "
+				echo -n "$cmd "
+				fill_to "$cmd_maxlen" "$cmd" "-";
+				if check_cmd "$workload" "$cmd"; then
+					(
+						. "$workload_dir/$workload/$cmd/cmd"
+						echo -n " $info_cmd"
+					)
+				else
+					echo -n " ***CORRUPTED***"
+				fi
+				echo -ne "\n"
+			done
+		else
+			echo -n " ***CORRUPTED***"
+		fi
+		echo -en "\n"
+
+	done
+)
+}
+
+workload="$1"; shift
+cmd="$1"; shift
+
+if [ ! -z "$workload" ] && ! check_workload "$workload"; then
+	echo "Incorrect workload: $workload"
+	exit 1
+fi
+
+if [ -z "$workload" ] || [ -z "$cmd" ]; then
+	if [ "$workload" ]; then
+		print_help "$workload"
+	else
+		print_help
+	fi
+	exit 0
+fi
+
+
+if ! check_cmd "$workload" "$cmd"; then
+	echo "Incorrect cmd: $workload/$cmd"
+	exit 1
+fi
+
+
+map() {
+(
+        file="$1"; shift
+#        echo "$cmake_dir/$facility/${file#*/}.cmake"
+        echo "$cmake_dir/${file#*/}.cmake"
+)
+}
+
+
+main() {
+(
+	echo "missing main() in file $workload_dir/$workload/$cmd/cmd"
+	exit 1
+)
+}
+
+
+exec_cmd() {
+(
+	workload="$1"; shift
+	cmd="$1"; shift
+	. "$workload_dir"/"$workload"/"$cmd"/cmd
+	
+	main "$@"
+)
+}
+
+facility="$workload"
+. $workload_dir/$workload/meta
+exec_cmd "$workload" "$cmd" "$@"
+exit $?

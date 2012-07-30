@@ -1,0 +1,35 @@
+#!/bin/sh
+
+info_cmd="Creates core files"
+
+main() {
+(
+	override="false"
+	if [ "$1" = "-f" ]; then
+		override="true"
+		shift
+	fi
+	if [ ${#@} -lt 1 ]; then
+		echo "Please specify skin name"
+		return 1
+	fi
+
+	name="`echo "$@" | tr ' ' '_'`"
+
+	file="$src_dirs/${name}.cpp"
+
+	if [ -e "$file" ] && [ "$override" != "true" ]; then
+		echo "File '$file' already exists. Refusing to proceed."
+		echo "Use -f to override."
+		return 1
+	fi
+
+
+	mkdir -p `dirname "$file"`
+
+cat <<EOF > "$file"
+
+EOF
+	exec_cmd "$facility" "add" "$file"
+)
+}

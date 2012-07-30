@@ -1,0 +1,19 @@
+#!/bin/sh
+
+info_cmd="Lists core files"
+
+main() {
+(
+	echo "List of core files"
+	for file in `list_files "src"`; do
+		if cmake_link_exists "${file/src/core}"; then
+			echo -n "  *  "
+		else
+			echo -n "  !  "
+		fi
+		echo -n "$file"
+		echo -ne "\n"
+	done
+	echo "End of list"
+)
+}

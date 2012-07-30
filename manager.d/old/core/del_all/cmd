@@ -1,0 +1,20 @@
+#!/bin/sh
+
+info_cmd="Dels all core files"
+
+main() {
+(
+        for file in `list_files "src"`; do
+                if cmake_link_exists "${file/src/core}"; then
+			echo "Removing file: $file"
+			cmake_file="$cmake_dir/${file/src/core}.cmake"
+			rm "$cmake_file"
+                else
+			:
+                fi
+        done
+
+
+)
+}
+

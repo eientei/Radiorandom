@@ -1,0 +1,12 @@
+#!/bin/sh
+
+info_descr="Controller utils"
+info_version="1.0"
+
+src_group="CONTROLLER_SRC"
+
+src_dirs="src/controller"
+
+mask="*.cpp"
+
+recursive="true"

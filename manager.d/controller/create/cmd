@@ -1,0 +1,78 @@
+#!/bin/sh
+
+info_cmd="Creates controller"
+
+main() {
+(
+	override="false"
+	if [ "$1" = "-f" ]; then
+		override="true"
+		shift
+	fi
+	if [ ${#@} -lt 1 ]; then
+		echo "Please specify class name"
+		return 1
+	fi
+	name="`echo "$@" | tr ' ' '_'`"
+	capname="`echo "$name" | tr [:lower:] [:upper:]`"
+	namespace_open="`echo "$@" | tr ' ' '\n' | sed 's|.*|namespace & {|g' | head -n -1`"
+	namespace_close="`echo "$@" | tr ' ' '\n'  | sed 's|.*|} // namespace &|g' | head -n -1 | tac`"
+	namespace="`echo "controller $@" | sed 's/ [^ ]*$//g' | sed 's/ /::/g'`"
+	model="`echo "$@" | sed 's/ /::/g'`"
+	classname="`echo "$@" | sed 's/.* //g'`"
+	capclassname="`echo "${classname:0:1}" | tr [:lower:] [:upper:]`${classname:1}"
+	parent="`echo "$@" | sed 's/[ ]*[^ ]*$//'`"
+	bfile="$src_dirs/`echo "$@" | tr ' ' '/'`"
+
+	for file in "${bfile}.h" "${bfile}.cpp"; do
+		if [ -e "$file" ] && [ "$override" != "true" ]; then
+			echo "File '$file' already exists. Refusing to proceed."
+			echo "Use -f to override."
+			return 1
+		fi
+	done
+
+	mkdir -p `dirname "$bfile"`
+
+cat <<EOF > "${bfile}.h"
+#ifndef CONTROLLER_${capname}_H
+#define CONTROLLER_${capname}_H
+
+namespace controller {
+$namespace_open
+class index : public controller::base
+{
+public:
+    ${classname}(cppcms::service &srv, controller::base *parent = 0);
+
+    virtual void indexPage(std::string url);
+};
+$namespace_close
+}
+
+#endif // CONTROLLER_${capname}_H
+EOF
+
+
+cat <<EOF > "${bfile}.cpp"
+#include "${classname}.h"
+
+using namespace ${namespace};
+
+${classname}::${classname}(cppcms::service &srv, controller::base *parent = 0) 
+    : controller::base(srv,parent,"$capclassname","$classname")
+{
+	
+}
+
+void ${classname}::indexPage(std::string data)
+{
+    model::$model c;
+    prepare(c);
+    display(c);
+}
+
+EOF
+	exec_cmd "$facility" "add" "${bfile}.cpp"
+)
+}
