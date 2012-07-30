@@ -40,7 +40,7 @@ cat <<EOF > "${bfile}.h"
 
 namespace controller {
 $namespace_open
-class index : public controller::base
+class ${classname} : public controller::base
 {
 public:
     ${classname}(cppcms::service &srv, controller::base *parent = 0);
@@ -59,7 +59,7 @@ cat <<EOF > "${bfile}.cpp"
 
 using namespace ${namespace};
 
-${classname}::${classname}(cppcms::service &srv, controller::base *parent = 0) 
+${classname}::${classname}(cppcms::service &srv, controller::base *parent) 
     : controller::base(srv,parent,"$capclassname","$classname")
 {
 	

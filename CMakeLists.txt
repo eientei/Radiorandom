@@ -11,11 +11,22 @@ set(DATA_SRC)
 set(MISC_SRC)
 set(CORE_SRC)
 
-file(GLOB_RECURSE PARTS cmake_parts/*.cmake)
+file(GLOB_RECURSE PARTS cmake.d/*.cmake)
 
 foreach(PART ${PARTS})
   include(${PART})
 endforeach()
+
+foreach(f ${VIEW_SRC})
+    set(VIEW_SRC_PREFIXED ${VIEW_SRC_PREFIXED} ${CMAKE_CURRENT_SOURCE_DIR}/${f})
+endforeach(f)
+
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
+    COMMAND cppcms_tmpl_cc ${VIEW_SRC_PREFIXED} -o ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
+    DEPENDS ${VIEW_SRC}
+)
+
 
 set(ALL_SRC
   ${CONTROLLER_SRC}
@@ -25,7 +36,9 @@ set(ALL_SRC
   ${DATA_SRC}
   ${MISC_SRC}
   ${CORE_SRC}
+  ${CMAKE_CURRENT_BINARY_DIR}/html.cpp
   src/main.cpp
+
 )
 
 set(ALL_LIB
