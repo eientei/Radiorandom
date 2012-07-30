@@ -6,7 +6,8 @@
 namespace model {
 
 struct error : public base {
-
+    int code;
+    std::string message;
 };
 
 }
