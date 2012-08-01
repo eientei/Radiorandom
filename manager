@@ -154,8 +154,7 @@ fi
 map() {
 (
         file="$1"; shift
-#        echo "$cmake_dir/$facility/${file#*/}.cmake"
-        echo "$cmake_dir/${file#*/}.cmake"
+        echo "$cmake_dir/${outdir}${file#*/}.cmake"
 )
 }
 

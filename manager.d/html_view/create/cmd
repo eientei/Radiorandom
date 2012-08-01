@@ -2,6 +2,15 @@
 
 info_cmd="Creates mview"
 
+map() {
+(
+        file="$1"; shift
+        res="$cmake_dir/${outdir}${file#*/}.cmake" 
+	res="`dirname "$res"`/${view_level}`basename "$res"`"
+	echo "$res"
+)
+}
+
 main() {
 (
 	override="false"
@@ -9,18 +18,19 @@ main() {
 		override="true"
 		shift
 	fi
-	pos="$1"; shift
+	view_level="$1"; shift
 	if [ ${#@} -lt 1 ]; then
 		echo "Please specify skin name"
 		return 1
 	fi
 
-	name="`echo "$@" | tr ' ' '_'`"
+	view_level="`printf "%04d\n" "$view_level"`"
+
+	name="`echo "root_$@" | tr ' ' '_'`"
 	include="`echo "$@" | tr ' ' '/'`"
 	uses="`echo "$@" | sed 's/ /::/g'`"
 
 	file="$src_dirs/`echo "$@" | tr ' ' '/'`.tmpl"
-	file="`dirname "$file"`/${pos}`basename "$file"`"
 
 	if [ -e "$file" ] && [ "$override" != "true" ]; then
 		echo "File '$file' already exists. Refusing to proceed."

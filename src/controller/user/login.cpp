@@ -7,7 +7,7 @@ using namespace controller::user;
 login::login(cppcms::service &srv, controller::base *parent) 
     : controller::base(srv,parent,"Login","login")
 {
-	
+
 }
 
 void login::indexPage(std::string data)

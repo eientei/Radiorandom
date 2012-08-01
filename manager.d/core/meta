@@ -9,4 +9,6 @@ src_dirs="src"
 
 mask="*.cpp"
 
+outdir="$facility/"
+
 recursive="false"

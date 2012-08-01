@@ -7,7 +7,7 @@ using namespace controller::user;
 list::list(cppcms::service &srv, controller::base *parent) 
     : controller::base(srv,parent,"List","list")
 {
-	
+
 }
 
 void list::indexPage(std::string data)

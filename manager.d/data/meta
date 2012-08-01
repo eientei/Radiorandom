@@ -7,6 +7,6 @@ src_group="DATA_SRC"
 
 src_dirs="src/data"
 
-mask="*.cpp"
+mask="*"
 
 recursive="true"

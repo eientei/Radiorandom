@@ -1,6 +1,6 @@
 #include "radiorandom.h"
 
-#include "controller/index.h"
+#include "controller/root.h"
 
 #include <cppcms/applications_pool.h>
 #include <cppcms/service.h>
@@ -17,7 +17,7 @@ void radiorandom::execute()
     try {
         cppcms::service srv(m_argc,m_argv);
         srv.applications_pool().mount(
-                    cppcms::applications_factory<controller::index>());
+                    cppcms::applications_factory<controller::root>());
         std::cout << "fired up" << std::endl;
         srv.run();
     } catch (const std::exception &e) {

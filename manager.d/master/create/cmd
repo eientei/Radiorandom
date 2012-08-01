@@ -15,6 +15,11 @@ helper() {
 
 main() {
 (
+	override=""
+        if [ "$1" = "-f" ]; then
+                override="-f"
+                shift
+        fi
 	view_level="$1"; shift
 	if [ -z "$view_level" ]; then
 		echo "Please specify view level"
@@ -24,12 +29,9 @@ main() {
 		echo "Invalid view level number: $view_level"
 		return 1
 	fi
-	if [ "`printf "%04d\n" "$view_level"`" != "$view_level" ]; then
-		view_level="`printf "%04d\n" "$view_level"`"
-	fi
 
-	helper "controller" "create" "$@"
-	helper "model" "create" "$@"
-	helper "html_view" "create" "$view_level" "$@"
+	helper "controller" "create" $override "$@"
+	helper "model" "create" $override "$@"
+	helper "html_view" "create" $override "$view_level" "$@"
 )
 }
